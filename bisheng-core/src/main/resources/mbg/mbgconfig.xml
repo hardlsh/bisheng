@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration  
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"  
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+	<classPathEntry location="mysql-connector-java-5.1.21.jar" />
+
+	<context id="DB2Tables" targetRuntime="MyBatis3">
+		<!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+		<commentGenerator>
+			<property name="suppressAllComments" value="false" />
+		</commentGenerator>
+
+		<!--数据库链接URL，用户名、密码 -->
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://127.0.0.1:3306/bishengdb" userId="root"
+			password="root">
+		</jdbcConnection>
+
+		<javaTypeResolver>
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+		<!-- 生成模型的包名和位置 -->
+		<javaModelGenerator targetPackage="com.bisheng.services.exhibit.model.generated" targetProject="../../java">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+		<!-- 生成映射文件的包名和位置 -->
+		<sqlMapGenerator targetPackage="mybatis.exhibit.generated" targetProject="../../resources">
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+		<!-- 生成DAO的包名和位置 -->
+		<!-- type=ANNOTATEDMAPPER 或 XMLMAPPER -->
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="com.bisheng.services.exhibit.dao.generated" targetProject="../../java">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+
+		<!-- system -->
+		<!-- <table tableName="tp_sys_user" domainObjectName="User">
+			<property name="useActualColumnNames" value="false" />
+		</table>
+		<table tableName="tp_sys_role" domainObjectName="Role">
+			<property name="useActualColumnNames" value="false" />
+		</table>
+		<table tableName="tp_sys_user_role" domainObjectName="UserRole">
+			<property name="useActualColumnNames" value="false" />
+		</table>
+		<table tableName="tp_sys_resource" domainObjectName="Resource">
+			<property name="useActualColumnNames" value="false" />
+		</table>
+		<table tableName="tp_sys_role_resource" domainObjectName="RoleResource">
+			<property name="useActualColumnNames" value="false" />
+		</table> 
+		<table tableName="tp_sys_dict" domainObjectName="Dict">
+			<property name="useActualColumnNames" value="false" />
+		</table>
+		<table tableName="tp_sys_dict_item" domainObjectName="DictItem">
+			<property name="useActualColumnNames" value="false" />
+		</table> 
+		<table tableName="tp_sys_user_exhibit" domainObjectName="UserExhibit">
+			<property name="useActualColumnNames" value="false" />
+		</table> -->
+		<!-- <table tableName="tb_exhibit" domainObjectName="Exhibit">
+			<property name="useActualColumnNames" value="false" />
+		</table>  -->
+		<!-- <table tableName="tb_booth" domainObjectName="Booth">
+			<property name="useActualColumnNames" value="false" />
+		</table>  -->
+		<!-- <table tableName="tp_sys_area" domainObjectName="Area">
+			<property name="useActualColumnNames" value="false" />
+		</table>  -->
+		<!-- <table tableName=
+		"tb_booth_word" domainObjectName="BoothWord">
+			<property name="useActualColumnNames" value="false" />
+		</table> -->
+		<!-- <table tableName="tb_word" domainObjectName="Word">
+			<property name="useActualColumnNames" value="false" />
+		</table> -->
+		<table tableName="tb_word_operate" domainObjectName="WordOperate">
+			<property name="useActualColumnNames" value="false" />
+		</table>
+
+	</context>
+</generatorConfiguration>

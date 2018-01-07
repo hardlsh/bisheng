@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bisheng.services.system.dao.customized.ResourceDao" >
+	<resultMap id="ResourceModel" extends="BaseResultMap" type="com.bisheng.services.system.model.customized.ResourceModel" >
+  	
+  	</resultMap>
+  	
+  	<sql id="Column_List" >
+  		t5.resource_id, t5.resource_name, t5.resource_type, 
+		t5.parent_id, t5.resource_path,  t5.level, t5.sequence, t5.status
+  	</sql>
+  	
+  	<select id="queryUserResourceByParam" resultMap="ResourceModel" 
+  		parameterType="com.bisheng.apps.system.param.AuthParam">
+		SELECT 
+			<include refid="Column_List"/>
+		FROM 
+			tp_sys_user t1 
+			INNER JOIN tp_sys_user_role t2 ON t1.user_id = t2.user_id
+			INNER JOIN tp_sys_role t3 ON t2.role_id = t3.role_id
+			INNER JOIN tp_sys_role_resource t4 ON t3.role_id = t4.role_id
+			INNER JOIN tp_sys_resource t5 ON t4.resource_id = t5.resource_id
+		<where>
+			<if test="userId != null">
+				AND	t1.user_id = #{userId, jdbcType=INTEGER} 
+			</if>
+			<if test="userStatus != null">
+				AND	t1.status = #{userStatus, jdbcType=INTEGER} 
+			</if>
+			<if test="roleStatus != null">
+				AND t3.status = #{roleStatus, jdbcType=INTEGER}
+			</if>
+			<if test="resourceType != null">
+				AND t5.resource_type = #{resourceType, jdbcType=INTEGER}
+			</if>
+			<if test="resourceStatus != null">
+				AND t5.status = #{resourceStatus, jdbcType=INTEGER}
+			</if>
+		</where>
+		GROUP BY t5.resource_id
+  	</select>
+  	
+  	<select id="queryRoleResourceByParam" resultMap="ResourceModel" 
+  		parameterType="com.bisheng.apps.system.param.AuthParam">
+		SELECT
+			<include refid="Column_List" />
+		FROM
+			tp_sys_role t1 
+			INNER JOIN tp_sys_role_resource t2 ON t1.role_id = t2.role_id
+			INNER JOIN tp_sys_resource t5 ON t2.resource_id = t5.resource_id
+		<where>
+			<if test="roleId != null">
+				AND t1.role_id = #{roleId, jdbcType=INTEGER}
+			</if>
+			<if test="roleStatus != null">
+				AND t1.status = #{roleStatus, jdbcType=INTEGER}
+			</if>
+			<if test="resourceStatus != null">
+				AND t5.status = #{resourceStatus, jdbcType=INTEGER}
+			</if>
+		</where>
+  	</select>
+  	
+</mapper>

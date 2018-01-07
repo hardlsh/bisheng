@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bisheng.services.system.dao.customized.AreaDao" >
+	<resultMap id="AreaModel" extends="BaseResultMap" type="com.bisheng.services.system.model.customized.AreaModel" >
+  	
+  	</resultMap>
+  	
+  	<sql id="Column_List" >
+  		a.area_id, a.area_name, a.parent_id, a.short_name, a.level, a.pinyin, a.jianpin, 
+  		a.first_char, a.status, a.remark
+  	</sql>
+  	
+  	<select id="getAreaList" resultMap="AreaModel">
+  		SELECT <include refid="Column_List"/>
+  		FROM tp_sys_area a
+  	</select>
+  	
+  	<select id="getAreaListByParam" resultMap="AreaModel" parameterType="com.bisheng.apps.system.param.AreaParam">
+  		SELECT <include refid="Column_List"/>
+  		FROM tp_sys_area a
+  		<where>
+  			<if test="level != null">
+  				a.level = #{level, jdbcType=INTEGER}
+  			</if>
+  			<if test="parentId != null and parentId != ''">
+  				a.parent_id = #{parentId, jdbcType=VARCHAR}
+  			</if>
+  		</where>
+  	</select>
+</mapper>

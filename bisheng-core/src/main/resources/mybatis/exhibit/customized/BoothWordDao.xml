@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bisheng.services.exhibit.dao.customized.BoothWordDao">
+	<resultMap id="BoothWordModel" type="com.bisheng.services.exhibit.model.customized.BoothWordModel" extends="BaseResultMap">
+	    <result column="exhibit_id" jdbcType="BIGINT" property="exhibitId" />
+	    <result column="exhibit_name" jdbcType="VARCHAR" property="exhibitName" />
+	</resultMap>
+
+	<sql id="Column_List" >
+		bw.booth_word_id, bw.word, bw.templet_name, bw.booth_id, bw.booth_name, bw.x_axis, bw.y_axis, bw.remark
+  	</sql>
+	
+	<!-- 批量插入 -->
+	<insert id="batchInsert">
+		INSERT INTO tb_booth_word 
+			(word, templet_name, booth_id, booth_name, x_axis, y_axis, number, remark)
+    	VALUES 
+    		<foreach collection="boothWordList" item="item" separator=",">
+    		(#{item.word,jdbcType=VARCHAR}, #{item.templetName,jdbcType=VARCHAR}, 
+      		#{item.boothId,jdbcType=BIGINT}, #{item.boothName,jdbcType=VARCHAR}, #{item.xAxis,jdbcType=INTEGER}, 
+      		#{item.yAxis,jdbcType=INTEGER}, #{item.number,jdbcType=INTEGER}, #{item.remark,jdbcType=VARCHAR})
+      		</foreach>
+	</insert>
+	
+	<!-- 根据boothId,进行删除操作 -->
+	<delete id="deleteByBoothId" parameterType="com.bisheng.services.exhibit.model.generated.BoothWord">
+		DELETE FROM 
+			tb_booth_word 
+		WHERE 
+			booth_id = #{boothId,jdbcType=BIGINT}
+	</delete>
+	
+	<!-- 根据参数,查询展位文字 -->
+	<select id="queryBoothWordByParam" parameterType="com.bisheng.apps.exhibit.param.ExhibitQueryParam" 
+		resultMap="BoothWordModel">
+		SELECT 
+			bw.booth_word_id, bw.word, bw.templet_name, bw.x_axis, bw.y_axis, bw.number, b.exhibit_id, 
+			b.exhibit_name, b.booth_id, b.booth_name 
+		FROM 
+			tb_booth b INNER JOIN tb_booth_word bw ON b.booth_id = bw.booth_id
+		<where>
+			<if test="exhibitIdList != null and exhibitIdList.size() > 0">
+				AND b.exhibit_id IN 
+				<foreach collection="exhibitIdList" item="exhibitIdItem" separator="," open="(" close=")">
+					#{exhibitIdItem, jdbcType=BIGINT}
+				</foreach>
+			</if>
+			<if test="boothIdList != null and boothIdList.size() > 0">
+				AND b.booth_id IN
+				<foreach collection="boothIdList" item="boothIdItem" separator="," open="(" close=")">
+					#{boothIdItem, jdbcType=BIGINT}
+				</foreach>
+			</if>
+			<if test="word != null and word != ''">
+				AND bw.word = #{word, jdbcType=VARCHAR} 
+			</if>
+			<if test="wordList != null and wordList.size() > 0">
+				AND bw.word IN
+				<foreach collection="wordList" item="wordItem" separator="," open="(" close=")">
+					#{wordItem, jdbcType=VARCHAR}
+				</foreach>
+			</if>
+		</where>
+	</select>
+</mapper>

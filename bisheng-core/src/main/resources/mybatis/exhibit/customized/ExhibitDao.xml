@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bisheng.services.exhibit.dao.customized.ExhibitDao">
+	<resultMap id="ExhibitModel" type="com.bisheng.services.exhibit.model.customized.ExhibitModel"
+		extends="BaseResultMap">
+		<result column="parent_id" property="parentId" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Column_List" >
+  		e.exhibit_id, e.exhibit_name, e.exhibit_code, e.area_id, e.area_name, e.address, e.phone, e.status, 
+    	e.start_time, e.end_time, e.remark, e.create_by_user, e.update_by_user, e.gmt_created, e.gmt_modified
+  	</sql>
+
+	<!-- 根据展馆查询参数查询展馆列表 -->
+	<select id="queryExhibitListByParam" resultMap="ExhibitModel"
+	parameterType="com.bisheng.apps.exhibit.param.ExhibitQueryParam">
+		SELECT
+			<include refid="Column_List"/>, sa.parent_id
+		FROM 
+			tb_exhibit e INNER JOIN tp_sys_user_exhibit ue ON e.exhibit_id = ue.exhibit_id
+			INNER JOIN tp_sys_area sa ON e.area_name = sa.area_name
+		<where>
+			<if test="exhibitStatus != null">
+				AND e.status = #{exhibitStatus, jdbcType=INTEGER}
+			</if>
+			<if test="exhibitStatusList != null and exhibitStatusList.size() > 0">
+				AND e.status IN
+				<foreach collection="exhibitStatusList" item="exStatus" open="(" close=")" separator=",">
+					#{exStatus}
+				</foreach>
+			</if>
+			<if test="exhibitId != null">
+				AND e.exhibit_id = #{exhibitId, jdbcType=BIGINT}
+			</if>
+			<if test="exhibitIdList != null and exhibitIdList.size() > 0">
+				AND e.exhibit_id IN 
+				<foreach collection="exhibitIdList" item="exId" open="(" close=")" separator=",">
+					#{exId}
+				</foreach>
+			</if>
+			<if test="userId != null">
+				AND ue.user_id = #{userId, jdbcType=BIGINT}
+			</if>
+			<if test="city != null and city != ''">
+				AND sa.area_name = #{city, jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+	
+	<!-- 查询展馆列表，不关联用户表 -->
+	<select id="queryAllExhibitByParam" resultMap="ExhibitModel"
+	parameterType="com.bisheng.apps.exhibit.param.ExhibitQueryParam">
+		SELECT
+			<include refid="Column_List"/>
+		FROM 
+			tb_exhibit e LEFT JOIN tb_booth b ON e.exhibit_id = b.exhibit_id
+		<where>
+			<if test="exhibitStatus != null">
+				AND e.status = #{exhibitStatus, jdbcType=INTEGER}
+			</if>
+			<if test="boothId != null">
+				AND b.booth_id = #{boothId, jdbcType=BIGINT}
+			</if>
+		</where>
+	</select>
+	
+	<!-- 校验展馆信息 -->
+	<select id="checkExhibitByParam" resultMap="ExhibitModel" parameterType="com.bisheng.apps.exhibit.param.ExhibitQueryParam">
+		SELECT
+			<include refid="Column_List"/>
+		FROM 
+			tb_exhibit e
+		WHERE
+			e.exhibit_name = #{exhibitName, jdbcType=VARCHAR}
+			OR e.exhibit_code = #{exhibitCode, jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 插入展馆,并返回主键 -->
+	<insert id="addExhibitReturnId" parameterType="com.bisheng.services.exhibit.model.generated.Exhibit"
+		useGeneratedKeys="true" keyProperty="exhibitId" keyColumn="exhibit_id">
+		INSERT INTO tb_exhibit (exhibit_id, exhibit_name, exhibit_code, 
+      		area_id, area_name, address, phone, status, start_time, 
+      		end_time, remark, create_by_user, update_by_user)
+    	VALUES (#{exhibitId,jdbcType=BIGINT}, #{exhibitName,jdbcType=VARCHAR}, #{exhibitCode,jdbcType=VARCHAR}, 
+     		#{areaId,jdbcType=VARCHAR}, #{areaName,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      		#{phone,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{startTime,jdbcType=VARCHAR}, 
+      		#{endTime,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{createByUser,jdbcType=VARCHAR}, 
+      		#{updateByUser,jdbcType=VARCHAR})
+	</insert>
+	
+	<!-- 根据主键id, 修改展馆 -->
+	<update id="updateExhibitById" parameterType="com.bisheng.services.exhibit.model.generated.Exhibit">
+		UPDATE tb_exhibit
+    	SET 
+      		exhibit_name = #{exhibitName,jdbcType=VARCHAR},
+      		exhibit_code = #{exhibitCode,jdbcType=VARCHAR},
+	      	area_id = #{areaId,jdbcType=VARCHAR},
+      		area_name = #{areaName,jdbcType=VARCHAR},
+	      	address = #{address,jdbcType=VARCHAR},
+	      	phone = #{phone,jdbcType=VARCHAR},
+	      	status = #{status,jdbcType=INTEGER},
+	     	start_time = #{startTime,jdbcType=VARCHAR},
+	      	end_time = #{endTime,jdbcType=VARCHAR},
+	      	remark = #{remark,jdbcType=VARCHAR},
+	      	update_by_user = #{updateByUser,jdbcType=VARCHAR}
+	    WHERE
+	    	exhibit_id = #{exhibitId,jdbcType=BIGINT}
+	</update>
+</mapper>

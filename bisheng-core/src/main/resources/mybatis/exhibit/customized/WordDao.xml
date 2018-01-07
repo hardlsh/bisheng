@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bisheng.services.exhibit.dao.customized.WordDao">
+	<resultMap id="WordModel" extends="BaseResultMap" type="com.bisheng.services.exhibit.model.customized.WordModel">
+		<result column="exhibit_name" property="exhibitName" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Column_List" >
+  		w.word_id, w.exhibit_id, w.word, w.total_count
+  	</sql>
+	
+	<!-- 查询文字存量列表 -->
+	<select id="queryWordListByParam" parameterType="com.bisheng.apps.exhibit.param.ExhibitQueryParam"
+		resultMap="WordModel">
+		SELECT
+			<include refid="Column_List"/>, e.exhibit_name
+		FROM 
+			tb_word w LEFT JOIN tb_exhibit e ON w.exhibit_id = e.exhibit_id
+		<where>
+			<if test="word != null and word != ''">
+				AND w.word = #{word, jdbcType=VARCHAR}
+			</if>
+			<if test="exhibitId != null">
+				AND e.exhibit_id = #{exhibitId, jdbcType=BIGINT}
+			</if>
+			<if test="wordList != null and wordList.size() > 0">
+				AND w.word IN
+				<foreach collection="wordList" item="wordItem" separator="," open="(" close=")">
+					#{wordItem, jdbcType=VARCHAR}
+				</foreach>
+			</if>
+			<if test="wordIdList != null and wordIdList.size() > 0">
+				AND w.word_id IN 
+				<foreach collection="wordIdList" item="wordIdItem" separator="," open="(" close=")">
+					#{wordIdItem, jdbcType=BIGINT}
+				</foreach>
+			</if>
+		</where>
+		ORDER BY w.total_count ASC, w.word_id ASC, w.gmt_modified DESC
+	</select>
+	
+	<!-- 单表查询 -->
+	<select id="queryWordList" parameterType="com.bisheng.services.exhibit.model.customized.WordModel"
+		resultMap="BaseResultMap">
+		SELECT
+			<include refid="Column_List"/>
+		FROM 
+			tb_word w 
+		<where>
+			<if test="word != null and word != ''">
+				AND w.word = #{word, jdbcType=VARCHAR}
+			</if>
+			<if test="wordIdList != null and wordIdList.size() > 0">
+				AND w.word_id IN 
+				<foreach collection="wordIdList" item="wordIdItem" separator="," open="(" close=")">
+					#{wordIdItem, jdbcType=BIGINT}
+				</foreach>
+			</if>
+		</where>
+		ORDER BY word_id
+	</select>
+	
+	<!-- 查询文字操作信息汇总 -->
+	<select id="queryWordOperateCount" parameterType="com.bisheng.apps.exhibit.param.ExhibitQueryParam"
+		resultMap="WordModel">
+		SELECT 
+			w.word_id, w.word, e.exhibit_name, wo.type, count(wo.count) as operateCount
+		FROM tb_word w LEFT JOIN tb_word_operate wo ON w.word_id = wo.word_id 
+			LEFT JOIN tb_exhibit e ON w.exhibit_id = e.exhibit_id
+		<where>
+			<if test="wordList != null and wordList.size() > 0">
+				AND w.word IN
+				<foreach collection="wordList" item="wordItem" separator="," open="(" close=")">
+					#{wordItem, jdbcType=VARCHAR}
+				</foreach>
+			</if>
+			<if test="exhibitIdList != null and exhibitIdList.size() > 0">
+				AND w.exhibit_id IN
+				<foreach collection="exhibitIdList" item="exhibitIdItem" separator="," open="(" close=")">
+					#{exhibitIdItem, jdbcType=BIGINT}
+				</foreach>
+			</if>
+			<if test="operateType != null">
+				AND wo.type = #{operateType, jdbcType=INTEGER}
+			</if>
+			<if test="updateDateMin != null">
+				AND wo.gmt_modified <![CDATA[ >= ]]> #{updateDateMin}
+			</if>
+			<if test="updateDateMax != null">
+				AND wo.gmt_modified <![CDATA[ <= ]]> #{updateDateMax}
+			</if>
+		</where>
+			GROUP BY wo.word_id
+	</select>
+	
+	<!-- 插入返回主键 -->
+	<insert id="addWordReturnId" parameterType="com.bisheng.services.exhibit.model.generated.Word"
+		useGeneratedKeys="true" keyProperty="wordId" keyColumn="word_id">
+		INSERT INTO tb_word (exhibit_id, word, total_count)
+    	VALUES (#{exhibitId,jdbcType=BIGINT}, 
+		      #{word,jdbcType=VARCHAR}, #{totalCount,jdbcType=BIGINT})
+	</insert>
+	
+</mapper>

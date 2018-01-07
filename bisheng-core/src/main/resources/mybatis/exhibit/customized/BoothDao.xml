@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bisheng.services.exhibit.dao.customized.BoothDao">
+	<resultMap id="BoothModel" type="com.bisheng.services.exhibit.model.customized.BoothModel"
+		extends="BaseResultMap">
+		
+	</resultMap>
+
+	<sql id="Column_List" >
+  		b.booth_id, b.booth_name, b.exhibit_id, b.exhibit_name, b.sequence, b.x_count, b.y_count, b.status, 
+		b.word_sign, b.word_content, b.remark, b.create_by_user, b.update_by_user
+  	</sql>
+	
+	<!-- 查询参数查询展位列表 -->
+	<select id="queryBoothListByParam" parameterType="com.bisheng.apps.exhibit.param.ExhibitQueryParam"
+		resultMap="BoothModel">
+		SELECT
+			<include refid="Column_List"/>
+		FROM 
+			tb_exhibit e INNER JOIN tp_sys_user_exhibit ue ON e.exhibit_id = ue.exhibit_id
+			INNER JOIN tb_booth b ON e.exhibit_id = b.exhibit_id
+			INNER JOIN tp_sys_area sa ON e.area_name = sa.area_name
+		<where>
+			<if test="userId != null">
+				AND ue.user_id = #{userId, jdbcType=BIGINT}
+			</if>
+			<if test="boothId != null">
+				AND b.booth_id = #{boothId, jdbcType=BIGINT}
+			</if>
+			<if test="boothStatus != null">
+				AND b.status = #{boothStatus, jdbcType=INTEGER}
+			</if>
+			<if test="exhibitIdArr != null and exhibitIdArr.length > 0">
+				AND e.exhibit_id IN
+				<foreach collection="exhibitIdArr" item="exhibitId" open="(" close=")" separator=",">
+					#{exhibitId}
+				</foreach>
+			</if>
+			<if test="city != null and city != ''">
+				AND sa.area_name = #{city, jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+	
+	<!-- 插入展位,并返回主键 -->
+	<insert id="addBoothReturnId" parameterType="com.bisheng.services.exhibit.model.generated.Booth"
+		useGeneratedKeys="true" keyProperty="boothId" keyColumn="booth_id">
+		INSERT INTO tb_booth (booth_name, exhibit_id, 
+      			exhibit_name, sequence, x_count, y_count, status, remark, 
+      			create_by_user, update_by_user)
+    	VALUES (#{boothName,jdbcType=VARCHAR}, #{exhibitId,jdbcType=BIGINT}, 
+		      #{exhibitName,jdbcType=VARCHAR}, #{sequence,jdbcType=INTEGER}, #{xCount,jdbcType=INTEGER}, 
+		      #{yCount,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, 
+		      #{createByUser,jdbcType=VARCHAR}, #{updateByUser,jdbcType=VARCHAR})
+	</insert>
+</mapper>

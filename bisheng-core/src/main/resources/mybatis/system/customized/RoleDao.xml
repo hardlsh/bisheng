@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bisheng.services.system.dao.customized.RoleDao">
+	<resultMap id="RoleModel" type="com.bisheng.services.system.model.customized.RoleModel"
+		extends="BaseResultMap">
+	</resultMap>
+
+	<sql id="Column_List" >
+  		t1.role_id, t1.role_name, t1.remark, t1.status
+  	</sql>
+
+	<select id="queryRoleByParam" resultMap="RoleModel"
+	parameterType="com.bisheng.apps.system.param.AuthParam">
+		SELECT
+			<include refid="Column_List"/>
+		FROM 
+			tp_sys_role t1
+		<where>
+			<if test="roleId != null">
+				and t1.role_id = #{roleId, jdbcType=BIGINT}
+			</if>
+			<if test="roleName != null and roleName !='' ">
+				and t1.role_name = #{roleName, jdbcType=VARCHAR}
+			</if>
+			<if test="roleStatus != null">
+				and t1.status = #{roleStatus, jdbcType=INTEGER}
+			</if>
+		</where>
+	</select>
+	
+</mapper>

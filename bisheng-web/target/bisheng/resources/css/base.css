@@ -1,0 +1,11 @@
+/*--------------------------------------------------
+    [TRANSITION]
+----------------------------------------------------*/
+/* author chaowei.hu 2016/3/3 */
+.maskLayer {
+	pointer-events: none;
+	background-color: #000000;
+	opacity: 0.5;
+	-moz-opacity: 0.5;
+	filter: alpha(opacity = 50);
+}
