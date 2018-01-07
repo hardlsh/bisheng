@@ -11,10 +11,17 @@ public interface BoothDao extends BoothMapper{
 	
 	/**
 	 * 查询参数查询展位列表
-	 * @param exhibitParam
+	 * @param param
 	 * @return
 	 */
 	List<BoothModel> queryBoothListByParam(ExhibitQueryParam param);
+
+	/**
+	 * 单表查询,验重
+	 * @param boothModel
+	 * @return
+	 */
+	List<BoothModel>  queryBoothModelByModel(BoothModel boothModel);
 
 	/**
 	 * 新增展位,并返回主键

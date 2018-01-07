@@ -28,6 +28,13 @@ public interface BoothService {
 	 * 根据展位Id查询(单表)
 	 */
 	Booth queryBoothById(Long boothId);
+
+	/**
+	 * 单表查询，验重
+	 * @param boothModel
+	 * @return
+	 */
+	List<BoothModel> queryBoothModelByModel(BoothModel boothModel);
 	
 	/**
 	 * 新增展位,并返回主键

@@ -15,4 +15,6 @@ public class WEBConstants {
     public static final int FONT_HEIGHT = 18;
     // 字体名称   楷体
     public static final String FONT_NAME_KAI = "楷体";
+    // 导入模板中的空格替代符号
+    public static final String REPLACE_SIGN = ".";
 }

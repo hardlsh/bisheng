@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.bisheng.core.framework.exception.BusinessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,15 @@ public class BoothBusinessImpl implements BoothBusiness {
 	
 	@Override
 	public void addBooth(ExhibitQueryParam param) {
+		BoothModel record = new BoothModel();
+		record.setExhibitId(param.getExhibitId());
+		record.setBoothName(param.getBoothName());
+		record.setSequence(param.getSequence());
+		List<BoothModel> boothModels = boothService.queryBoothModelByModel(record);
+		if (null != boothModels && !boothModels.isEmpty()) {
+			logger.error("同一展馆内，展位名称、展位编号，不能重复");
+			throw new BusinessException("同一展馆内，展位名称、展位编号，不能重复");
+		}
 		Booth booth = new Booth();
 		MBeanUtil.copyProperties(param, booth);
 		booth.setStatus(param.getBoothStatus());

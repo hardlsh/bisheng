@@ -42,12 +42,12 @@
 	                                  classes="multiselect form-control"
 	                                  multiple="multiple"
 	                                  hasAll="false"
-	                                  placeholder="请选择"
 	                                  onchange="boothHelper.loadBooth(this);"
 	                                  style="width: 110px;height: 28px;display: block;"/>&nbsp;
 							展位: 
 								<hz:multipleSelect dictCode="" id="boothIdList" name="boothIdList" 
-									classes="multiselect form-control input-inline" multiple="multiple" 
+									classes="multiselect form-control input-inline" multiple="multiple"
+									hasAll="false"
 									style="width: 110px;height: 28px;display: none;" />&nbsp;
 						</div>
 						<div class="row">
@@ -78,8 +78,8 @@
 							<th>展位名称</th>
 							<th>所属展馆</th>
 							<th>展位编号</th>
-							<th>x轴字数</th>
-							<th>y轴字数</th>
+							<th>X轴字数(行数)</th>
+							<th>Y轴字数(列数)</th>
 							<th>展位状态</th>
 							<th>导入标识</th>
 							<th>文字模板</th>
@@ -289,7 +289,7 @@
 			if (boothName == null || boothName == '' ||
 					xCount == null || xCount <= 0 ||
 					yCount == null || yCount <= 0) {
-				bootbox.alert("请确保展位名称、x轴字数、y轴字数,数据准确");
+				bootbox.alert("请确保展位名称、行字数、列字数,数据准确");
 			}
 			$("#dnBoothName").val(boothName);
 			$("#dnXCount").val(xCount);

@@ -18,11 +18,12 @@
 			<include refid="Column_List"/>
 		FROM 
 			tb_exhibit e INNER JOIN tp_sys_user_exhibit ue ON e.exhibit_id = ue.exhibit_id
+			INNER JOIN tp_sys_user u ON ue.user_id = u.user_id
 			INNER JOIN tb_booth b ON e.exhibit_id = b.exhibit_id
 			INNER JOIN tp_sys_area sa ON e.area_name = sa.area_name
 		<where>
 			<if test="userId != null">
-				AND ue.user_id = #{userId, jdbcType=BIGINT}
+				AND u.user_id = #{userId, jdbcType=BIGINT}
 			</if>
 			<if test="boothId != null">
 				AND b.booth_id = #{boothId, jdbcType=BIGINT}
@@ -38,6 +39,25 @@
 			</if>
 			<if test="city != null and city != ''">
 				AND sa.area_name = #{city, jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+
+	<!-- 单表查询 -->
+	<select id="queryBoothModelByModel" parameterType="com.bisheng.services.exhibit.model.customized.BoothModel" resultMap="BoothModel">
+		SELECT
+			<include refid="Column_List"/>
+		FROM
+			tb_booth b
+		<where>
+			<if test="exhibitId != null">
+				AND b.exhibit_id = #{exhibitId, jdbcType=BIGINT}
+			</if>
+			<if test="boothName != null and boothName != ''">
+				OR b.booth_name = #{boothName, jdbcType=VARCHAR}
+			</if>
+			<if test="sequence != null">
+				  OR b.sequence = #{sequence, jdbcType=INTEGER}
 			</if>
 		</where>
 	</select>

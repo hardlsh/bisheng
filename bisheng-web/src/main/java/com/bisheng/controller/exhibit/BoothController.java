@@ -101,7 +101,8 @@ public class BoothController extends BaseController {
     public ModelAndView toUpdateBooth(String boothId) {
     	ModelAndView mav = new ModelAndView("exhibit/booth/updateBooth");
     	ExhibitQueryParam param = new ExhibitQueryParam();
-    	param.setExhibitId(Long.valueOf(boothId));
+    	param.setBoothId(Long.valueOf(boothId));
+    	param.setUserId(getCurrentUserId());
     	List<BoothModel> boothList = boothBusiness.queryBoothListByParam(param);
     	mav.addObject("booth", boothList.get(0));
         return mav;
@@ -138,12 +139,22 @@ public class BoothController extends BaseController {
 		logger.info("【展位管理】新增展位_开始,操作人:"+LogUtil.getCurrentUserName()+",入参:"+gson.toJson(param));
 		ALMResponse res = null;
 		try {
+			if (null == param.getExhibitId()) {
+				logger.error("【展位管理】新增展位_异常,操作人:"+LogUtil.getCurrentUserName()+",展馆信息不能为空");
+				res = new ALMResponse(RetCode.FAILURE);
+				res.setResultMsg("展馆信息不能为空");
+				return res;
+			}
 			param.setBoothStatus(BoothStatusEnum.MAINTAIN.getKey());//默认状态
 			param.setCreateByUser(getCurrentUserName());
 			param.setUpdateByUser(getCurrentUserName());
 			boothBusiness.addBooth(param);
 			logger.info("【展位管理】新增展位,成功");
 			res = new ALMResponse(RetCode.SUCCESS);
+		} catch (BusinessException be) {
+			logger.error("【展位管理】新增展位_异常,操作人:"+LogUtil.getCurrentUserName()+",异常原因:", be);
+			res = new ALMResponse(RetCode.FAILURE);
+			res.setResultMsg(be.getMessage());
 		} catch (Exception e) {
 			logger.error("【展位管理】新增展位_异常,操作人:"+LogUtil.getCurrentUserName()+",异常原因:", e);
 			res = new ALMResponse(RetCode.FAILURE);
@@ -312,7 +323,9 @@ public class BoothController extends BaseController {
 				show.append("<tr> <td align='center' width=25 height=25 >" + (i+1) + "</td>");
 				for (int j=0; j< lineArr.length; j++) {
 					show.append("<td align='center' width=25 height=25 >");
-					show.append(lineArr[j]);
+					if (!WEBConstants.REPLACE_SIGN.equals(lineArr[j])) {
+						show.append(lineArr[j]);
+					}
 					show.append("</td>");
 				}
 				show.append("</tr>");
@@ -429,6 +442,7 @@ public class BoothController extends BaseController {
 	}
 	/**
 	 * 导入文字模板处理
+	 * 模板中的空格，用英文.表示，判断和入库的时候，需要注意
 	 */
 	@SuppressWarnings("resource")
 	private String importTempletHandle(BoothModel booth, InputStream inputStream, String fileName) throws Exception{
@@ -449,7 +463,7 @@ public class BoothController extends BaseController {
 				for (int j = WEBConstants.ROW_START_NUM; j< WEBConstants.ROW_START_NUM + booth.getyCount(); j++) {
 					word = ExcelManager.getCellValue(row.getCell(j));
 					if (StringUtils.isBlank(word)) {
-						throw new BusinessException("上传文字模板中有空白格");
+						word = WEBConstants.REPLACE_SIGN;
 					}
 					line.append(word);
 				}
@@ -480,19 +494,22 @@ public class BoothController extends BaseController {
 	/**
 	 * 导入文字校验
 	 * 不能用重复字出现
+	 * 排除空格替代符
 	 */
 	private String checkHandle(List<String> lineList){
 		Set<String> set = new HashSet<String>();
+		String oneLine;
 		String[] oneLineArr = null;
-		for (int i=0; i<lineList.size(); i++) {
-			oneLineArr = lineList.get(i).split("");
-			for (int j=0; j<oneLineArr.length; j++) {
-					if(set.contains(oneLineArr[j])) {
-						return oneLineArr[j];
-					}
-					set.add(oneLineArr[j]);
+		for (int i = 0; i < lineList.size(); i++) {
+			oneLine = lineList.get(i).replace(WEBConstants.REPLACE_SIGN, "");
+			oneLineArr = oneLine.split("");
+			for (int j = 0; j < oneLineArr.length; j++) {
+				if (set.contains(oneLineArr[j])) {
+					return oneLineArr[j];
 				}
+				set.add(oneLineArr[j]);
 			}
+		}
 		return null;
 	}
 	/**
@@ -508,6 +525,9 @@ public class BoothController extends BaseController {
 		for (int i=0; i<lineList.size(); i++) {
 			oneLineArr = lineList.get(i).split("");
 			for (int j=0; j<oneLineArr.length; j++) {
+				if (WEBConstants.REPLACE_SIGN.equals(oneLineArr[j])) {
+					continue;
+				}
 				boothWordModel = new BoothWordModel();
 				boothWordModel.setBoothId(booth.getBoothId());
 				boothWordModel.setBoothName(booth.getBoothName());

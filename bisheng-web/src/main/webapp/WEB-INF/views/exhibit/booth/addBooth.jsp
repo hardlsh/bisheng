@@ -59,17 +59,17 @@
 						<div class="row" style="margin-bottom: 10px;">
 							<div class="col-md-4 col-sm-4 col-xs-12">
 								<div class="form-group">
-									<label class="control-label col-md-4 col-sm-4 col-xs-12">x轴字数<span class="required"> * </span></label>
+									<label class="control-label col-md-4 col-sm-4 col-xs-12">x轴字数(行数)<span class="required"> * </span></label>
 									<div class="col-md-8 col-sm-8 col-xs-12">
-										<input type="text" name="xCount" class="form-control" id="xCount"/>
+										<input type="text" name="xCount" class="form-control" placeholder="行数" id="xCount"/>
 									</div>
 								</div>
 							</div>
 							<div class="col-md-4 col-sm-4 col-xs-12">
 								<div class="form-group">
-									<label class="control-label col-md-4 col-sm-4 col-xs-12">y轴字数<span class="required"> * </span></label>
+									<label class="control-label col-md-4 col-sm-4 col-xs-12">y轴字数(列数)<span class="required"> * </span></label>
 									<div class="col-md-8 col-sm-8 col-xs-12">
-										<input type="text" name="yCount" class="form-control" id="yCount"/>
+										<input type="text" name="yCount" class="form-control" placeholder="列数" id="yCount"/>
 									</div>
 								</div>
 							</div>

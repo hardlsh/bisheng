@@ -4,7 +4,8 @@
 <configuration>
     <settings>
         <setting name="logPrefix" value="dao."/>
-        <setting name="logImpl" value="NO_LOGGING" />
+        <!-- STDOUT_LOGGING 打印SQL语句；NO_LOGGING 不打印SQL语句 -->
+        <setting name="logImpl" value="STDOUT_LOGGING" />
     </settings>
     <plugins>
         <!-- com.github.pagehelper为PageHelper类所在包名 -->

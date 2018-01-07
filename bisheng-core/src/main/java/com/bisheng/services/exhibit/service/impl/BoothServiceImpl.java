@@ -36,6 +36,11 @@ public class BoothServiceImpl extends BaseService implements BoothService {
 	public Booth queryBoothById(Long boothId) {
 		return getBoothDao().selectByPrimaryKey(boothId);
 	}
+
+	@Override
+	public List<BoothModel>  queryBoothModelByModel(BoothModel boothModel) {
+		return getBoothDao().queryBoothModelByModel(boothModel);
+	}
 	
 	@Override
 	public void addBoothReturnId(Booth booth) {

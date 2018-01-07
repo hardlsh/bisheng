@@ -43,7 +43,7 @@
 							展馆:<hz:authExhibitSelect id="exhibitIdList" name="exhibitIdList"
 	                                   classes="multiselect form-control"
 	                                   multiple="multiple"
-	                                   hasAll="true"
+	                                   hasAll="false"
 	                                   style="width: 110px;height: 28px;display: block;"/>&nbsp;
 						</div>
 						<div class="row">

@@ -23,7 +23,7 @@ public interface BoothBusiness {
 
 	/**
 	 * 分页查询展位列表
-	 * @param exhibitParam
+	 * @param param
 	 * @return
 	 */
 	PageInfo<BoothModel> queryPagedBoothByParam(ExhibitQueryParam param);
