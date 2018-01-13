@@ -2,11 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@include file="../../basepath.jsp"%>
 
-<style>
-	li {list-style-type:none;}
-	ul.arealist li{text-align:left;width:65px;overflow:hidden;margin:0 6px;color:#666}
-	ul.arealist .openLi{text-align:left;width:60px;overflow:hidden;margin:0 6px;color:#666}
-</style>
 
 <ol class="breadcrumb">
   <li class="active">展馆管理</li>
@@ -21,7 +16,9 @@
 				</div>
 				<div class="actions">
 					<button id="addExhibit" class="btn btn-sm blue" type="button">新增展馆</button>
-                    <button id="delExhibit" class="btn btn-sm red" type="button">删除展馆</button>
+                    <shiro:hasRole name="admin">
+                        <button id="delExhibit" class="btn btn-sm red" type="button">删除展馆</button>
+                    </shiro:hasRole>
 				</div>
 			</div>
 			<div class="portlet-body">

@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,9 +48,9 @@ import com.google.gson.Gson;
 public class ExhibitController extends BaseController {
     protected static final Logger logger = LoggerFactory.getLogger(ExhibitController.class);
 
-    @Autowired
+	@Autowired
     private ExhibitBusiness exhibitBusiness;
-    @Autowired
+	@Autowired
     private AreaBusiness areaBusiness;
     
     private Gson gson = new Gson();
@@ -170,9 +170,11 @@ public class ExhibitController extends BaseController {
 
 	/**
 	 * 删除展馆
+	 * 需要admin角色
 	 */
 	@RequestMapping("/deleteExhibit")
 	@ResponseBody
+	@RequiresRoles({"admin"})
 	public Object deleteExhibit(ExhibitQueryParam param) {
 		logger.info("【展馆管理】删除展馆_开始,操作人:"+LogUtil.getCurrentUserName()+",入参:"+gson.toJson(param));
 		ALMResponse res = null;
