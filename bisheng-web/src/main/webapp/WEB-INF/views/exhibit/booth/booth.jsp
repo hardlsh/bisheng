@@ -17,9 +17,9 @@
 				</div>
 				<div class="actions">
 					<button id="addBooth" class="btn btn-sm blue" type="button">新增展位</button>
-					<shiro:hasPermission  name="admin">
+					<shiro:hasRole  name="管理员">
 						<button id="delBooth" class="btn btn-sm red" type="button">删除展位</button>
-					</shiro:hasPermission>
+					</shiro:hasRole>
 				</div>
 			</div>
 			<div class="portlet-body">

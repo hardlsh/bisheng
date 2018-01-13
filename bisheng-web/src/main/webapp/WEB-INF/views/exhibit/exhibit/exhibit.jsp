@@ -16,7 +16,7 @@
 				</div>
 				<div class="actions">
 					<button id="addExhibit" class="btn btn-sm blue" type="button">新增展馆</button>
-                    <shiro:hasRole name="admin">
+                    <shiro:hasRole name="管理员">
                         <button id="delExhibit" class="btn btn-sm red" type="button">删除展馆</button>
                     </shiro:hasRole>
 				</div>

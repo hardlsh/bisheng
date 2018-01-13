@@ -172,11 +172,11 @@ public class ExhibitController extends BaseController {
 
 	/**
 	 * 删除展馆
-	 * 需要admin角色
+	 * 需要管理员角色
 	 */
 	@RequestMapping("/deleteExhibit")
 	@ResponseBody
-	@RequiresRoles({"admin"})
+	@RequiresRoles({"管理员"})
 	public Object deleteExhibit(ExhibitQueryParam param) {
 		logger.info("【展馆管理】删除展馆_开始,操作人:"+LogUtil.getCurrentUserName()+",入参:"+gson.toJson(param));
 		ALMResponse res = null;

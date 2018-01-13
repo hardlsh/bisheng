@@ -94,9 +94,16 @@
     <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
         <property name="exceptionMappings">
             <props>
-                <prop key="com.mljr.malm.core.framework.exception.BusinessException">public/error</prop>
+                <!-- 定义所有异常，进行跳转 -->
+                <prop key="java.lang.Exception">public/error</prop>
             </props>
         </property>
     </bean>
-    
+
+<!-- controller使用shiro注解 -->
+    <bean id="controllerAdvisorAutoProxyCreator" class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+          depends-on="lifecycleBeanPostProcessor"/>
+    <bean id="controllerAuthorizationAttributeSourceAdvisor"  class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
 </beans>

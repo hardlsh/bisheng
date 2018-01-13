@@ -186,11 +186,11 @@ public class BoothController extends BaseController {
 
 	/**
 	 * 删除展位
-	 * 需要admin角色
+	 * 需要管理员角色
 	 */
 	@RequestMapping("/deleteBooth")
 	@ResponseBody
-	@RequiresRoles({"admin"})
+	@RequiresRoles({"管理员"})
 	public Object deleteBooth(ExhibitQueryParam param) {
 		logger.info("【展位管理】删除展位_开始,操作人:"+LogUtil.getCurrentUserName()+",入参:"+gson.toJson(param));
 		ALMResponse res = null;

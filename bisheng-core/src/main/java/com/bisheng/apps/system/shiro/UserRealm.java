@@ -86,8 +86,9 @@ public class UserRealm extends AuthorizingRealm{
 	}
 
 	/**
-	 * 授权
-	 * 将按钮权限和角色权限放入授权集合
+	 * 授权，即权限验证
+	 * 将按钮权限放入权限集合
+	 * 将角色放入角色集合
 	 */
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
@@ -111,24 +112,25 @@ public class UserRealm extends AuthorizingRealm{
 		}
 		
 		logger.info("【shiro授权】根据当前用户,关联查询的可用的按钮资源为:"+ JSONObject.toJSONString(resourceList));
+		//查到权限数据,返回授权信息
+		SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
 		List<String> permissions = new ArrayList<>();
 		if(resourceList != null && resourceList.size() > 0){
 			for (ResourceModel resource : resourceList) {
-				//将按钮的地址,放入集合,作为判断标志
+				//将按钮的地址,放入权限集合,作为判断标志
 				permissions.add(resource.getResourcePath());
 			}
 		}
-		if (null != roleModelList && !roleModelList.isEmpty()) {
-			for(RoleModel role : roleModelList){
-				//将角色名称,放入集合,作为判断标志
-				permissions.add(role.getRoleName());
-			}
-		}
-		//查到权限数据,返回授权信息
-		SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
 		//把查询到的权限信息添加到simpleAuthorizationInfo对象中
 		simpleAuthorizationInfo.addStringPermissions(permissions);
-		
+
+		if (null != roleModelList && !roleModelList.isEmpty()) {
+			for(RoleModel role : roleModelList){
+				//将角色名称,放入角色集合,作为判断标志
+				simpleAuthorizationInfo.addRole(role.getRoleName());
+			}
+		}
+
 		return simpleAuthorizationInfo;
 	}
 	
