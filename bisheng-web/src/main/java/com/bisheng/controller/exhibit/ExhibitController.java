@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,13 +90,12 @@ public class ExhibitController extends BaseController {
      
     /**
      * 获取展馆列表,只能看到有对应权限的展馆
-     * 包含所有状态
      */
     @RequestMapping("/getExhibitList")
     public void getExhibitList(HttpServletResponse response, ExhibitQueryParam param) {
     	logger.info("【展馆管理】查询展馆_开始,操作人:"+LogUtil.getCurrentUserName()+",入参:"+gson.toJson(param));
 		try {
-			param.setUserId(LogUtil.getCurrentUserId());
+			convertParam(param);
 			PageInfo<ExhibitModel> pageInfo = exhibitBusiness.queryPagedExhibitListByParam(param);
 			int total = (int) pageInfo.getTotal();
 			PaginationResult<List<ExhibitModel>> result = PaginationResult.newInstance(pageInfo.getList());

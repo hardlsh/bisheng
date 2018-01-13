@@ -18,7 +18,7 @@
 			<include refid="Column_List"/>, sa.parent_id
 		FROM 
 			tb_exhibit e INNER JOIN tp_sys_user_exhibit ue ON e.exhibit_id = ue.exhibit_id
-			INNER JOIN tp_sys_area sa ON e.area_name = sa.area_name
+			INNER JOIN tp_sys_area sa ON e.area_id = sa.area_id
 		<where>
 			<if test="exhibitStatus != null">
 				AND e.status = #{exhibitStatus, jdbcType=INTEGER}
@@ -42,7 +42,7 @@
 				AND ue.user_id = #{userId, jdbcType=BIGINT}
 			</if>
 			<if test="city != null and city != ''">
-				AND sa.area_name = #{city, jdbcType=VARCHAR}
+				AND sa.area_name LIKE #{city, jdbcType=VARCHAR}
 			</if>
 		</where>
 	</select>

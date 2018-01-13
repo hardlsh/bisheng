@@ -11,6 +11,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.bisheng.apps.exhibit.param.ExhibitQueryParam;
+import com.bisheng.util.LogUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
@@ -153,4 +156,18 @@ public abstract class BaseController {
         return user.getUserName();
     }
 
+    /**
+     * 处理查询参数
+     * @param param
+     */
+    protected void convertParam(ExhibitQueryParam param){
+        param.setUserId(getCurrentUserId());
+        String city = param.getCity();
+        if (StringUtils.isNotBlank(city)) {
+            city = city.replace(" ", "");
+            // 模糊查询使用
+            city = "%" + city + "%";
+            param.setCity(city);
+        }
+    }
 }

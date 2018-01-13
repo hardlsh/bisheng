@@ -39,12 +39,16 @@
 						<!-- 隐藏的复位按钮 -->
 						<input type="reset" style="display: none;" />
 						<div class="form-group input-inline">
-							城市:<input id="city" name="city" class="form-control input-inline input-sm" maxlength="15" placeholder="例如:上海" type="text"/>
+							城市:<input id="city" name="city" class="form-control input-inline input-sm"
+									  maxlength="15" placeholder="例如:上海" type="text"/>
 							展馆:<hz:authExhibitSelect id="exhibitIdList" name="exhibitIdList"
 	                                   classes="multiselect form-control"
 	                                   multiple="multiple"
 	                                   hasAll="false"
 	                                   style="width: 110px;height: 28px;display: block;"/>&nbsp;
+							展馆状态:<hz:multipleSelect name="exhibitStatus" id="exhibitStatus"  dictCode="EXHIBIT_STATUS"
+													classes="bs-select form-control input-sm input-inline "
+													hasAll="true" placeholder="请选择"/>
 						</div>
 						<div class="row">
 						<div class="form-group  input-inline">

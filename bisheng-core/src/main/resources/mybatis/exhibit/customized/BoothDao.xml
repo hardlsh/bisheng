@@ -20,7 +20,7 @@
 			tb_exhibit e INNER JOIN tp_sys_user_exhibit ue ON e.exhibit_id = ue.exhibit_id
 			INNER JOIN tp_sys_user u ON ue.user_id = u.user_id
 			INNER JOIN tb_booth b ON e.exhibit_id = b.exhibit_id
-			INNER JOIN tp_sys_area sa ON e.area_name = sa.area_name
+			INNER JOIN tp_sys_area sa ON e.area_id = sa.area_id
 		<where>
 			<if test="userId != null">
 				AND u.user_id = #{userId, jdbcType=BIGINT}
@@ -38,7 +38,7 @@
 				</foreach>
 			</if>
 			<if test="city != null and city != ''">
-				AND sa.area_name = #{city, jdbcType=VARCHAR}
+				AND sa.area_name LIKE #{city, jdbcType=VARCHAR}
 			</if>
 		</where>
 	</select>

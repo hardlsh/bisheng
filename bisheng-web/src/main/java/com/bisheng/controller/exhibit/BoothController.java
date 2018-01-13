@@ -116,7 +116,7 @@ public class BoothController extends BaseController {
     public void getBoothList(HttpServletResponse response, ExhibitQueryParam param) {
     	logger.info("【展位管理】查询展位_开始,操作人:"+LogUtil.getCurrentUserName()+",入参:"+gson.toJson(param));
 		try {
-			param.setUserId(LogUtil.getCurrentUserId());
+			convertParam(param);
 			PageInfo<BoothModel> pageInfo = boothBusiness.queryPagedBoothByParam(param);
 			int total = (int) pageInfo.getTotal();
 			PaginationResult<List<BoothModel>> result = PaginationResult.newInstance(pageInfo.getList());
