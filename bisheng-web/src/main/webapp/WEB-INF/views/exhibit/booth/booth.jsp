@@ -206,6 +206,7 @@
 			
 			//初始化Table
 			me.boothTable();
+            me.loadBooth();
 		},
 		//初始化Table,加载表格
 		boothTable : function () {
@@ -367,7 +368,7 @@
             
             var params = {};
             var exhibitIdArr = $('#exhibitIdList').val();
-            if (exhibitIdList == null || exhibitIdList == "") {
+            if (exhibitIdArr == null || exhibitIdArr == "") {
             	var options ="[]";			
             	$('#boothIdList').multiselect( 'dataprovider',eval(options));
             	return;

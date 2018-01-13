@@ -10,9 +10,9 @@ public enum AvailStatusEnum {
 	AVAILABLE(1, "可用");
 
 	@Getter
-    private final int key;
+    private int key;
 	@Getter
-    private final String desc;
+    private String desc;
 
     private AvailStatusEnum(int key, String desc) {
         this.key = key;
