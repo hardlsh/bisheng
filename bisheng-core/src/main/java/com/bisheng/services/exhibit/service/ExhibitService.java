@@ -23,7 +23,7 @@ public interface ExhibitService {
 
 	/**
 	 * 分页查询展馆列表(关联用户表)
-	 * @param exhibitParam
+	 * @param param
 	 * @return
 	 */
 	PageInfo<ExhibitModel> queryPagedExhibitListByParam(ExhibitQueryParam param);
@@ -32,6 +32,13 @@ public interface ExhibitService {
 	 * 查询全部展馆(没有关联用户表)
 	 */
 	List<ExhibitModel> queryAllExhibitByParam(ExhibitQueryParam exhibitParam);
+
+	/**
+	 * 查询展馆
+	 * @param exhibitId
+	 * @return
+	 */
+	Exhibit queryExhibitById(Long exhibitId);
 	
 	/**
 	 * 校验展馆信息
@@ -48,10 +55,4 @@ public interface ExhibitService {
 	 */
 	void updateExhibitById(Exhibit exhibit);
 	
-	/**
-	 * 查询展馆
-	 * @param exhibitId
-	 * @return
-	 */
-	Exhibit queryExhibitById(Long exhibitId);
 }

@@ -54,7 +54,10 @@ public class ExcelManager{
 	 */
 	@SuppressWarnings("deprecation")
 	public static String getCellValue(Cell cell) {
-        String cellValue = "";
+		String cellValue = "";
+		if (null == cell) {
+			return cellValue;
+		}
         switch (cell.getCellType()) {
         case Cell.CELL_TYPE_STRING:
             cellValue = cell.getRichStringCellValue().getString().trim();

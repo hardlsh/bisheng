@@ -312,7 +312,7 @@ public class BoothController extends BaseController {
 			StringBuilder show = new StringBuilder("<table border='1'>");
 			// 第一行
 			show.append("<tr> <td></td>");
-			for (int j=WEBConstants.ROW_START_NUM; j< booth.getyCount()+WEBConstants.ROW_START_NUM; j++) {
+			for (int j = WEBConstants.ROW_START_NUM; j < booth.getyCount() + WEBConstants.ROW_START_NUM; j++) {
 				show.append("<td align='center' width=25 height=25 >");
 				show.append(j);
 				show.append("</td>");
@@ -456,12 +456,13 @@ public class BoothController extends BaseController {
 			Row row = null;
 			List<String> lineList = new ArrayList<String>();
 			StringBuilder line = null;
-			for (int i = WEBConstants.ROW_START_NUM; i< WEBConstants.ROW_START_NUM + booth.getxCount(); i++) {
-				row = sheet.getRow(i);
+			for (int r = WEBConstants.ROW_START_NUM; r < WEBConstants.ROW_START_NUM + booth.getxCount(); r++) {
+				row = sheet.getRow(r);
 				String word = null;
 				line = new StringBuilder();
-				for (int j = WEBConstants.ROW_START_NUM; j< WEBConstants.ROW_START_NUM + booth.getyCount(); j++) {
-					word = ExcelManager.getCellValue(row.getCell(j));
+				for (int c = WEBConstants.ROW_START_NUM; c < WEBConstants.ROW_START_NUM + booth.getyCount(); c++) {
+					logger.info("第" + r + "行,第" + c + "列");
+					word = ExcelManager.getCellValue(row.getCell(c));
 					if (StringUtils.isBlank(word)) {
 						word = WEBConstants.REPLACE_SIGN;
 					}

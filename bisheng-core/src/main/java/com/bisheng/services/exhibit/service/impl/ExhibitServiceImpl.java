@@ -38,6 +38,11 @@ public class ExhibitServiceImpl extends BaseService implements ExhibitService {
 	}
 
 	@Override
+	public Exhibit queryExhibitById(Long exhibitId) {
+		return getExhibitDao().selectByPrimaryKey(exhibitId);
+	}
+
+	@Override
 	public List<ExhibitModel> checkExhibitByParam(ExhibitQueryParam param) {
 		return getExhibitDao().checkExhibitByParam(param);
 	}
@@ -52,9 +57,6 @@ public class ExhibitServiceImpl extends BaseService implements ExhibitService {
 		getExhibitDao().updateExhibitById(exhibit);
 	}
 
-	@Override
-	public Exhibit queryExhibitById(Long exhibitId) {
-		return getExhibitDao().selectByPrimaryKey(exhibitId);
-	}
+
 
 }

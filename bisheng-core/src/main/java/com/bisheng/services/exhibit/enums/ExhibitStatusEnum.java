@@ -8,7 +8,7 @@ import lombok.Getter;
  *
  */
 public enum ExhibitStatusEnum {
-	START(1, "开业"),
+	START(1, "营业中"),
 	REST(2, "休息"),
 	STOPDOING(3, "停业");
 
