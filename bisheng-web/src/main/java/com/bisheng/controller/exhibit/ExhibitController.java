@@ -167,7 +167,33 @@ public class ExhibitController extends BaseController {
 		logger.info("【展馆管理】修改展馆_结束,操作人:"+LogUtil.getCurrentUserName());
 		return res;
 	}
-	
+
+	/**
+	 * 删除展馆
+	 */
+	@RequestMapping("/deleteExhibit")
+	@ResponseBody
+	public Object deleteExhibit(ExhibitQueryParam param) {
+		logger.info("【展馆管理】删除展馆_开始,操作人:"+LogUtil.getCurrentUserName()+",入参:"+gson.toJson(param));
+		ALMResponse res = null;
+		try {
+			if (null == param.getExhibitId()) {
+				res = new ALMResponse(RetCode.FAILURE);
+				res.setResultMsg("你好,不能删除展馆");
+				return res;
+			}
+			exhibitBusiness.deleteExhibit(param);
+			logger.info("【展馆管理】删除展馆,成功");
+			res = new ALMResponse(RetCode.SUCCESS);
+		} catch (Exception e) {
+			logger.error("【展馆管理】删除展馆_异常,操作人:"+LogUtil.getCurrentUserName()+",异常原因:", e);
+			res = new ALMResponse(RetCode.FAILURE);
+			res.setResultMsg("系统异常,请联系管理员");
+		}
+		logger.info("【展馆管理】删除展馆_结束,操作人:"+LogUtil.getCurrentUserName());
+		return res;
+	}
+
 	/**
 	 * 导出数据
 	 */

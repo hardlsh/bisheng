@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.bisheng.core.framework.exception.BusinessException;
 import org.springframework.stereotype.Service;
 
 import com.bisheng.apps.exhibit.business.ExhibitBusiness;
@@ -56,4 +57,13 @@ public class ExhibitBusinessImpl implements ExhibitBusiness {
 		exhibitService.updateExhibitById(exhibit);
 	}
 
+	@Override
+	public void deleteExhibit(ExhibitQueryParam param){
+		Exhibit record = new Exhibit();
+		record.setExhibitId(param.getExhibitId());
+		int result = exhibitService.deleteExhibitById(record);
+		if (result != 1) {
+			throw new BusinessException("删除展馆异常");
+		}
+	}
 }

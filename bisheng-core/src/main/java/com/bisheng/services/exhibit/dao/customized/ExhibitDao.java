@@ -35,5 +35,11 @@ public interface ExhibitDao extends ExhibitMapper{
 	 * 根据主键id, 修改展馆
 	 */
 	void updateExhibitById(Exhibit exhibit);
-	
+
+	/**
+	 * 根据主键id, 删除展馆
+	 * @param exhibit
+	 * @return
+	 */
+	int deleteExhibitById(Exhibit exhibit);
 }

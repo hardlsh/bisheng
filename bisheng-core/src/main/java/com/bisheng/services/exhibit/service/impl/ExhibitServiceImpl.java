@@ -57,6 +57,9 @@ public class ExhibitServiceImpl extends BaseService implements ExhibitService {
 		getExhibitDao().updateExhibitById(exhibit);
 	}
 
-
+	@Override
+	public int deleteExhibitById(Exhibit exhibit){
+		return getExhibitDao().deleteExhibitById(exhibit);
+	}
 
 }

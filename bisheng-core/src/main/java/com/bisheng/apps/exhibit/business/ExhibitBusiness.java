@@ -22,7 +22,7 @@ public interface ExhibitBusiness {
 
 	/**
 	 * 分页查询展馆列表(关联用户表)
-	 * @param exhibitParam
+	 * @param param
 	 * @return
 	 */
 	PageInfo<ExhibitModel> queryPagedExhibitListByParam(ExhibitQueryParam param);
@@ -46,5 +46,11 @@ public interface ExhibitBusiness {
 	 * 修改展馆
 	 */
 	void updateExhibit(ExhibitQueryParam param);
+
+	/**
+	 * 删除展馆
+	 * @param param
+	 */
+	void deleteExhibit(ExhibitQueryParam param);
 
 }

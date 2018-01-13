@@ -21,6 +21,7 @@
 				</div>
 				<div class="actions">
 					<button id="addExhibit" class="btn btn-sm blue" type="button">新增展馆</button>
+                    <button id="delExhibit" class="btn btn-sm red" type="button">删除展馆</button>
 				</div>
 			</div>
 			<div class="portlet-body">
@@ -85,6 +86,38 @@
 			</div>
 </div>
 
+<!-- 删除展馆,弹出框 -->
+<div class="modal" id="delExhibitModal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">删除展馆</h4>
+            </div>
+            <div class="modal-body">
+                <form id='del_form' href="##" method="post">
+                </form>
+                <table class="table table-striped table-bordered table-hover"
+                       id="delExhibitTable">
+                    <thead>
+                    <tr>
+                        <th>单选</th>
+                        <th>展馆名称</th>
+                        <th>展馆所在地区</th>
+                        <th>联系方式</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="modal-footer -align-center">
+                <button type="button" class="btn blue" id="delExhibitConfirm">确认</button>
+                <button type="button" class="btn default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+</div>
+
 <script type="text/javascript">
 
 	var exhibitHelper = {
@@ -94,9 +127,11 @@
 			var me = exhibitHelper;
 			
 			$('#addExhibit').click(me.addExhibit);// 新增展馆按钮
+            $('#delExhibit').click(me.delExhibit);// 删除展馆按钮
 			$('#btnRefresh').click(me.btnRefresh);//搜索按钮
 			$('#btnEmpty').click(me.btnEmpty);//清空条件
 			$('#doExport').click(me.doExport);// 导出明细按钮
+            $('#delExhibitConfirm').click(me.delExhibitConfirm);// 删除展馆弹出框上的确认按钮
 			
 			$('.multiselect').multiselect({
 	            enableFiltering: true,
@@ -112,6 +147,7 @@
 			
 			//初始化Table
 			me.exhibitTable();
+			me.delExhibitTable();
 		},
 		//初始化Table,加载表格
 		exhibitTable : function () {
@@ -131,15 +167,62 @@
 					{"data" : "startTime","bSortable" : false},
 					{"data" : "endTime","bSortable" : false},
 					{"data" : function(e) {
-						return'<div style="min-width:110px;"><a class="ajaxify btn default btn-xs purple"  href="${basePath}/exhibit/toUpdateExhibit.do?exhibitId=' + e.exhibitId + '">修改展馆</a></div>';
+						return'<div style="min-width:110px;"><a class="ajaxify btn default btn-xs purple"  href="${basePath}/exhibit/toUpdateExhibit.do?exhibitId='
+                            + e.exhibitId + '">修改展馆</a></div>';
 					},"bSortable" : false}
 				];
 			TablePaginationSort.initCustom(url, colArray, "exhibitTable","filter_form");//最后一个参数formid,此处为空form
 		},
+        //初始化Table,加载表格
+        delExhibitTable : function () {
+            var me = exhibitHelper;
+            var url = "${basePath}/exhibit/getExhibitList.do"; //表格数据远程地址
+            var colArray = [
+                {"data" : function(e) {
+                    return '<input type="radio" name="rad1" value="'+e.exhibitId+'"/>';
+                    }
+                },
+                {"data" : "exhibitName","bSortable" : false},
+                {"data" : "areaName","bSortable" : false},
+                {"data" : "phone","bSortable" : false}
+            ];
+            TablePaginationSort.initCustom(url, colArray, "delExhibitTable","del_form");//最后一个参数formid,此处为空form
+        },
 		//新增展馆
 		addExhibit : function () {
 			$('#body2').load("${basePath}/exhibit/toAddExhibit.do");
 		},
+        // 删除展馆
+        delExhibit : function () {
+            $("#delExhibitModal").modal('show');
+        },
+        // 确认删除展馆
+        delExhibitConfirm : function () {
+            var exhibitId = "";
+            $("[name='rad1']:checked").each(function() {
+                if ($(this).attr('checked')) {
+                    exhibitId = $(this).val();
+                }
+            });
+            if (exhibitId == '') {
+                bootbox.alert('请先选择要删除的展馆');
+                return;
+            }
+            $("#delExhibitConfirm").attr({"disabled":"disabled"});
+            $.ajax({
+                url : "${basePath}/exhibit/deleteExhibit.do",
+                data: {exhibitId: exhibitId},
+                dataType : "json",
+                type : "POST",
+                success : function(data) {
+                    $("#delExhibitConfirm").removeAttr("disabled");
+
+                    $("#exhibitTable").DataTable().draw();// 点击手动分配后,重新绘制展馆table
+                    $('#delExhibitModal').modal('hide');// 隐藏删除展馆对应的弹窗
+                    bootbox.alert(data.resultMsg);
+                }
+            });
+        },
 		// 查询展馆
 		btnRefresh : function() {
 			$("#exhibitTable").DataTable().draw();// 点搜索重新绘制table。

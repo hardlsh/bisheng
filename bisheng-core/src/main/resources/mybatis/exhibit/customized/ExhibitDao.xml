@@ -106,4 +106,12 @@
 	    WHERE
 	    	exhibit_id = #{exhibitId,jdbcType=BIGINT}
 	</update>
+
+	<!-- 根据主键id, 删除展馆 -->
+	<delete id="deleteExhibitById" parameterType="com.bisheng.services.exhibit.model.generated.Exhibit">
+		DELETE FROM
+			tb_exhibit
+		WHERE
+			exhibit_id = #{exhibitId,jdbcType=BIGINT}
+	</delete>
 </mapper>
