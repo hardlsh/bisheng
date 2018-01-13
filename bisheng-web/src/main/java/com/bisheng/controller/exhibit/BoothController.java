@@ -24,6 +24,7 @@ import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -180,6 +181,33 @@ public class BoothController extends BaseController {
 			res = new ALMResponse(RetCode.FAILURE);
 		}
 		logger.info("【展位管理】修改展位_结束,操作人:"+LogUtil.getCurrentUserName());
+		return res;
+	}
+
+	/**
+	 * 删除展位
+	 * 需要admin角色
+	 */
+	@RequestMapping("/deleteBooth")
+	@ResponseBody
+	@RequiresRoles({"admin"})
+	public Object deleteBooth(ExhibitQueryParam param) {
+		logger.info("【展位管理】删除展位_开始,操作人:"+LogUtil.getCurrentUserName()+",入参:"+gson.toJson(param));
+		ALMResponse res = null;
+		try {
+			if (null == param.getBoothId()) {
+				res = new ALMResponse(RetCode.FAILURE);
+				res.setResultMsg("你好,不能删除展位");
+				return res;
+			}
+			boothBusiness.deleteBooth(param);
+			logger.info("【展位管理】删除展位,成功");
+			res = new ALMResponse(RetCode.SUCCESS);
+		} catch (Exception e) {
+			logger.error("【展位管理】删除展位_异常,操作人:"+LogUtil.getCurrentUserName()+",异常原因:", e);
+			res = new ALMResponse(RetCode.FAILURE);
+		}
+		logger.info("【展位管理】删除展位_结束,操作人:"+LogUtil.getCurrentUserName());
 		return res;
 	}
 	

@@ -76,6 +76,16 @@ public class BoothBusinessImpl implements BoothBusiness {
 	}
 
 	@Override
+	public void deleteBooth(ExhibitQueryParam param) {
+		Booth record = new Booth();
+		record.setBoothId(param.getBoothId());
+		int result = boothService.deleteBoothById(record);
+		if (result != 1) {
+			throw new BusinessException("删除展位异常");
+		}
+	}
+
+	@Override
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void batchInsertBoothWord(ExhibitQueryParam queryParam) {
 		Booth booth = new Booth();

@@ -107,7 +107,7 @@
                 </table>
             </div>
             <div class="modal-footer -align-center">
-                <button type="button" class="btn blue" id="delExhibitConfirm">确认</button>
+                <button type="button" class="btn red" id="delExhibitConfirm">确认删除</button>
                 <button type="button" class="btn default" data-dismiss="modal">关闭</button>
             </div>
         </div>
@@ -172,7 +172,6 @@
 		},
         //初始化Table,加载表格
         delExhibitTable : function () {
-            var me = exhibitHelper;
             var url = "${basePath}/exhibit/getExhibitList.do"; //表格数据远程地址
             var colArray = [
                 {"data" : function(e) {
@@ -191,6 +190,7 @@
 		},
         // 删除展馆
         delExhibit : function () {
+            $('#delExhibitTable').DataTable().draw();
             $("#delExhibitModal").modal('show');
         },
         // 确认删除展馆
@@ -213,8 +213,7 @@
                 type : "POST",
                 success : function(data) {
                     $("#delExhibitConfirm").removeAttr("disabled");
-
-                    $("#exhibitTable").DataTable().draw();// 点击手动分配后,重新绘制展馆table
+                    $("#exhibitTable").DataTable().draw();// 点击确认删除后,重新绘制table
                     $('#delExhibitModal').modal('hide');// 隐藏删除展馆对应的弹窗
                     bootbox.alert(data.resultMsg);
                 }

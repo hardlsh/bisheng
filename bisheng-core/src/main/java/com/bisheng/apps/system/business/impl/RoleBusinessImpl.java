@@ -43,6 +43,11 @@ public class RoleBusinessImpl implements RoleBusiness {
 	}
 
 	@Override
+	public List<RoleModel> queryUserRoleByParam(AuthParam param) {
+		return roleService.queryUserRoleByParam(param);
+	}
+
+	@Override
 	public int addResource(Role role) {
 		return roleService.addResource(role);
 	}

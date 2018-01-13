@@ -38,6 +38,12 @@ public interface BoothBusiness {
 	 * 修改展位
 	 */
 	int updateBooth(ExhibitQueryParam param);
+
+	/**
+	 * 删除展位
+	 * @param param
+	 */
+	void deleteBooth(ExhibitQueryParam param);
 	
 	/**
 	 * 批量保存展位文字

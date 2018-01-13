@@ -9,4 +9,10 @@ import com.bisheng.services.system.model.customized.RoleModel;
 public interface RoleDao extends RoleMapper {
 	List<RoleModel> queryRoleByParam(AuthParam param);
 
+	/**
+	 * 根据参数,查询用户关联角色
+	 * @param param
+	 * @return
+	 */
+	List<RoleModel> queryUserRoleByParam(AuthParam param);
 }

@@ -21,6 +21,7 @@
 		<property name="filters">
 			<util:map>
 				<entry key="authc" value-ref="formAuthenticationFilter" />
+				<entry key="roles" value-ref="rolesAuthorizationFilter"/>
 			</util:map>
 		</property>
 		<property name="filterChainDefinitions">
@@ -107,7 +108,12 @@
 		<property name="usernameParam" value="userName" />
 		<property name="passwordParam" value="password" />
 	</bean>
-	
+
+<!-- 基于role的角色验证过滤器 -->
+	<bean id="rolesAuthorizationFilter"
+		  class="com.bisheng.apps.system.shiro.MyRolesAuthorizationFilter">
+	</bean>
+
 <!-- shiro生命周期处理器 -->
 	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor">
 

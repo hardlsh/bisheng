@@ -27,6 +27,11 @@ public interface BoothDao extends BoothMapper{
 	 * 新增展位,并返回主键
 	 */
 	void addBoothReturnId(Booth booth);
-	
 
+	/**
+	 * 根据主键id, 删除展位
+	 * @param booth
+	 * @return
+	 */
+	int deleteBoothById(Booth booth);
 }

@@ -46,7 +46,7 @@
 		</div>
 		<div class="form-group">
 			<label class="control-label visible-ie8 visible-ie9">密码</label>
-			<input class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off" placeholder="密码" name="password"/>
+			<input class="form-control form-control-solid placeholder-no-fix" id="password"  type="password" autocomplete="off" placeholder="密码" name="password"/>
 		</div>
 		<div class="form-actions">
 			<button type="submit" class="btn btn-success uppercase">登录</button>
@@ -95,6 +95,11 @@ jQuery(document).ready(function() {
 		$("#msgId").html("${result.data}");
 		$("#alertId").show();
 	}
+});
+$(function() {
+    $('#password').password().on('show.bs.password', function(e) {
+    }).on('hide.bs.password', function(e) {
+    });
 });
 </script>
 <!-- END JAVASCRIPTS -->

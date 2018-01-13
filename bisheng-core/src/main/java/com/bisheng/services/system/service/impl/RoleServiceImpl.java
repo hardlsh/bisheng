@@ -32,6 +32,15 @@ public class RoleServiceImpl extends BaseService implements RoleService {
 	}
 
 	@Override
+	public List<RoleModel> queryUserRoleByParam(AuthParam param){
+    	AuthParam record = new AuthParam();
+    	record.setUserId(param.getUserId());
+    	record.setUserStatus(param.getUserStatus());
+    	record.setRoleStatus(param.getRoleStatus());
+    	return getRoleDao().queryUserRoleByParam(record);
+	}
+
+	@Override
 	public int addResource(Role role) {
 		return getRoleDao().insertSelective(role);
 	}

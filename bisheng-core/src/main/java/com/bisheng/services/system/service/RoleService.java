@@ -22,6 +22,14 @@ public interface RoleService {
 	 * 根据参数,分页查询角色
 	 */
 	PageInfo<RoleModel> queryPageRoleByParam(AuthParam param);
+
+	/**
+	 * 根据参数,查询用户关联角色
+	 * @param param
+	 * @return
+	 */
+	List<RoleModel> queryUserRoleByParam(AuthParam param);
+
 	/**
 	 * 新增角色
 	 */

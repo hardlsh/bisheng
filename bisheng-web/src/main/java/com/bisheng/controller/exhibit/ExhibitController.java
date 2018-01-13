@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -190,7 +192,6 @@ public class ExhibitController extends BaseController {
 		} catch (Exception e) {
 			logger.error("【展馆管理】删除展馆_异常,操作人:"+LogUtil.getCurrentUserName()+",异常原因:", e);
 			res = new ALMResponse(RetCode.FAILURE);
-			res.setResultMsg("系统异常,请联系管理员");
 		}
 		logger.info("【展馆管理】删除展馆_结束,操作人:"+LogUtil.getCurrentUserName());
 		return res;

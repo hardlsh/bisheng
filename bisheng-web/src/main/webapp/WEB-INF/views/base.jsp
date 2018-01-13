@@ -56,6 +56,7 @@ var basePath = "${basePath}";
 <script src="${basePath}/resources/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
 <script src="${basePath}/resources/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js" type="text/javascript" ></script>
 <script src="${basePath}/resources/js/bootstrap-multiselect.js" type="text/javascript"></script>
+<script src="${basePath}/resources/js/password.js" type="text/javascript"></script>
 
 <!-- END CORE PLUGINS -->
 

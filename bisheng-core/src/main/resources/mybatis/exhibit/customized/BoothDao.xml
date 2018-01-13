@@ -54,7 +54,7 @@
 				AND b.exhibit_id = #{exhibitId, jdbcType=BIGINT}
 			</if>
 			<if test="boothName != null and boothName != ''">
-				OR b.booth_name = #{boothName, jdbcType=VARCHAR}
+				AND b.booth_name = #{boothName, jdbcType=VARCHAR}
 			</if>
 			<if test="sequence != null">
 				  OR b.sequence = #{sequence, jdbcType=INTEGER}
@@ -73,4 +73,12 @@
 		      #{yCount,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, 
 		      #{createByUser,jdbcType=VARCHAR}, #{updateByUser,jdbcType=VARCHAR})
 	</insert>
+
+	<!-- 根据主键，删除展位 -->
+	<delete id="deleteBoothById" parameterType="com.bisheng.services.exhibit.model.generated.Booth">
+		DELETE FROM
+			tb_booth
+		WHERE
+			booth_id = #{boothId,jdbcType=BIGINT}
+	</delete>
 </mapper>

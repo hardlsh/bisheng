@@ -17,6 +17,9 @@
 				</div>
 				<div class="actions">
 					<button id="addBooth" class="btn btn-sm blue" type="button">新增展位</button>
+					<shiro:hasPermission  name="admin">
+						<button id="delBooth" class="btn btn-sm red" type="button">删除展位</button>
+					</shiro:hasPermission>
 				</div>
 			</div>
 			<div class="portlet-body">
@@ -176,6 +179,36 @@
     </div>
 </div>
 
+<!-- 删除展位,弹出框 -->
+<div class="modal" id="delBoothModal" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+				<h4 class="modal-title">删除展位</h4>
+			</div>
+			<div class="modal-body">
+				<form id='del_form' href="##" method="post">
+				</form>
+				<table class="table table-striped table-bordered table-hover"
+					   id="delBoothTable">
+					<thead>
+					<tr>
+						<th>单选</th>
+						<th>展位名称</th>
+						<th>所属展馆</th>
+					</tr>
+					</thead>
+				</table>
+			</div>
+			<div class="modal-footer -align-center">
+				<button type="button" class="btn red" id="delBoothConfirm">确认删除</button>
+				<button type="button" class="btn default" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+</div>
 
 <script type="text/javascript">
 
@@ -186,11 +219,13 @@
 		init : function () {
 			var me = boothHelper;
 			
-			$('#addBooth').click(me.addBooth);// 新增展馆按钮
+			$('#addBooth').click(me.addBooth);// 新增展位按钮
+            $('#delBooth').click(me.delBooth);// 删除展位按钮
 			$('#uploadFile').click(me.uploadFile);// 上传文件
 			$('#btnRefresh').click(me.btnRefresh);//搜索按钮
 			$('#btnEmpty').click(me.btnEmpty);//清空条件
 			$('#doExport').click(me.doExport);// 导出明细按钮
+            $('#delBoothConfirm').click(me.delBoothConfirm);// 删除展位弹出框上的确认按钮
 			
 			$('.multiselect').multiselect({
 	            enableFiltering: true,
@@ -206,6 +241,7 @@
 			
 			//初始化Table
 			me.boothTable();
+            me.delBoothTable();
             me.loadBooth();
 		},
 		//初始化Table,加载表格
@@ -246,10 +282,54 @@
 				];
 			TablePaginationSort.initCustom(url, colArray, "boothTable","filter_form");//最后一个参数formid,此处为空form
 		},
+        //初始化Table,加载表格
+        delBoothTable : function () {
+            var url = "${basePath}/booth/getBoothList.do"; //表格数据远程地址
+            var colArray = [
+                {"data" : function(e) {
+                    return '<input type="radio" name="rad1" value="'+e.boothId+'"/>';
+                }
+                },
+                {"data" : "boothName","bSortable" : false},
+                {"data" : "exhibitName","bSortable" : false}
+            ];
+            TablePaginationSort.initCustom(url, colArray, "delBoothTable","del_form");//最后一个参数formid,此处为空form
+        },
 		//新增展馆
 		addBooth : function () {
 			$('#body2').load("${basePath}/booth/toAddBooth.do");
 		},
+        // 删除展位
+        delBooth : function () {
+            $('#delBoothTable').DataTable().draw();
+            $("#delBoothModal").modal('show');
+        },
+        // 确认删除展位
+        delBoothConfirm : function () {
+            var boothId = "";
+            $("[name='rad1']:checked").each(function() {
+                if ($(this).attr('checked')) {
+                    boothId = $(this).val();
+                }
+            });
+            if (boothId == '') {
+                bootbox.alert('请先选择要删除的展位');
+                return;
+            }
+            $("#delBoothConfirm").attr({"disabled":"disabled"});
+            $.ajax({
+                url : "${basePath}/booth/deleteBooth.do",
+                data: {boothId: boothId},
+                dataType : "json",
+                type : "POST",
+                success : function(data) {
+                    $("#delBoothConfirm").removeAttr("disabled");
+                    $("#boothTable").DataTable().draw();// 点击确认删除后,重新绘制table
+                    $('#delBoothModal').modal('hide');// 隐藏删除展位对应的弹窗
+                    bootbox.alert(data.resultMsg);
+                }
+            });
+        },
 		// 查看文字导入
 		queryWordContent : function(boothId) {
 			$("#wordContent"+boothId).attr({"disabled":"disabled"});

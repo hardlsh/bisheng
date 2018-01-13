@@ -5,6 +5,7 @@ import java.util.List;
 import com.bisheng.apps.exhibit.param.ExhibitQueryParam;
 import com.bisheng.services.exhibit.model.customized.BoothModel;
 import com.bisheng.services.exhibit.model.generated.Booth;
+import com.bisheng.services.exhibit.model.generated.Exhibit;
 import com.github.pagehelper.PageInfo;
 
 /**
@@ -45,5 +46,11 @@ public interface BoothService {
 	 * 根据主键进行修改
 	 */
 	int updateSelectiveByPrimaryKey(Booth booth);
-	
+
+	/**
+	 * 根据主键id, 删除展位
+	 * @param booth
+	 * @return
+	 */
+	int deleteBoothById(Booth booth);
 }

@@ -3,6 +3,10 @@ package com.bisheng.apps.system.shiro;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bisheng.apps.system.business.RoleBusiness;
+import com.bisheng.core.common.util.MBeanUtil;
+import com.bisheng.services.system.model.customized.RoleModel;
+import com.bisheng.services.system.model.customized.UserModel;
 import org.apache.shiro.authc.AccountException;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -14,6 +18,7 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
+import org.apache.shiro.web.filter.authz.RolesAuthorizationFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +48,8 @@ public class UserRealm extends AuthorizingRealm{
 	private UserBusiness userBusiness;
 	@Autowired
 	private ResourceBusiness resourceBusiness;
+	@Autowired
+	private RoleBusiness roleBusiness;
 	
 	/**
 	 * 登录认证
@@ -63,7 +70,6 @@ public class UserRealm extends AuthorizingRealm{
 			logger.error("【shiro登录认证】报错,错误原因:", e);
 			throw new AuthenticationException("登录报错,请联系管理员");
 		}
-		
 		//账号不存在
 		if (user == null) {
 			 throw new UnknownAccountException();
@@ -81,10 +87,12 @@ public class UserRealm extends AuthorizingRealm{
 
 	/**
 	 * 授权
+	 * 将按钮权限和角色权限放入授权集合
 	 */
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		List<ResourceModel> resourceList = null;
+		List<RoleModel> roleModelList = null;
 		try {
 			//从principals获取主身份信息(真实身份信息)		认证时放入的是什么身份,授权时就要获取对应的身份
 			User user = (User) principals.getPrimaryPrincipal();
@@ -96,6 +104,8 @@ public class UserRealm extends AuthorizingRealm{
 			param.setResourceStatus(AvailStatusEnum.AVAILABLE.getKey());
 			param.setResourceType(ResourceTypeEnum.BUTTON.getKey());
 			resourceList = resourceBusiness.queryUserResourceByParam(param);
+
+			roleModelList = roleBusiness.queryUserRoleByParam(param);
 		} catch (Exception e) {
 			logger.error("【shiro授权】根据当前用户,关联查询的可用的按钮资源报错,错误原因:", e);
 		}
@@ -106,6 +116,12 @@ public class UserRealm extends AuthorizingRealm{
 			for (ResourceModel resource : resourceList) {
 				//将按钮的地址,放入集合,作为判断标志
 				permissions.add(resource.getResourcePath());
+			}
+		}
+		if (null != roleModelList && !roleModelList.isEmpty()) {
+			for(RoleModel role : roleModelList){
+				//将角色名称,放入集合,作为判断标志
+				permissions.add(role.getRoleName());
 			}
 		}
 		//查到权限数据,返回授权信息

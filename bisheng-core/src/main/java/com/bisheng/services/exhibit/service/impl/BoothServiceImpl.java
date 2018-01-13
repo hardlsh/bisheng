@@ -51,5 +51,9 @@ public class BoothServiceImpl extends BaseService implements BoothService {
 	public int updateSelectiveByPrimaryKey(Booth booth) {
 		return getBoothDao().updateByPrimaryKeySelective(booth);
 	}
-	
+
+	@Override
+	public int deleteBoothById(Booth booth) {
+		return getBoothDao().deleteBoothById(booth);
+	}
 }

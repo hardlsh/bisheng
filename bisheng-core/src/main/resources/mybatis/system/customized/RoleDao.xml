@@ -6,7 +6,7 @@
 	</resultMap>
 
 	<sql id="Column_List" >
-  		t1.role_id, t1.role_name, t1.remark, t1.status
+  		r.role_id, r.role_name, r.remark, r.status
   	</sql>
 
 	<select id="queryRoleByParam" resultMap="RoleModel"
@@ -14,18 +14,39 @@
 		SELECT
 			<include refid="Column_List"/>
 		FROM 
-			tp_sys_role t1
+			tp_sys_role r
 		<where>
 			<if test="roleId != null">
-				and t1.role_id = #{roleId, jdbcType=BIGINT}
+				and r.role_id = #{roleId, jdbcType=BIGINT}
 			</if>
 			<if test="roleName != null and roleName !='' ">
-				and t1.role_name = #{roleName, jdbcType=VARCHAR}
+				and r.role_name = #{roleName, jdbcType=VARCHAR}
 			</if>
 			<if test="roleStatus != null">
-				and t1.status = #{roleStatus, jdbcType=INTEGER}
+				and r.status = #{roleStatus, jdbcType=INTEGER}
 			</if>
 		</where>
 	</select>
-	
+
+	<!-- 根据参数,查询用户关联角色 -->
+	<select id="queryUserRoleByParam" resultMap="RoleModel"
+			parameterType="com.bisheng.apps.system.param.AuthParam">
+		SELECT
+			<include refid="Column_List"/>
+		FROM
+		tp_sys_user u
+		INNER JOIN tp_sys_user_role ur ON u.user_id = ur.user_id
+		INNER JOIN tp_sys_role r ON ur.role_id = r.role_id
+		<where>
+			<if test="userId != null">
+				AND	u.user_id = #{userId, jdbcType=INTEGER}
+			</if>
+			<if test="userStatus != null">
+				AND	u.status = #{userStatus, jdbcType=INTEGER}
+			</if>
+			<if test="roleStatus != null">
+				AND r.status = #{roleStatus, jdbcType=INTEGER}
+			</if>
+		</where>
+	</select>
 </mapper>
