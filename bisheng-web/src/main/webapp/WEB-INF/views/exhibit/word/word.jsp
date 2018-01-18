@@ -60,7 +60,7 @@
 				<table class="table table-striped table-bordered table-hover" id="wordTable">
 					<thead>
 						<tr>
-							<th><input id="checkAll" type="checkbox" name="checkBox"></th>
+							<th><input id="checkAll" type="checkbox" name="checkBox">全选</th>
 							<th>文字ID</th>
 							<th>文字</th>
 							<th>所属展馆</th>

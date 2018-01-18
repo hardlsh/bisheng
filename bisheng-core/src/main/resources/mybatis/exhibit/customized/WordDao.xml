@@ -23,6 +23,12 @@
 			<if test="exhibitId != null">
 				AND e.exhibit_id = #{exhibitId, jdbcType=BIGINT}
 			</if>
+			<if test="exhibitIdList != null and exhibitIdList.size() > 0">
+				AND e.exhibit_id IN
+				<foreach collection="exhibitIdList" item="exhibitIdItem" separator="," open="(" close=")">
+					#{exhibitIdItem, jdbcType=BIGINT}
+				</foreach>
+			</if>
 			<if test="wordList != null and wordList.size() > 0">
 				AND w.word IN
 				<foreach collection="wordList" item="wordItem" separator="," open="(" close=")">
