@@ -341,20 +341,21 @@ public class BoothController extends BaseController {
 			// 第一行
 			show.append("<tr> <td></td>");
 			for (int j = WEBConstants.ROW_START_NUM; j < booth.getyCount() + WEBConstants.ROW_START_NUM; j++) {
-				show.append("<td align='center' width=25 height=25 >");
+				show.append("<td align='center' width=35 height=35 ><font size='5'>");
 				show.append(j);
-				show.append("</td>");
+				show.append("</font></td>");
 			}
 			show.append("</tr>");
 			for (int i=0; i<booth.getxCount(); i++) {
 				lineArr = wordContentArr[i].split("");
-				show.append("<tr> <td align='center' width=25 height=25 >" + (i+1) + "</td>");
+				show.append("<tr> <td align='center' width=35 height=35 ><font size='5'>" +
+						(i+1) + "</font></td>");
 				for (int j=0; j< lineArr.length; j++) {
-					show.append("<td align='center' width=25 height=25 >");
+					show.append("<td align='center' width=35 height=35 ><font size='5'>");
 					if (!WEBConstants.REPLACE_SIGN.equals(lineArr[j])) {
 						show.append(lineArr[j]);
 					}
-					show.append("</td>");
+					show.append("</font></td>");
 				}
 				show.append("</tr>");
 			}

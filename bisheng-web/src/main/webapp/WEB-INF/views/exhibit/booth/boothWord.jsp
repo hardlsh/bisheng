@@ -128,7 +128,7 @@
 
 			if (exhibitIdList == null || exhibitIdList == "" ||
 					wordQuery == null || wordQuery == "") {
-				bootbox.alert("必填字段不能为空");
+				bootbox.alert("请输入您要查询的汉字");
 				return;
 			}
 			$("#boothWordTable").DataTable().destroy();//先删除表格,因为表格不能重复初始化
