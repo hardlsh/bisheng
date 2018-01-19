@@ -20,7 +20,7 @@ public interface WordBusiness {
 	
 	/**
 	 * 批量插入文字存量信息(导入模板时调用)
-	 * @param queryParam
+	 * @param param
 	 */
 	void batchInsertWord(ExhibitQueryParam param);
 

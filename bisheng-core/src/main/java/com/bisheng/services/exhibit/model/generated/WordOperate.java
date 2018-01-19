@@ -29,6 +29,11 @@ public class WordOperate {
     private Long count;
 
     /**
+     *修改时间
+     */
+    private Date updateDate;
+
+    /**
      *操作人
      */
     private String operateUser;
@@ -111,6 +116,20 @@ public class WordOperate {
      */
     public void setCount(Long count) {
         this.count = count;
+    }
+
+    /**
+     *修改时间
+     */
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    /**
+     *修改时间
+     */
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
     }
 
     /**

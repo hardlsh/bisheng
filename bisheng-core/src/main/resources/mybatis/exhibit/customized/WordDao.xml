@@ -6,7 +6,7 @@
 	</resultMap>
 
 	<sql id="Column_List" >
-  		w.word_id, w.exhibit_id, w.word, w.total_count
+  		w.word_id, w.exhibit_id, w.word, w.in_time, w.out_time, w.total_count
   	</sql>
 	
 	<!-- 查询文字存量列表 -->
@@ -102,9 +102,10 @@
 	<!-- 插入返回主键 -->
 	<insert id="addWordReturnId" parameterType="com.bisheng.services.exhibit.model.generated.Word"
 		useGeneratedKeys="true" keyProperty="wordId" keyColumn="word_id">
-		INSERT INTO tb_word (exhibit_id, word, total_count)
+		INSERT INTO tb_word (exhibit_id, word, in_time, out_time, total_count)
     	VALUES (#{exhibitId,jdbcType=BIGINT}, 
-		      #{word,jdbcType=VARCHAR}, #{totalCount,jdbcType=BIGINT})
+		      #{word,jdbcType=VARCHAR}, #{inTime,jdbcType=TIMESTAMP},
+		      #{outTime,jdbcType=TIMESTAMP}, #{totalCount,jdbcType=BIGINT})
 	</insert>
 	
 </mapper>

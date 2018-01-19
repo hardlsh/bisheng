@@ -146,7 +146,7 @@
 								class="required"> * </span></label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
 								<input id="wordCreate" name="wordStr" class="form-control input-inline input-sm" maxlength="1000" 
-								placeholder="请输入要查询的文字,支持批量文字" onkeyup="value=value.replace(/[^\u4e00-\u9fa5]/,'')" type="text" style="width:240px" />
+								placeholder="请输入要新建入库的文字,支持批量文字" onkeyup="value=value.replace(/[^\u4e00-\u9fa5]/,'')" type="text" style="width:240px" />
 							</div>
 						</div>
 					</div>
@@ -186,7 +186,7 @@
 			$('#btnEmpty').click(me.btnEmpty);//清空条件
 			$('#btnUpdate').click(me.btnUpdate);// 批量修改按钮
 			$('#btnCreate').click(me.btnCreate);// 新建入库按钮
-			$('#checkAll').click(me.checkAllFunc);//资产表里的全选按钮
+			$('#checkAll').click(me.checkAllFunc);// 文字存量表上的全选
 			$('#confirmUpdate').click(me.confirmUpdate);// 修改弹出框上的确认按钮
 			$('#confirmCreate').click(me.confirmCreate);// 新建弹出框上的确认按钮
 			

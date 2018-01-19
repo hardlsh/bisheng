@@ -19,6 +19,16 @@ public class Word {
     private String word;
 
     /**
+     *入库时间
+     */
+    private Date inTime;
+
+    /**
+     *出库时间
+     */
+    private Date outTime;
+
+    /**
      *文字总数
      */
     private Long totalCount;
@@ -73,6 +83,34 @@ public class Word {
      */
     public void setWord(String word) {
         this.word = word == null ? null : word.trim();
+    }
+
+    /**
+     *入库时间
+     */
+    public Date getInTime() {
+        return inTime;
+    }
+
+    /**
+     *入库时间
+     */
+    public void setInTime(Date inTime) {
+        this.inTime = inTime;
+    }
+
+    /**
+     *出库时间
+     */
+    public Date getOutTime() {
+        return outTime;
+    }
+
+    /**
+     *出库时间
+     */
+    public void setOutTime(Date outTime) {
+        this.outTime = outTime;
     }
 
     /**
