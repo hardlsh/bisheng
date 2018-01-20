@@ -146,6 +146,15 @@ public class DateUtil {
     }
 
     /**
+     * 获取当前时间
+     * @return
+     */
+    public static String getCurrentHour(){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH-mm-ss");
+        return dateFormat.format(Calendar.getInstance().getTime());
+    }
+
+    /**
      * 取得当前天后，加上指定天数后的最小时间
      *
      * @param date   当前日期

@@ -86,7 +86,7 @@ public class WordBusinessImpl implements WordBusiness {
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+//	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void batchUpdateWord(ExhibitQueryParam param) {
 		Map<Long, Word> wordMap = getWordMap(param);
 		Word word;
@@ -97,6 +97,7 @@ public class WordBusinessImpl implements WordBusiness {
 			word = wordMap.get(wordId);
 			if (WordOperateTypeEnum.IN.getKey() == param.getOperateType().intValue()) {
 				word.setTotalCount(word.getTotalCount() + param.getCount());
+				word.setInDate(param.getUpdateDate());
 			} else if (WordOperateTypeEnum.OUT.getKey() == param.getOperateType().intValue()){
 				totalCount = word.getTotalCount() - param.getCount();
 				if (totalCount < 0) {
@@ -105,6 +106,7 @@ public class WordBusinessImpl implements WordBusiness {
 					throw new BusinessException("业务异常,售出数量不得大于现有存量");
 				}
 				word.setTotalCount(totalCount);
+				word.setOutDate(param.getUpdateDate());
 			} else {
 				logger.error("【文字存量业务】业务异常,操作类型不存在");
 				throw new BusinessException("系统异常");
@@ -116,6 +118,7 @@ public class WordBusinessImpl implements WordBusiness {
 			wordOperate.setWordId(wordId);
 			wordOperate.setType(param.getOperateType());
 			wordOperate.setCount(param.getCount());
+			wordOperate.setOperateDate(param.getUpdateDate());
 			wordOperate.setOperateUser(param.getUpdateByUser());
 			wordOperateList.add(wordOperate);
 		}

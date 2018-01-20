@@ -6,7 +6,7 @@
 	</resultMap>
 
 	<sql id="Column_List" >
-  		w.word_id, w.exhibit_id, w.word, w.in_time, w.out_time, w.total_count
+  		w.word_id, w.exhibit_id, w.word, w.in_date, w.out_date, w.total_count
   	</sql>
 	
 	<!-- 查询文字存量列表 -->
@@ -102,10 +102,23 @@
 	<!-- 插入返回主键 -->
 	<insert id="addWordReturnId" parameterType="com.bisheng.services.exhibit.model.generated.Word"
 		useGeneratedKeys="true" keyProperty="wordId" keyColumn="word_id">
-		INSERT INTO tb_word (exhibit_id, word, in_time, out_time, total_count)
+		INSERT INTO tb_word (exhibit_id, word, in_date, out_date, total_count)
     	VALUES (#{exhibitId,jdbcType=BIGINT}, 
-		      #{word,jdbcType=VARCHAR}, #{inTime,jdbcType=TIMESTAMP},
-		      #{outTime,jdbcType=TIMESTAMP}, #{totalCount,jdbcType=BIGINT})
+		      #{word,jdbcType=VARCHAR}, #{inDate,jdbcType=TIMESTAMP},
+		      #{outDate,jdbcType=TIMESTAMP}, #{totalCount,jdbcType=BIGINT})
 	</insert>
-	
+
+	<!-- 根据主键进行修改 -->
+	<update id="updateWord" parameterType="com.bisheng.services.exhibit.model.generated.Word">
+		UPDATE tb_word
+		SET
+		<if test="inDate != null">
+			in_date = #{inDate,jdbcType=TIMESTAMP},
+		</if>
+		<if test="outDate != null">
+			out_date = #{outDate,jdbcType=TIMESTAMP},
+		</if>
+		total_count = #{totalCount,jdbcType=BIGINT}
+		WHERE word_id = #{wordId,jdbcType=BIGINT}
+	</update>
 </mapper>

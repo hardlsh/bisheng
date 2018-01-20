@@ -64,15 +64,20 @@ public class ExhibitQueryParam extends BaseQuery {
     private List<Long> wordIdList;// 文字id集合
     private Integer operateType;// 操作类型
     private Long count;// 操作数量
+	private String updateDateStr;// 修改时间
     private String updateDateStrMin;// 最小修改时间
     private String updateDateStrMax;// 最大修改时间
+	private Date updateDate;// 最小修改时间
     private Date updateDateMin;// 最小修改时间
     private Date updateDateMax;// 最大修改时间
     
     // 日期转换
     public static void convertDate(ExhibitQueryParam param) throws ParseException{
+    	if (StringUtils.isNotBlank(param.getUpdateDateStr())) {
+    		param.setUpdateDate(DateUtil.parseDateTime(param.getUpdateDateStr() + " " + DateUtil.getCurrentHour()));
+		}
     	if (StringUtils.isNotBlank(param.getUpdateDateStrMin())) {
-        	param.setUpdateDateMin(DateUtil.parseDateTime(param.getUpdateDateStrMin()+ " 00:00:00"));
+        	param.setUpdateDateMin(DateUtil.parseDateTime(param.getUpdateDateStrMin() + " 00:00:00"));
     	}
     	if (StringUtils.isNotBlank(param.getUpdateDateStrMax())) {
         	param.setUpdateDateMax(DateUtil.parseDateTime(param.getUpdateDateStrMax() + " 23:59:59"));
@@ -319,5 +324,20 @@ public class ExhibitQueryParam extends BaseQuery {
 	public void setUpdateDateMax(Date updateDateMax) {
 		this.updateDateMax = updateDateMax;
 	}
-	
+
+	public String getUpdateDateStr() {
+		return updateDateStr;
+	}
+
+	public void setUpdateDateStr(String updateDateStr) {
+		this.updateDateStr = updateDateStr;
+	}
+
+	public Date getUpdateDate() {
+		return updateDate;
+	}
+
+	public void setUpdateDate(Date updateDate) {
+		this.updateDate = updateDate;
+	}
 }

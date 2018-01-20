@@ -55,7 +55,13 @@ public class WordServiceImpl extends BaseService implements WordService {
 		Word record = new Word();
 		record.setWordId(word.getWordId());
 		record.setTotalCount(word.getTotalCount());
-		getWordDao().updateByPrimaryKeySelective(record);
+		if (null != word.getInDate()) {
+			record.setInDate(word.getInDate());
+		}
+		if (null != word.getOutDate()) {
+			record.setOutDate(word.getOutDate());
+		}
+		getWordDao().updateWord(record);
 	}
 
 

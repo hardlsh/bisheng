@@ -21,12 +21,6 @@ public interface WordDao extends WordMapper{
 	 * @return
 	 */
 	List<WordModel> queryWordOperateCount(ExhibitQueryParam param);
-	
-	/**
-	 * 插入返回主键
-	 * @param word
-	 */
-	void addWordReturnId (Word word);
 
 	/**
 	 * 单表查询
@@ -35,5 +29,17 @@ public interface WordDao extends WordMapper{
 	 */
 	List<Word> queryWordList(WordModel wordModel);
 
+	/**
+	 * 插入返回主键
+	 * @param word
+	 */
+	void addWordReturnId (Word word);
+
+	/**
+	 * 根据主键进行修改
+	 * @param word
+	 * @return
+	 */
+	int updateWord(Word word);
 
 }

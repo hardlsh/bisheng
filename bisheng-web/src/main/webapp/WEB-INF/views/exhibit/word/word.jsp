@@ -42,6 +42,12 @@
 							文字:
 	                        	<input id="wordQuery" name="wordStr" class="form-control input-inline input-sm" maxlength="1000" 
 								placeholder="请输入要查询的文字,支持批量文字" onkeyup="value=value.replace(/[^\u4e00-\u9fa5]/,'')" type="text" style="width:240px" />
+							查询日期:
+							<input class="form-control input-inline input-sm date-picker" id="updateDateStrMin" name="updateDateStrMin"
+								   size="10" type="text" data-date-format="yyyy-mm-dd" placeholder="开始日期"/>
+							至：
+							<input class="form-control input-inline input-sm date-picker" id="updateDateStrMax" name="updateDateStrMax"
+								   size="10" type="text" data-date-format="yyyy-mm-dd" placeholder="结束日期"/>
 						</div>
 						<div class="row">
 						<div class="form-group  input-inline">
@@ -112,6 +118,17 @@
 									placeholder="请输入数字" type="text"
 									onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
 									/>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group">
+							<label
+									class="control-label col-md-3 col-sm-3 col-xs-8">修改日期<span
+									class="required"> * </span></label>
+							<div class="col-md-6 col-sm-6 col-xs-12">
+								<input class="form-control input-inline input-sm date-picker" id="updateDateStr" name="updateDateStr"
+									   size="10" type="text" data-date-format="yyyy-mm-dd" placeholder="修改日期"/>
 							</div>
 						</div>
 					</div>
@@ -289,6 +306,7 @@
                     if (data.resultCode == '0000') {
                     	var html = "您选择修改:" + data.data.exhibitName + "，共选择了" + updateWordIds.length + "个字。";
                         $("#prompt").html(html);
+                        $("#updateDateStr").datepicker('setDate',new Date());
                         $('#updateModal').modal('show');
                     } else {
                         bootbox.alert("批量修改错误:" + data.resultMsg);
@@ -298,6 +316,16 @@
 		},
 		// 批量修改确认
 		confirmUpdate : function () {
+		    var updateCount = $('#updateCount').val();
+		    var updateDateStr = $('#updateDateStr').val();
+		    if ('' == updateCount) {
+                bootbox.alert('请输入修改数量');
+                return;
+			}
+			if (null == updateDateStr || '' == updateDateStr) {
+                bootbox.alert('请选择修改日期');
+                return;
+			}
 			$("#confirmUpdate").attr({"disabled":"disabled"});
 			$.ajax({
 		        url : "${basePath}/word/batchUpdateWord.do",
@@ -364,11 +392,18 @@
 		            }
 		        }
 		    });
-		}
+		},
+        // 为日期赋值
+        updateDateDefault : function () {
+            $("#updateDateStrMin").datepicker('setDate','-7d');
+            $("#updateDateStrMax").datepicker('setDate',new Date());
+        }
 		
 	};
 
 	$(function() {
+        ComponentsPickers.init();//日期插件初始化
+        wordHelper.updateDateDefault();
 		wordHelper.init();
 	});
 

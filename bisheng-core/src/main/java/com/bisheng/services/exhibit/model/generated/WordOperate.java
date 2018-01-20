@@ -29,9 +29,9 @@ public class WordOperate {
     private Long count;
 
     /**
-     *修改时间
+     *操作日期
      */
-    private Date updateDate;
+    private Date operateDate;
 
     /**
      *操作人
@@ -119,17 +119,17 @@ public class WordOperate {
     }
 
     /**
-     *修改时间
+     *操作日期
      */
-    public Date getUpdateDate() {
-        return updateDate;
+    public Date getOperateDate() {
+        return operateDate;
     }
 
     /**
-     *修改时间
+     *操作日期
      */
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
+    public void setOperateDate(Date operateDate) {
+        this.operateDate = operateDate;
     }
 
     /**

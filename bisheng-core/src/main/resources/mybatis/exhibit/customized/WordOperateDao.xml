@@ -7,18 +7,18 @@
 	</resultMap>
 
 	<sql id="Column_List" >
-  		wo.operate_id, wo.exhibit_id, wo.word_id, wo.type, wo.count, wo.update_date, wo.operate_user
+  		wo.operate_id, wo.exhibit_id, wo.word_id, wo.type, wo.count, wo.operate_date, wo.operate_user
   	</sql>
 	
 	<!-- 批量插入 -->
 	<insert id="batchInsert">
 		INSERT INTO tb_word_operate 
-			(exhibit_id, word_id, type, count, update_date, operate_user)
+			(exhibit_id, word_id, type, count, operate_date, operate_user)
     	VALUES 
     		<foreach collection="wordOperateList" item="item" separator=",">
     		(#{item.exhibitId,jdbcType=BIGINT}, #{item.wordId,jdbcType=BIGINT}, 
       		#{item.type,jdbcType=INTEGER}, #{item.count,jdbcType=BIGINT},
-			#{updateDate,jdbcType=TIMESTAMP}, #{item.operateUser,jdbcType=VARCHAR})
+			#{item.operateDate,jdbcType=TIMESTAMP}, #{item.operateUser,jdbcType=VARCHAR})
       		</foreach>
 	</insert>
 	

@@ -19,14 +19,14 @@ public class Word {
     private String word;
 
     /**
-     *入库时间
+     *入库日期
      */
-    private Date inTime;
+    private Date inDate;
 
     /**
-     *出库时间
+     *出库日期
      */
-    private Date outTime;
+    private Date outDate;
 
     /**
      *文字总数
@@ -86,31 +86,31 @@ public class Word {
     }
 
     /**
-     *入库时间
+     *入库日期
      */
-    public Date getInTime() {
-        return inTime;
+    public Date getInDate() {
+        return inDate;
     }
 
     /**
-     *入库时间
+     *入库日期
      */
-    public void setInTime(Date inTime) {
-        this.inTime = inTime;
+    public void setInDate(Date inDate) {
+        this.inDate = inDate;
     }
 
     /**
-     *出库时间
+     *出库日期
      */
-    public Date getOutTime() {
-        return outTime;
+    public Date getOutDate() {
+        return outDate;
     }
 
     /**
-     *出库时间
+     *出库日期
      */
-    public void setOutTime(Date outTime) {
-        this.outTime = outTime;
+    public void setOutDate(Date outDate) {
+        this.outDate = outDate;
     }
 
     /**

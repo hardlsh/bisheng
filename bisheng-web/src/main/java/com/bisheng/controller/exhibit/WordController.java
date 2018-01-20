@@ -125,6 +125,7 @@ public class WordController extends BaseController {
 			}
 			param.setWordIdList(wordIdList);
 			param.setUpdateByUser(LogUtil.getCurrentUserName());
+			ExhibitQueryParam.convertDate(param);// 转换参数
 			wordBusiness.batchUpdateWord(param);
 			res = new ALMResponse(RetCode.SUCCESS);
 		} catch (Exception e) {
