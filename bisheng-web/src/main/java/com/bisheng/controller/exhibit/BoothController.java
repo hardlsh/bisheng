@@ -58,7 +58,7 @@ import com.bisheng.util.LogUtil;
 import com.bisheng.util.QRCode.QRCodeManager;
 import com.bisheng.util.constant.QRConstants;
 import com.bisheng.util.constant.WEBConstants;
-import com.bisheng.util.exportModel.ExcelBoothExportModel;
+import com.bisheng.util.exportmodel.ExcelBoothExportModel;
 import com.bisheng.vo.ALMResponse;
 import com.bisheng.vo.RetCode;
 import com.github.pagehelper.PageInfo;

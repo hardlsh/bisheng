@@ -109,7 +109,7 @@ public class ExcelManager{
 					}else if(value instanceof BigDecimal){
 						cell.setCellValue(((BigDecimal) value).toString());
 					}else if(value instanceof Date){
-						cell.setCellValue(  (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format((Date)value)         );
+						cell.setCellValue((new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format((Date)value));
 					}else{
 						MethodUtils.invokeExactMethod(cell, "setCellValue", value);
 					}

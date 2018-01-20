@@ -3,15 +3,22 @@ package com.bisheng.controller.exhibit;
 import com.bisheng.apps.exhibit.business.WordBusiness;
 import com.bisheng.apps.exhibit.param.ExhibitQueryParam;
 import com.bisheng.controller.BaseController;
+import com.bisheng.core.common.util.DateUtil;
 import com.bisheng.core.framework.pager.PaginationResult;
+import com.bisheng.services.exhibit.enums.ExhibitStatusEnum;
+import com.bisheng.services.exhibit.model.customized.ExhibitModel;
 import com.bisheng.services.exhibit.model.customized.WordModel;
 import com.bisheng.services.exhibit.model.generated.Exhibit;
 import com.bisheng.services.exhibit.service.ExhibitService;
+import com.bisheng.util.ExcelManager;
 import com.bisheng.util.LogUtil;
+import com.bisheng.util.exportmodel.ExcelExhibitExportModel;
+import com.bisheng.util.exportmodel.ExcelWordExportModel;
 import com.bisheng.vo.ALMResponse;
 import com.bisheng.vo.RetCode;
 import com.github.pagehelper.PageInfo;
 import com.google.gson.Gson;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,9 +28,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -76,6 +87,51 @@ public class WordController extends BaseController {
 			logger.error("【文字存量管理】查询展位_异常,操作人:"+LogUtil.getCurrentUserName()+",异常原因:", e);
 		}
     }
+
+	/**
+	 * 导出数据
+	 */
+	@RequestMapping("/exportWord")
+	public void exportWord(HttpServletRequest request, HttpServletResponse response, ExhibitQueryParam param){
+		logger.info("【文字存量管理】导出文字_开始,操作人:"+LogUtil.getCurrentUserName()+",入参:"+gson.toJson(param));
+		OutputStream os = null;
+		try {
+			EXPORT_NAME = DateUtil.format(new Date(), "yyyyMMddHHmmss") + "_文字存量明细.xlsx";
+			String wordStr = param.getWordStr().replace(" ", "");
+			if (wordStr.length() == 1) {
+				param.setWord(param.getWordStr());
+			}else if (wordStr.length() > 1) {
+				param.setWordList(Arrays.asList(wordStr.split("")));
+			}
+			ExhibitQueryParam.convertDate(param);// 转换参数
+			List<WordModel> wordModelList = wordBusiness.queryWordListByParam(param);
+			processResponse(response);
+
+			List<ExcelWordExportModel> exportWord = new ArrayList<>();
+			if (null != wordModelList && !wordModelList.isEmpty()) {
+				ExcelWordExportModel model;
+				for (WordModel word : wordModelList) {
+					model = new ExcelWordExportModel();
+					model.setWord(word.getWord());
+					model.setExhibitName(word.getExhibitName());
+					model.setTotalCount(word.getTotalCount());
+					model.setInTotalCount(word.getInTotalCount());
+					model.setOutTotalCount(word.getOutTotalCount());
+					model.setInDate(DateUtil.formatDateTime(word.getInDate()));
+					model.setOutDate(DateUtil.formatDateTime(word.getOutDate()));
+					exportWord.add(model);
+				}
+			}
+			logger.info("【文字存量管理】导出数据长度:" + exportWord.size() + ",操作人：" + LogUtil.getCurrentUserName());
+			os = new BufferedOutputStream(response.getOutputStream());
+			ExcelManager.exportExcelByMould(os, 2, exportWord, "WordExportExcel", ExcelWordExportModel.class);
+			os.flush();
+		} catch (Exception e) {
+			logger.error("【文字存量管理】导出数据_异常,操作人:"+LogUtil.getCurrentUserName()+",异常原因:", e);
+		} finally {
+			IOUtils.closeQuietly(os);// 关闭流
+		}
+	}
     
     /**
      * 查询展馆名称
@@ -160,5 +216,6 @@ public class WordController extends BaseController {
 		logger.info("【文字存量管理】批量修改_结束,操作人:" + LogUtil.getCurrentUserName());
 		return res;
 	}
-	
+
+
 }

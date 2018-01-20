@@ -40,9 +40,9 @@ public class DateUtil {
     }
 
     public static String formatDateTime(Date date) {
-        if (date == null)
+        if (date == null){
             return null;
-
+        }
         String simpleDateStr = DateUtil.FULL_SDF.format(date);
         return simpleDateStr;
     }

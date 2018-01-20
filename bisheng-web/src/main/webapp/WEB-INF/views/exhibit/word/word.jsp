@@ -61,7 +61,10 @@
 								<button id="btnRefresh" class="btn btn-sm green" type="button">搜索</button>
 								<a class="btn btn-sm red" id="btnEmpty"><i class="icon-trash"></i>清空条件</a>
 								<button id="btnUpdate" class="btn btn-sm blue" type="button">批量修改</button>
+								<%-- 先注释掉,看后期需求
 								<button id="btnCreate" class="btn btn-sm blue" type="button">新建入库</button>
+								--%>
+								<button id="doExport" class="btn btn-sm green" type="button">导出明细</button>
 	                        </div>
 						</div>
 						</div>
@@ -73,7 +76,6 @@
 					<thead>
 						<tr>
 							<th><input id="checkAll" type="checkbox" name="checkBox">全选</th>
-							<th>文字ID</th>
 							<th>文字</th>
 							<th>所属展馆</th>
 							<th>现有库存</th>
@@ -216,6 +218,7 @@
 			$('#checkAll').click(me.checkAllFunc);// 文字存量表上的全选
 			$('#confirmUpdate').click(me.confirmUpdate);// 修改弹出框上的确认按钮
 			$('#confirmCreate').click(me.confirmCreate);// 新建弹出框上的确认按钮
+            $('#doExport').click(me.doExport);// 导出明细按钮
 			
 			$('.multiselect').multiselect({
 	            enableFiltering: true,
@@ -239,7 +242,6 @@
 						return '<input type="checkbox" class="checkboxes" name="chb1" data-id="'
 						+ e.wordId + '" onclick="wordHelper.checkAll()" />';
 					},"bSortable" : false},
-					{"data" : "wordId","bSortable" : false},
 					{"data" : "word","bSortable" : false},
 					{"data" : "exhibitName","bSortable" : false},
 					{"data" : "totalCount","bSortable" : false},
@@ -407,6 +409,11 @@
 		        }
 		    });
 		},
+        //导出明细
+        doExport : function(){
+            $("#filter_form").attr('action','${basePath}/word/exportWord.do');
+            $("#filter_form").submit();
+        },
         // 为日期赋值
         updateDateDefault : function () {
             $("#updateDateStrMin").datepicker('setDate','-7d');

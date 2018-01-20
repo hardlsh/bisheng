@@ -43,6 +43,11 @@ public class WordBusinessImpl implements WordBusiness {
 		PageInfo<WordModel> outWordPageList = wordService.queryPagedWordByParam(param);
 		List<WordModel> inWordList = inWordPageList.getList();
 		List<WordModel> outWordList = outWordPageList.getList();
+		convertWordList(inWordList, outWordList);
+		return inWordPageList;
+	}
+
+	private void convertWordList (List<WordModel> inWordList, List<WordModel> outWordList) {
 		for (WordModel inWord : inWordList) {
 			inWord.setInTotalCount(inWord.getOperateCount());
 			for (WordModel outWord : outWordList) {
@@ -52,7 +57,16 @@ public class WordBusinessImpl implements WordBusiness {
 				}
 			}
 		}
-		return inWordPageList;
+	}
+
+	@Override
+	public List<WordModel> queryWordListByParam(ExhibitQueryParam param){
+		param.setOperateType(WordOperateTypeEnum.IN.getKey());
+		List<WordModel> inWordList = wordService.queryWordListByParam(param);
+		param.setOperateType(WordOperateTypeEnum.OUT.getKey());
+		List<WordModel> outWordList = wordService.queryWordListByParam(param);
+		convertWordList(inWordList, outWordList);
+		return inWordList;
 	}
 
 	@Override

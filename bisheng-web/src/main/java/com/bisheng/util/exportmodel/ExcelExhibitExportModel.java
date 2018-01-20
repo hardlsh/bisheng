@@ -1,4 +1,4 @@
-package com.bisheng.util.exportModel;
+package com.bisheng.util.exportmodel;
 
 import java.io.Serializable;
 
