@@ -31,14 +31,6 @@ public class WordServiceImpl extends BaseService implements WordService {
 		PageInfo<WordModel> pageInfo = new PageInfo<>(list);
 		return pageInfo;
 	}
-
-	@Override
-	public PageInfo<WordModel> queryPagedWordOperateCount(ExhibitQueryParam param) {
-		setStartPage(param);
-		List<WordModel> list = getWordDao().queryWordOperateCount(param);
-		PageInfo<WordModel> pageInfo = new PageInfo<>(list);
-		return pageInfo;
-	}
 	
 	@Override
 	public List<Word> queryWordList(WordModel wordModel) {

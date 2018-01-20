@@ -45,9 +45,15 @@
 							查询日期:
 							<input class="form-control input-inline input-sm date-picker" id="updateDateStrMin" name="updateDateStrMin"
 								   size="10" type="text" data-date-format="yyyy-mm-dd" placeholder="开始日期"/>
-							至：
+							至:
 							<input class="form-control input-inline input-sm date-picker" id="updateDateStrMax" name="updateDateStrMax"
 								   size="10" type="text" data-date-format="yyyy-mm-dd" placeholder="结束日期"/>
+							现有库存:
+							<input class="form-control input-inline input-sm" id="totalCountMin" name="totalCountMin"
+								   size="10" type="text" placeholder="最小库存"/>
+							至:
+							<input class="form-control input-inline input-sm" id="totalCountMax" name="totalCountMax"
+								   size="10" type="text" placeholder="最大库存"/>
 						</div>
 						<div class="row">
 						<div class="form-group  input-inline">
@@ -71,6 +77,10 @@
 							<th>文字</th>
 							<th>所属展馆</th>
 							<th>现有库存</th>
+							<th>入库数量</th>
+							<th>出库数量</th>
+							<th>最近入库时间</th>
+							<th>最近出库时间</th>
 						</tr>
 					</thead>
 				</table>
@@ -232,7 +242,11 @@
 					{"data" : "wordId","bSortable" : false},
 					{"data" : "word","bSortable" : false},
 					{"data" : "exhibitName","bSortable" : false},
-					{"data" : "totalCount","bSortable" : false}
+					{"data" : "totalCount","bSortable" : false},
+                	{"data" : "inTotalCount","bSortable" : false},
+                	{"data" : "outTotalCount","bSortable" : false},
+					{"data" : "inDate","bSortable" : false},
+					{"data" : "outDate","bSortable" : false}
 				];
 			TablePaginationSort.initCustom(url, colArray, "wordTable","filter_form");
 		},

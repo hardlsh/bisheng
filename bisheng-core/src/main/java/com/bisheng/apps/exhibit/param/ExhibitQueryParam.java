@@ -64,6 +64,8 @@ public class ExhibitQueryParam extends BaseQuery {
     private List<Long> wordIdList;// 文字id集合
     private Integer operateType;// 操作类型
     private Long count;// 操作数量
+	private Long totalCountMin;// 最小库存
+	private Long totalCountMax;// 最大库存
 	private String updateDateStr;// 修改时间
     private String updateDateStrMin;// 最小修改时间
     private String updateDateStrMax;// 最大修改时间
@@ -339,5 +341,21 @@ public class ExhibitQueryParam extends BaseQuery {
 
 	public void setUpdateDate(Date updateDate) {
 		this.updateDate = updateDate;
+	}
+
+	public Long getTotalCountMin() {
+		return totalCountMin;
+	}
+
+	public void setTotalCountMin(Long totalCountMin) {
+		this.totalCountMin = totalCountMin;
+	}
+
+	public Long getTotalCountMax() {
+		return totalCountMax;
+	}
+
+	public void setTotalCountMax(Long totalCountMax) {
+		this.totalCountMax = totalCountMax;
 	}
 }

@@ -25,13 +25,6 @@ public interface WordBusiness {
 	void batchInsertWord(ExhibitQueryParam param);
 
 	/**
-	 * 查询文字操作信息汇总
-	 * @param param
-	 * @return
-	 */
-	PageInfo<WordModel> queryPagedWordOperateCount(ExhibitQueryParam param);
-
-	/**
 	 * 批量修改文字存量信息
 	 * @param param
 	 */

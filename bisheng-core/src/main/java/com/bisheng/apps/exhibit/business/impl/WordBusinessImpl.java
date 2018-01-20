@@ -37,12 +37,22 @@ public class WordBusinessImpl implements WordBusiness {
 	
 	@Override
 	public PageInfo<WordModel> queryPagedWordByParam(ExhibitQueryParam param) {
-		return wordService.queryPagedWordByParam(param);
-	}
-	
-	@Override
-	public PageInfo<WordModel> queryPagedWordOperateCount(ExhibitQueryParam param) {
-		return wordService.queryPagedWordOperateCount(param);
+		param.setOperateType(WordOperateTypeEnum.IN.getKey());
+		PageInfo<WordModel> inWordPageList = wordService.queryPagedWordByParam(param);
+		param.setOperateType(WordOperateTypeEnum.OUT.getKey());
+		PageInfo<WordModel> outWordPageList = wordService.queryPagedWordByParam(param);
+		List<WordModel> inWordList = inWordPageList.getList();
+		List<WordModel> outWordList = outWordPageList.getList();
+		for (WordModel inWord : inWordList) {
+			inWord.setInTotalCount(inWord.getOperateCount());
+			for (WordModel outWord : outWordList) {
+				if (inWord.getWordId().equals(outWord.getWordId())) {
+					inWord.setOutTotalCount(outWord.getOperateCount());
+					break;
+				}
+			}
+		}
+		return inWordPageList;
 	}
 
 	@Override
@@ -86,7 +96,7 @@ public class WordBusinessImpl implements WordBusiness {
 	}
 
 	@Override
-//	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void batchUpdateWord(ExhibitQueryParam param) {
 		Map<Long, Word> wordMap = getWordMap(param);
 		Word word;

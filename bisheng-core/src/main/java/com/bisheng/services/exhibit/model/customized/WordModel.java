@@ -17,6 +17,14 @@ public class WordModel extends Word {
      * 文字id集合
      */
     private List<Long> wordIdList;
+	/**
+	 * 入库数量
+	 */
+	private Long inTotalCount;
+	/**
+	 * 出库数量
+	 */
+	private Long outTotalCount;
     /**
      * 操作类型
      */
@@ -57,5 +65,20 @@ public class WordModel extends Word {
 	public void setType(Integer type) {
 		this.type = type;
 	}
-    
+
+	public Long getInTotalCount() {
+		return inTotalCount;
+	}
+
+	public void setInTotalCount(Long inTotalCount) {
+		this.inTotalCount = inTotalCount;
+	}
+
+	public Long getOutTotalCount() {
+		return outTotalCount;
+	}
+
+	public void setOutTotalCount(Long outTotalCount) {
+		this.outTotalCount = outTotalCount;
+	}
 }

@@ -26,13 +26,6 @@ public interface WordService {
 	 * @return
 	 */
 	PageInfo<WordModel> queryPagedWordByParam(ExhibitQueryParam param);
-
-	/**
-	 * 分页查询文字操作信息汇总
-	 * @param param
-	 * @return
-	 */
-	PageInfo<WordModel> queryPagedWordOperateCount(ExhibitQueryParam param);
 	
 	/**
 	 * 查询文字存量记录(单表查询)

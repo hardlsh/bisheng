@@ -1,11 +1,17 @@
 package com.bisheng.controller.exhibit;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
-
+import com.bisheng.apps.exhibit.business.WordBusiness;
+import com.bisheng.apps.exhibit.param.ExhibitQueryParam;
+import com.bisheng.controller.BaseController;
+import com.bisheng.core.framework.pager.PaginationResult;
+import com.bisheng.services.exhibit.model.customized.WordModel;
+import com.bisheng.services.exhibit.model.generated.Exhibit;
+import com.bisheng.services.exhibit.service.ExhibitService;
+import com.bisheng.util.LogUtil;
+import com.bisheng.vo.ALMResponse;
+import com.bisheng.vo.RetCode;
+import com.github.pagehelper.PageInfo;
+import com.google.gson.Gson;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,20 +21,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.bisheng.apps.exhibit.business.WordBusiness;
-import com.bisheng.apps.exhibit.param.ExhibitQueryParam;
-import com.bisheng.controller.BaseController;
-import com.bisheng.core.common.util.EnumJsonConverter;
-import com.bisheng.core.framework.pager.PaginationResult;
-import com.bisheng.services.exhibit.enums.WordOperateTypeEnum;
-import com.bisheng.services.exhibit.model.customized.WordModel;
-import com.bisheng.services.exhibit.model.generated.Exhibit;
-import com.bisheng.services.exhibit.service.ExhibitService;
-import com.bisheng.util.LogUtil;
-import com.bisheng.vo.ALMResponse;
-import com.bisheng.vo.RetCode;
-import com.github.pagehelper.PageInfo;
-import com.google.gson.Gson;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 文字存量控制类
@@ -52,12 +48,6 @@ public class WordController extends BaseController {
     	ModelAndView mav = new ModelAndView("exhibit/word/word");
         return mav;
     }
-    @RequestMapping("/toWordOperate")
-    public ModelAndView toWordOperate() {
-    	ModelAndView mav = new ModelAndView("exhibit/word/wordOperate");
-    	mav.addObject("wordOperateTypeEnum", EnumJsonConverter.buildEnumJson(WordOperateTypeEnum.class));
-        return mav;
-    }
     
     /**
      * 查询文字存量信息
@@ -74,7 +64,7 @@ public class WordController extends BaseController {
     		}else if (wordStr.length() > 1) {
     			param.setWordList(Arrays.asList(wordStr.split("")));
     		}
-    		
+			ExhibitQueryParam.convertDate(param);// 转换参数
 			PageInfo<WordModel> pageInfo = wordBusiness.queryPagedWordByParam(param);
 			int total = (int) pageInfo.getTotal();
 			PaginationResult<List<WordModel>> result = PaginationResult.newInstance(pageInfo.getList());
@@ -170,34 +160,5 @@ public class WordController extends BaseController {
 		logger.info("【文字存量管理】批量修改_结束,操作人:" + LogUtil.getCurrentUserName());
 		return res;
 	}
-	
-	/**
-	 * 查询文字操作汇总记录
-	 * @param param
-	 */
-	@RequestMapping("/getWordOperateList")
-	public void getWordOperateList(HttpServletResponse response, ExhibitQueryParam param){
-		logger.info("【文字存量管理】查询文字操作汇总_开始,操作人:" + LogUtil.getCurrentUserName() + ",入参:" + gson.toJson(param));
-		try {
-			ExhibitQueryParam.convertDate(param);
-			if (StringUtils.isNotBlank(param.getWordStr())) {
-				List<String> wordList = new ArrayList<String>();
-				for (String word : param.getWordStr().split(",")) {
-					wordList.add(word);
-				}
-				param.setWordList(wordList);
-			}
-			PageInfo<WordModel> pageInfo = wordBusiness.queryPagedWordOperateCount(param);
-			int total = (int) pageInfo.getTotal();
-			PaginationResult<List<WordModel>> result = PaginationResult.newInstance(pageInfo.getList());
-			result.setiTotalRecords(total);
-			result.setiTotalDisplayRecords(total);
-			actionResult4Json(result.json(), response);
-			logger.info("【文字存量管理】查询文字操作汇总_结束,操作人:" + LogUtil.getCurrentUserName());
-		} catch (Exception e) {
-			logger.error("【文字存量管理】查询文字操作汇总_异常,操作人:" + LogUtil.getCurrentUserName(), e);
-		}
-	}
-	
 	
 }

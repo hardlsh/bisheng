@@ -14,13 +14,6 @@ public interface WordDao extends WordMapper{
 	 * @return
 	 */
 	List<WordModel> queryWordListByParam(ExhibitQueryParam queryParam);
-	
-	/**
-	 * 查询文字操作信息汇总
-	 * @param param
-	 * @return
-	 */
-	List<WordModel> queryWordOperateCount(ExhibitQueryParam param);
 
 	/**
 	 * 单表查询
