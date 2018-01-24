@@ -97,7 +97,7 @@
 
 <!-- 查看文字导入,弹出框 -->
 <div class="modal" id="wordContentModal" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog" style="height:560px;background-color:white;overflow:auto;min-width:750px;">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>

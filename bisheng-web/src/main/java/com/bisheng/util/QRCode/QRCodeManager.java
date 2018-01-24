@@ -38,8 +38,7 @@ public class QRCodeManager {
 	/**
 	 * 生成二维码,并放入输出流中
 	 * 
-	 * @param contents
-	 *            二维码内容
+	 * @param contents 二维码内容
 	 */
 	public static String createQRCode(String contents) throws Exception {
 		@SuppressWarnings("rawtypes")

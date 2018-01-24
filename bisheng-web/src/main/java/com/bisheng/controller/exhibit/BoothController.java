@@ -357,7 +357,7 @@ public class BoothController extends BaseController {
 			Booth booth = boothService.queryBoothById(param.getBoothId());
 			String[] wordContentArr = booth.getWordContent().split(",");
 			String[] lineArr = null;
-			StringBuilder show = new StringBuilder("<table border='1'>");
+			StringBuilder show = new StringBuilder("<table border='1' bgcolor='#00FF00'>");
 			// 第一行
 			show.append("<tr> <td></td>");
 			for (int j = WEBConstants.ROW_START_NUM; j < booth.getyCount() + WEBConstants.ROW_START_NUM; j++) {
