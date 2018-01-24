@@ -146,6 +146,8 @@ public class BoothController extends BaseController {
 				res.setResultMsg("展馆信息不能为空");
 				return res;
 			}
+			// 校验展位信息,是否重复
+			checkRepeat(param);
 			param.setBoothStatus(BoothStatusEnum.MAINTAIN.getKey());//默认状态
 			param.setCreateByUser(getCurrentUserName());
 			param.setUpdateByUser(getCurrentUserName());
@@ -162,6 +164,24 @@ public class BoothController extends BaseController {
 		}
 		logger.info("【展位管理】新增展位_结束,操作人:"+LogUtil.getCurrentUserName());
 		return res;
+	}
+
+	private void checkRepeat(ExhibitQueryParam param) {
+		BoothModel record = new BoothModel();
+		record.setExhibitId(param.getExhibitId());
+		record.setBoothName(param.getBoothName());
+		List<BoothModel> boothModels = boothService.queryBoothModelByModel(record);
+		if (null != boothModels && !boothModels.isEmpty()) {
+			logger.error("同一展馆内，展位名称，不能重复");
+			throw new BusinessException("同一展馆内，展位名称，不能重复");
+		}
+		record.setBoothName(null);
+		record.setSequence(param.getSequence());
+		boothModels = boothService.queryBoothModelByModel(record);
+		if (null != boothModels && !boothModels.isEmpty()) {
+			logger.error("同一展馆内，展位编号，不能重复");
+			throw new BusinessException("同一展馆内，展位编号，不能重复");
+		}
 	}
 	
 	/**

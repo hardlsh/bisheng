@@ -31,9 +31,9 @@
 			<if test="boothStatus != null">
 				AND b.status = #{boothStatus, jdbcType=INTEGER}
 			</if>
-			<if test="exhibitIdArr != null and exhibitIdArr.length > 0">
+			<if test="exhibitIdList != null and exhibitIdList.size() > 0">
 				AND e.exhibit_id IN
-				<foreach collection="exhibitIdArr" item="exhibitId" open="(" close=")" separator=",">
+				<foreach collection="exhibitIdList" item="exhibitId" open="(" close=")" separator=",">
 					#{exhibitId}
 				</foreach>
 			</if>
@@ -57,7 +57,7 @@
 				AND b.booth_name = #{boothName, jdbcType=VARCHAR}
 			</if>
 			<if test="sequence != null">
-				  OR b.sequence = #{sequence, jdbcType=INTEGER}
+				AND b.sequence = #{sequence, jdbcType=INTEGER}
 			</if>
 		</where>
 	</select>
