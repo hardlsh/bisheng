@@ -3,13 +3,7 @@ package com.bisheng.controller.exhibit;
 import java.io.BufferedOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -284,6 +278,9 @@ public class BoothController extends BaseController {
 		logger.info("【展位管理】查询有权限的展位_开始,操作人:"+LogUtil.getCurrentUserName()+",入参:"+gson.toJson(param));
 		ALMResponse res = null;
 		try {
+			if (null != param.getExhibitIdArr() && param.getExhibitIdArr().length > 0) {
+				param.setExhibitIdList(Arrays.asList(param.getExhibitIdArr()));
+			}
 			param.setUserId(LogUtil.getCurrentUserId());
 			param.setBoothStatus(BoothStatusEnum.NORMAL.getKey());
 			List<BoothModel> boothList = boothBusiness.queryBoothListByParam(param);
