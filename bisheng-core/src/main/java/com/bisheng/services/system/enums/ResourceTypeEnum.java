@@ -1,14 +1,10 @@
 package com.bisheng.services.system.enums;
 
-import lombok.Getter;
-
 public enum ResourceTypeEnum {
     MENU(1, "菜单"),
     BUTTON(0, "按钮");
 
-    @Getter
     private int key;
-    @Getter
     private String desc;
 
     private ResourceTypeEnum(int key, String desc) {
@@ -24,4 +20,12 @@ public enum ResourceTypeEnum {
         }
         return "";
     }
+
+	public int getKey() {
+		return key;
+	}
+
+	public String getDesc() {
+		return desc;
+	}
 }

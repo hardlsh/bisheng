@@ -3,10 +3,6 @@ package com.bisheng.apps.system.shiro;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.bisheng.apps.system.business.RoleBusiness;
-import com.bisheng.core.common.util.MBeanUtil;
-import com.bisheng.services.system.model.customized.RoleModel;
-import com.bisheng.services.system.model.customized.UserModel;
 import org.apache.shiro.authc.AccountException;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -18,13 +14,13 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
-import org.apache.shiro.web.filter.authz.RolesAuthorizationFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.alibaba.fastjson.JSONObject;
 import com.bisheng.apps.system.business.ResourceBusiness;
+import com.bisheng.apps.system.business.RoleBusiness;
 import com.bisheng.apps.system.business.UserBusiness;
 import com.bisheng.apps.system.param.AuthParam;
 import com.bisheng.core.common.constant.Constants;
@@ -32,6 +28,7 @@ import com.bisheng.services.system.enums.AvailStatusEnum;
 import com.bisheng.services.system.enums.ResourceTypeEnum;
 import com.bisheng.services.system.enums.UserStatusEnum;
 import com.bisheng.services.system.model.customized.ResourceModel;
+import com.bisheng.services.system.model.customized.RoleModel;
 import com.bisheng.services.system.model.generated.User;
 
 /** 

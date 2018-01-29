@@ -1,11 +1,4 @@
-/**
- * @(#)SettleOrderStatus.java, 2016年1月29日. Copyright (c) 2015, Youjie8 and/or
- * its affiliates. All rights reserved. Youjie8 PROPRIETARY/CONFIDENTIAL. Use is
- * subject to license terms.
- */
 package com.bisheng.services.system.enums;
-
-import lombok.Getter;
 
 /**
  * @author shihao.li
@@ -17,9 +10,7 @@ public enum UserStatusEnum {
     FROZEN(2, "冻结"),
     STOP(3, "停用");
 	
-	@Getter
     private final int key;
-	@Getter
     private final String desc;
 
     private UserStatusEnum(int key, String desc) {
@@ -35,4 +26,10 @@ public enum UserStatusEnum {
         return "";
     }
     
+	public int getKey() {
+		return key;
+	}
+	public String getDesc() {
+		return desc;
+	}
 }

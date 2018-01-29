@@ -155,16 +155,6 @@
 							<button type="reset" id="uploadFormReset" style="display: none;"></button>
 						</div>
 					</div>
-					<%--<div class="form-group input-inline">
-						<label class="control-label col-md-1"/>
-						<label class="control-label col-md-5 col-sm-5 col-xs-8">模板入库数量<span class="required"> * </span></label>
-						<div class="col-md-6 col-sm-6 col-xs-12">
-						<input id="templateCount" name="templateCount" class="form-control input-inline input-sm" maxlength="15" 
-							placeholder="请输入数字" type="text" onkeyup="value=value.replace(/[^(\d)]/g,'')" />
-						</div>
-					</div>--%>
-					<!-- 导入模板,默认为导入一份 -->
-					<input id="templateCount" name="templateCount" type="hidden" value="1" />
 				</form>
             </div>
             <div class="modal-footer -align-center">

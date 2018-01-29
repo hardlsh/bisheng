@@ -39,7 +39,7 @@ public class EnumJsonConverter {
 
             return jsonObject.toString();
         } catch (Exception e) {
-            EnumJsonConverter.log.error("构建Enum的json数据异常, clazz is " + clazz.getName(), e);
+            log.error("构建Enum的json数据异常, clazz is " + clazz.getName(), e);
         }
         return null;
     }
