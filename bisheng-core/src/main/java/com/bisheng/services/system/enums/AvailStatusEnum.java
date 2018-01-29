@@ -1,7 +1,5 @@
 package com.bisheng.services.system.enums;
 
-import lombok.Getter;
-
 /**
  * @author shihao.li
  */
@@ -9,9 +7,7 @@ public enum AvailStatusEnum {
 	UNAVAILABLE(0, "不可用"),
 	AVAILABLE(1, "可用");
 
-	@Getter
     private int key;
-	@Getter
     private String desc;
 
     private AvailStatusEnum(int key, String desc) {
@@ -26,5 +22,12 @@ public enum AvailStatusEnum {
         }
         return "";
     }
-    
+
+    public int getKey() {
+        return key;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
 }

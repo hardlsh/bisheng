@@ -1,7 +1,5 @@
 package com.bisheng.services.exhibit.enums;
 
-import lombok.Getter;
-
 /**
  * 文字操作类型枚举类
  * @author lihao
@@ -12,9 +10,7 @@ public enum WordOperateTypeEnum {
 	IN(2, "入库"),
 	OUT(3, "出库");
 
-    @Getter
     private final int key;
-    @Getter
     private final String desc;
 
     private WordOperateTypeEnum(int key, String desc) {
@@ -29,5 +25,12 @@ public enum WordOperateTypeEnum {
         }
         return "";
     }
-    
+
+    public int getKey() {
+        return key;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
 }

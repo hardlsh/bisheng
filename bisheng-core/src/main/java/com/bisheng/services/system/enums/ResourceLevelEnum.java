@@ -1,8 +1,6 @@
 package com.bisheng.services.system.enums;
 
-import lombok.Getter;
-
-/** 
+/**
  * @ClassName: ResourceLevelEnum 
  * @author: shihao.li
  * @Explain: 资源级别
@@ -13,9 +11,7 @@ public enum ResourceLevelEnum {
     SECONDMENU(2, "二级菜单"),
     BUTTON(3, "按钮");
 
-    @Getter
     private int key;
-    @Getter
     private String desc;
 
     private ResourceLevelEnum(int key, String desc) {
@@ -30,5 +26,13 @@ public enum ResourceLevelEnum {
             }
         }
         return "";
+    }
+
+    public int getKey() {
+        return key;
+    }
+
+    public String getDesc() {
+        return desc;
     }
 }

@@ -48,7 +48,7 @@ public class DictJsonConverter {
 
             return jsonObject.toString();
         } catch (Exception e) {
-            DictJsonConverter.log.error("构建Dict的json数据异常, dictCode is " + dictCode, e);
+            log.error("构建Dict的json数据异常, dictCode is " + dictCode, e);
         }
         return null;
     }

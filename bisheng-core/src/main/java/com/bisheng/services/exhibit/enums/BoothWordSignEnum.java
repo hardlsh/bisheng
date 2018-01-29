@@ -1,7 +1,5 @@
 package com.bisheng.services.exhibit.enums;
 
-import lombok.Getter;
-
 /**
  * 展位导入标识枚举类
  * 
@@ -11,9 +9,7 @@ public enum BoothWordSignEnum {
 	NOIMPORT(0, "未导入"),
 	ALIMPORT(1, "已导入");
 
-    @Getter
     private final int key;
-    @Getter
     private final String desc;
 
     private BoothWordSignEnum(int key, String desc) {
@@ -28,5 +24,12 @@ public enum BoothWordSignEnum {
         }
         return "";
     }
-    
+
+    public int getKey() {
+        return key;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
 }
