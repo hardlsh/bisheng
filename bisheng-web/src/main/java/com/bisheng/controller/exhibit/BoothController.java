@@ -8,6 +8,7 @@ import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.bisheng.core.common.constant.Constants;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -461,9 +462,18 @@ public class BoothController extends BaseController {
 	@RequestMapping(value = "/importTempletNew")
 	@ResponseBody
 	public Object importTempletNew(@RequestParam(value = "multipartFile", required = false) MultipartFile file,HttpServletRequest request, 
-			HttpServletResponse response, BoothModel boothModel) {
-		response.setContentType("text/html;charset=UTF-8");
+			HttpServletResponse response, ExhibitQueryParam param) {
 		ALMResponse res = null;
+		Booth booth = null;
+		logger.info("【展位管理】导入文字模板_开始,入参:" + gson.toJson(param));
+		if (null != param.getBoothId()) {
+			booth = boothService.queryBoothById(param.getBoothId());
+			res = new ALMResponse(RetCode.FAILURE);
+			logger.info("【导入文字模板】展位id为空,导入失败，操作人：" + LogUtil.getCurrentUserName());
+			return res;
+		}
+
+		response.setContentType("text/html;charset=UTF-8");
 		InputStream inputStream = null;
 		String fileName = file.getOriginalFilename();
 		int endIndex = fileName.indexOf(".");
@@ -471,7 +481,7 @@ public class BoothController extends BaseController {
 		logger.info("【展位管理】导入文字模板_开始,文件名:["+fileName+"],操作人:"+ LogUtil.getCurrentUserName());
 		try {
 			inputStream = file.getInputStream();
-			String message = importTempletHandle(boothModel, inputStream, fileName);
+			String message = importTempletHandle(booth, inputStream, fileName);
 			if (StringUtils.isNotBlank(message)) {
 				res = new ALMResponse(RetCode.FAILURE);
 				res.setResultMsg(message);
@@ -491,7 +501,7 @@ public class BoothController extends BaseController {
 	 * 模板中的空格，用英文.表示，判断和入库的时候，需要注意
 	 */
 	@SuppressWarnings("resource")
-	private String importTempletHandle(BoothModel booth, InputStream inputStream, String fileName) throws Exception{
+	private String importTempletHandle(Booth booth, InputStream inputStream, String fileName) throws Exception{
 		String message = null;
 		//解析excel
 		XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
@@ -530,6 +540,7 @@ public class BoothController extends BaseController {
 			}
 			ExhibitQueryParam queryParam = paramHandle(booth, lineList, fileName);
 			queryParam.setUpdateByUser(LogUtil.getCurrentUserName());
+			queryParam.setTemplateCount(Constants.FIRST_IN);
 			// 保存数据
 			boothBusiness.batchInsertBoothWord(queryParam);
 		} else {
@@ -562,7 +573,7 @@ public class BoothController extends BaseController {
 	/**
 	 * 展位文字参数处理
 	 */
-	private ExhibitQueryParam paramHandle(BoothModel booth, List<String> lineList, String fileName) {
+	private ExhibitQueryParam paramHandle(Booth booth, List<String> lineList, String fileName) {
 		ExhibitQueryParam queryParam = new ExhibitQueryParam();
 		MBeanUtil.copyProperties(booth, queryParam);
 		List<BoothWordModel> boothWordList = new ArrayList<>();
@@ -576,6 +587,8 @@ public class BoothController extends BaseController {
 					continue;
 				}
 				boothWordModel = new BoothWordModel();
+				boothWordModel.setExhibitId(booth.getExhibitId());
+				boothWordModel.setExhibitName(booth.getExhibitName());
 				boothWordModel.setBoothId(booth.getBoothId());
 				boothWordModel.setBoothName(booth.getBoothName());
 				boothWordModel.setTempletName(fileName);

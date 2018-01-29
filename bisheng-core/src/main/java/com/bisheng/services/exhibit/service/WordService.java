@@ -13,6 +13,14 @@ import com.github.pagehelper.PageInfo;
  * @author lihao
  */
 public interface WordService {
+
+	/**
+	 * 查询入库信息
+	 * @param param
+	 * @return
+	 */
+	PageInfo<WordModel> queryPagedWordInByParam(ExhibitQueryParam param);
+
 	/**
 	 * 根据参数查询文字存量记录(关联展馆表)
 	 * @param queryParam

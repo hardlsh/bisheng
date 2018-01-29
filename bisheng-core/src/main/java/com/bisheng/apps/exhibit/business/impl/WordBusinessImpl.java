@@ -1,9 +1,12 @@
 package com.bisheng.apps.exhibit.business.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.bisheng.services.exhibit.model.generated.WordIn;
+import com.bisheng.services.exhibit.service.WordInService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +37,15 @@ public class WordBusinessImpl implements WordBusiness {
 	private WordService wordService;
 	@Autowired
 	private WordOperateService wordOperateService;
-	
+	@Autowired
+	private WordInService wordInService;
+
+	@Override
+	public PageInfo<WordModel> queryPagedWordInByParam(ExhibitQueryParam param) {
+		PageInfo<WordModel> inWordPageList = wordService.queryPagedWordInByParam(param);
+		return inWordPageList;
+	}
+
 	@Override
 	public PageInfo<WordModel> queryPagedWordByParam(ExhibitQueryParam param) {
 		param.setOperateType(WordOperateTypeEnum.IN.getKey());
@@ -74,8 +85,8 @@ public class WordBusinessImpl implements WordBusiness {
 	public void batchInsertWord(ExhibitQueryParam param) {
 		Word word;
 		WordModel wordModel;
-		WordOperate wordOperate;
-		List<WordOperate> wordOperateList = new ArrayList<WordOperate>();
+		WordIn wordIn;
+		List<WordIn> wordInList = new ArrayList<>();
 		for (BoothWordModel boothWord : param.getBoothWordList()) {
 			wordModel = new WordModel();
 			wordModel.setWord(boothWord.getWord());
@@ -86,27 +97,31 @@ public class WordBusinessImpl implements WordBusiness {
 				word.setExhibitId(param.getExhibitId());
 				word.setTotalCount(param.getTemplateCount());
 				wordService.addWordReturnId(word);
-				
-				wordOperate = new WordOperate();
-				wordOperate.setExhibitId(param.getExhibitId());
-				wordOperate.setWordId(word.getWordId());
-				wordOperate.setType(WordOperateTypeEnum.IN.getKey());
-				wordOperate.setCount(param.getTemplateCount());
-				wordOperate.setOperateUser(param.getUpdateByUser());
-				wordOperateList.add(wordOperate);
+
+				wordIn = assembleWordIn(param);
+				wordIn.setWordId(word.getWordId());
+				wordIn.setWord(word.getWord());
+				wordInList.add(wordIn);
 			} else if (null != wordList && wordList.size() == 1){
-				wordOperate = new WordOperate();
-				wordOperate.setExhibitId(param.getExhibitId());
-				wordOperate.setWordId(wordList.get(0).getWordId());
-				wordOperate.setType(WordOperateTypeEnum.IN.getKey());
-				wordOperate.setCount(param.getTemplateCount());
-				wordOperate.setOperateUser(param.getUpdateByUser());
-				wordOperateList.add(wordOperate);
+				wordIn = assembleWordIn(param);
+				wordIn.setWordId(wordList.get(0).getWordId());
+				wordIn.setWord(wordList.get(0).getWord());
+				wordInList.add(wordIn);
 			} else {
 				logger.error("【文字存量业务】文字存量表数据记录有重复,对应展馆ID:"+boothWord.getExhibitId()+",对应文字:" + boothWord.getWord());
 			}
 		}
-		wordOperateService.batchInsert(wordOperateList);
+		wordInService.batchInsert(wordInList);
+	}
+
+	private WordIn assembleWordIn(ExhibitQueryParam param){
+		WordIn wordIn = new WordIn();
+		wordIn.setExhibitId(param.getExhibitId());
+		wordIn.setExhibitName(param.getExhibitName());
+		wordIn.setInNumber(param.getTemplateCount());
+		wordIn.setInDate(new Date());
+		wordIn.setInUser(param.getUpdateByUser());
+		return wordIn;
 	}
 
 	@Override
@@ -155,7 +170,8 @@ public class WordBusinessImpl implements WordBusiness {
 		wordModel.setWordIdList(param.getWordIdList());
 		List<Word> wordList = wordService.queryWordList(wordModel);
 		Map<Long, Word> wordMap = Maps.uniqueIndex(wordList, new Function<Word, Long>() {
-            public Long apply(Word from) {
+            @Override
+			public Long apply(Word from) {
                 return from.getWordId();
             }
         });

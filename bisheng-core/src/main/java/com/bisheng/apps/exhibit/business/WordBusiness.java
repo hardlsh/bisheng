@@ -12,7 +12,14 @@ import java.util.List;
  * @author lihao
  */
 public interface WordBusiness {
-	
+
+	/**
+	 * 根据查询参数查询文字入库信息
+	 * @param param
+	 * @return
+	 */
+	PageInfo<WordModel> queryPagedWordInByParam(ExhibitQueryParam param);
+
 	/**
 	 * 根据查询参数查询文字存量信息
 	 * @param param
@@ -28,7 +35,8 @@ public interface WordBusiness {
 	List<WordModel> queryWordListByParam(ExhibitQueryParam param);
 
 	/**
-	 * 批量插入文字存量信息(导入模板时调用)
+	 * 批量插入文字存量信息(导入模板时调用)，并入库
+	 *
 	 * @param param
 	 */
 	void batchInsertWord(ExhibitQueryParam param);

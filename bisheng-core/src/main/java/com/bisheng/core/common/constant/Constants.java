@@ -7,4 +7,8 @@ public class Constants {
     public static final int HASH_ITERATIONS = 2;
     //默认密码
     public static final String DEFAULT_PWD = "000000";
+    /**
+     * 首次入库时,默认入库1个
+     */
+    public static final Long FIRST_IN = 1L;
 }

@@ -8,6 +8,14 @@ import com.bisheng.services.exhibit.model.customized.WordModel;
 import com.bisheng.services.exhibit.model.generated.Word;
 
 public interface WordDao extends WordMapper{
+
+	/**
+	 * 查询文字入库信息
+	 * @param param
+	 * @return
+	 */
+	List<WordModel> queryWordInByParam(ExhibitQueryParam param);
+
 	/**
 	 * 查询文字存量列表
 	 * @param queryParam

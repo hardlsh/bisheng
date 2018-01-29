@@ -35,7 +35,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 文字存量控制类
+ * 文字出入库控制类
  * 
  * @author lihao
  */
@@ -56,6 +56,40 @@ public class WordController extends BaseController {
     	ModelAndView mav = new ModelAndView("exhibit/word/word");
         return mav;
     }
+
+	@RequestMapping("/toWordIn")
+	public ModelAndView toWordIn() {
+		ModelAndView mav = new ModelAndView("exhibit/word/wordIn");
+		return mav;
+	}
+
+	/**
+	 * 查询文字入库信息
+	 * @param response
+	 * @param param
+	 */
+	@RequestMapping("/getWordInList")
+	public void getWordInList(HttpServletResponse response, ExhibitQueryParam param) {
+		logger.info("【文字存量管理】查询文字入库_开始,操作人:"+LogUtil.getCurrentUserName()+",入参:"+gson.toJson(param));
+		try {
+			String wordStr = param.getWordStr().replace(" ", "");
+			if (wordStr.length() == 1) {
+				param.setWord(param.getWordStr());
+			}else if (wordStr.length() > 1) {
+				param.setWordList(Arrays.asList(wordStr.split("")));
+			}
+			ExhibitQueryParam.convertDate(param);// 转换参数
+			PageInfo<WordModel> pageInfo = wordBusiness.queryPagedWordInByParam(param);
+			int total = (int) pageInfo.getTotal();
+			PaginationResult<List<WordModel>> result = PaginationResult.newInstance(pageInfo.getList());
+			result.setiTotalRecords(total);
+			result.setiTotalDisplayRecords(total);
+			actionResult4Json(result.json(), response);
+			logger.debug("【文字存量管理】查询文字入库_结束,操作人:"+LogUtil.getCurrentUserName());
+		} catch (Exception e) {
+			logger.error("【文字存量管理】查询文字入库_异常,操作人:"+LogUtil.getCurrentUserName()+",异常原因:", e);
+		}
+	}
     
     /**
      * 查询文字存量信息

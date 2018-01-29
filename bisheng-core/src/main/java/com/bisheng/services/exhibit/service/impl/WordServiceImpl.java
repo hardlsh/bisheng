@@ -18,7 +18,15 @@ public class WordServiceImpl extends BaseService implements WordService {
 	private WordDao getWordDao(){
 		return sqlSession.getMapper(WordDao.class);
 	}
-	
+
+	@Override
+	public PageInfo<WordModel> queryPagedWordInByParam(ExhibitQueryParam param) {
+		setStartPage(param);
+		List<WordModel> list = getWordDao().queryWordInByParam(param);
+		PageInfo<WordModel> pageInfo = new PageInfo<>(list);
+		return pageInfo;
+	}
+
 	@Override
 	public List<WordModel> queryWordListByParam(ExhibitQueryParam queryParam) {
 		return getWordDao().queryWordListByParam(queryParam);

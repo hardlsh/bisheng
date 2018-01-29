@@ -71,16 +71,21 @@
 		<!-- <table tableName="tp_sys_area" domainObjectName="Area">
 			<property name="useActualColumnNames" value="false" />
 		</table>  -->
-		<!-- <table tableName=
-		"tb_booth_word" domainObjectName="BoothWord">
+		<!-- <table tableName="tb_booth_word" domainObjectName="BoothWord">
 			<property name="useActualColumnNames" value="false" />
-		</table> -->
+		</table>-->
 		<!-- <table tableName="tb_word" domainObjectName="Word">
 			<property name="useActualColumnNames" value="false" />
 		</table> -->
-		<table tableName="tb_word_operate" domainObjectName="WordOperate">
+		<!-- <table tableName="tb_word_operate" domainObjectName="WordOperate">
+			<property name="useActualColumnNames" value="false" />
+		</table> -->
+		<!--<table tableName="tb_word_in" domainObjectName="WordIn">
 			<property name="useActualColumnNames" value="false" />
 		</table>
+		<table tableName="tb_word_out" domainObjectName="WordOut">
+			<property name="useActualColumnNames" value="false" />
+		</table>-->
 
 	</context>
 </generatorConfiguration>

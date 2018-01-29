@@ -19,6 +19,16 @@ public class BoothWord {
     private String templetName;
 
     /**
+     *展馆ID
+     */
+    private Long exhibitId;
+
+    /**
+     *展馆名称
+     */
+    private String exhibitName;
+
+    /**
      *展位ID
      */
     private Long boothId;
@@ -98,6 +108,34 @@ public class BoothWord {
      */
     public void setTempletName(String templetName) {
         this.templetName = templetName == null ? null : templetName.trim();
+    }
+
+    /**
+     *展馆ID
+     */
+    public Long getExhibitId() {
+        return exhibitId;
+    }
+
+    /**
+     *展馆ID
+     */
+    public void setExhibitId(Long exhibitId) {
+        this.exhibitId = exhibitId;
+    }
+
+    /**
+     *展馆名称
+     */
+    public String getExhibitName() {
+        return exhibitName;
+    }
+
+    /**
+     *展馆名称
+     */
+    public void setExhibitName(String exhibitName) {
+        this.exhibitName = exhibitName == null ? null : exhibitName.trim();
     }
 
     /**

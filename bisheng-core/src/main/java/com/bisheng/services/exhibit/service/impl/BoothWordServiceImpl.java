@@ -22,10 +22,12 @@ public class BoothWordServiceImpl extends BaseService implements BoothWordServic
 	}
 
 	@Override
-	public void batchInsert(ExhibitQueryParam queryParam) {
-		Map<String, Object> map = new HashMap<>();
-		map.put("boothWordList", queryParam.getBoothWordList());
-		getBoothWordDao().batchInsert(map);
+	public void batchInsert(List<BoothWordModel> boothWordList) {
+		if (null != boothWordList && !boothWordList.isEmpty()) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("boothWordList", boothWordList);
+			getBoothWordDao().batchInsert(map);
+		}
 	}
 
 	@Override

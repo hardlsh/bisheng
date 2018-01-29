@@ -150,7 +150,7 @@ public class DateUtil {
      * @return
      */
     public static String getCurrentHour(){
-        SimpleDateFormat dateFormat = new SimpleDateFormat("HH-mm-ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
         return dateFormat.format(Calendar.getInstance().getTime());
     }
 

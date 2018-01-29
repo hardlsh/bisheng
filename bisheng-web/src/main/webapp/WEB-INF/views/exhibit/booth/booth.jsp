@@ -145,10 +145,6 @@
                 <form id="uploadForm" action="${basePath}/booth/importTempletNew.do" class="form-horizontal" enctype="multipart/form-data" method="post">
 					<!-- 隐藏域 -->
 					<input type="hidden" name="boothId" id="upBoothId"/>
-					<input type="hidden" name="boothName" id="upBoothName"/>
-					<input type="hidden" name="xCount" id="upXCount"/>
-					<input type="hidden" name="yCount" id="upYCount"/>
-					<input type="hidden" name="wordSign" id="upWordSign"/>
 					<div class="form-group">
 						<label class="control-label col-md-1"/>
 						<div class="col-md-8">
@@ -274,7 +270,7 @@
 					{"data" : function(e) {
 						return '<div style="min-width:110px;"> '+
 						'<button type="button" class="btn btn-sm purple" ' + 'onclick="boothHelper.downloadTemplet(\''+e.boothName+'\',\''+e.xCount+'\',\''+e.yCount+'\')">下载模板</button> ' +
-						'<button type="button" class="btn btn-sm purple" ' + 'onclick="boothHelper.uploadTemplet(\''+e.boothId+'\',\''+e.boothName+'\',\''+e.xCount+'\',\''+e.yCount+'\',\''+e.wordSign+'\')">上传文字</button>'+
+						'<button type="button" class="btn btn-sm purple" ' + 'onclick="boothHelper.uploadTemplet(\''+e.boothId+'\')">上传文字</button>'+
 						'<a class="ajaxify btn btn-sm purple" href="${basePath}/booth/toUpdateBooth.do?boothId=' + e.boothId + '">修改展位</a> ' +
 						'<button type="button" class="btn btn-sm blue" ' + 'onclick="boothHelper.createQRCode(\'' + e.boothId + '\')">生成二维码</button> ' +	
 						'</div>';
@@ -385,10 +381,6 @@
 		uploadTemplet : function (boothId, boothName, xCount, yCount, wordSign) {
 			// 为隐藏域赋值
 			$("#upBoothId").val(boothId);
-			$("#upBoothName").val(boothName);
-			$("#upXCount").val(xCount);
-			$("#upYCount").val(yCount);
-			$("#upWordSign").val(wordSign);
 			$("#uploadFormReset").click();
 			if (wordSign == 1) {// 已经导入
 				bootbox.confirm("该展位已经导入过模板了,重新导入将会覆盖原来导入数据,您确认继续操作吗？", function (result) {

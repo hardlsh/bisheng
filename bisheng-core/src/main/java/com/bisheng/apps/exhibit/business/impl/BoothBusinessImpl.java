@@ -97,9 +97,9 @@ public class BoothBusinessImpl implements BoothBusiness {
 			int delIndex = boothWordService.deleteByBoothId(boothWord);
 			Preconditions.checkArgument(delIndex >= 1, "删除原来导入数据失败");
 		}
-		boothWordService.batchInsert(queryParam);
+		boothWordService.batchInsert(queryParam.getBoothWordList());
 		
-		// 插入文字存量数据和文字操作记录
+		// 插入文字存量数据和文字入库数据
 		wordBusiness.batchInsertWord(queryParam);
 	}
 
