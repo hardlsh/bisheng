@@ -1,7 +1,5 @@
 package com.bisheng.services.system.enums;
 
-import lombok.Getter;
-
 /**
  * 地区状态枚举类
  * 
@@ -11,9 +9,7 @@ public enum AreaStatusEnum {
 	ACTIVATE(1, "激活"),
 	FROZEN(2, "冻结");
 	
-	@Getter
     private final int key;
-	@Getter
     private final String desc;
 
     private AreaStatusEnum(int key, String desc) {
@@ -28,5 +24,12 @@ public enum AreaStatusEnum {
         }
         return "";
     }
-    
+
+    public int getKey() {
+        return key;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
 }

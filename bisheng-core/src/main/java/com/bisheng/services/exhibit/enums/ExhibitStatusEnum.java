@@ -1,7 +1,5 @@
 package com.bisheng.services.exhibit.enums;
 
-import lombok.Getter;
-
 /**
  * 展馆状态枚举类
  * @author hp
@@ -12,9 +10,7 @@ public enum ExhibitStatusEnum {
 	REST(2, "休息"),
 	STOPDOING(3, "停业");
 
-    @Getter
     private final int key;
-    @Getter
     private final String desc;
 
     private ExhibitStatusEnum(int key, String desc) {
@@ -30,4 +26,10 @@ public enum ExhibitStatusEnum {
         return "";
     }
     
+	public int getKey() {
+		return key;
+	}
+	public String getDesc() {
+		return desc;
+	}
 }

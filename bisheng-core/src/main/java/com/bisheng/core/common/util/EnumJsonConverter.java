@@ -14,12 +14,15 @@ import org.apache.commons.beanutils.PropertyUtils;
 import com.google.gson.JsonObject;
 
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author jian.wu 2016年3月2日 下午2:26:57
  */
 @Slf4j
 public class EnumJsonConverter {
+    private static final Logger logger = LoggerFactory.getLogger(EnumJsonConverter.class);
 
     public static <T> String buildEnumJson(Class<T> clazz) {
         if (!clazz.isEnum()) {
@@ -39,7 +42,7 @@ public class EnumJsonConverter {
 
             return jsonObject.toString();
         } catch (Exception e) {
-            log.error("构建Enum的json数据异常, clazz is " + clazz.getName(), e);
+            logger.error("构建Enum的json数据异常, clazz is " + clazz.getName(), e);
         }
         return null;
     }

@@ -1,7 +1,5 @@
 package com.bisheng.services.exhibit.enums;
 
-import lombok.Getter;
-
 /**
  * 展位状态枚举类
  * @author hp
@@ -12,9 +10,7 @@ public enum BoothStatusEnum {
 	MAINTAIN(2, "维护"),
 	CLOSE(3, "关闭");
 
-    @Getter
     private final int key;
-    @Getter
     private final String desc;
 
     private BoothStatusEnum(int key, String desc) {
@@ -29,5 +25,12 @@ public enum BoothStatusEnum {
         }
         return "";
     }
-    
+
+    public int getKey() {
+        return key;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
 }

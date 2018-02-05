@@ -1,12 +1,11 @@
 package com.bisheng.services.exhibit.service;
 
-import java.util.List;
-
 import com.bisheng.apps.exhibit.param.ExhibitQueryParam;
 import com.bisheng.services.exhibit.model.customized.BoothModel;
 import com.bisheng.services.exhibit.model.generated.Booth;
-import com.bisheng.services.exhibit.model.generated.Exhibit;
 import com.github.pagehelper.PageInfo;
+
+import java.util.List;
 
 /**
  * 展位服务类

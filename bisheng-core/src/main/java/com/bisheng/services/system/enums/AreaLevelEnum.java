@@ -1,7 +1,5 @@
 package com.bisheng.services.system.enums;
 
-import lombok.Getter;
-
 /**
  * 地区级别枚举类
  * 
@@ -12,9 +10,7 @@ public enum AreaLevelEnum {
 	CITY(2, "地级市"),
 	COUNTY(3, "县级市");
 	
-	@Getter
     private final int key;
-	@Getter
     private final String desc;
 
     private AreaLevelEnum(int key, String desc) {
@@ -29,5 +25,12 @@ public enum AreaLevelEnum {
         }
         return "";
     }
-    
+
+    public int getKey() {
+        return key;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
 }
