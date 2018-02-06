@@ -12,10 +12,11 @@
 	<!-- 批量插入 -->
 	<insert id="batchInsert">
 		INSERT INTO tb_booth_word 
-			(word, templet_name, booth_id, booth_name, x_axis, y_axis, number, remark)
+			(word, templet_name, exhibit_id, exhibit_name, booth_id, booth_name, x_axis, y_axis, number, remark)
     	VALUES 
     		<foreach collection="boothWordList" item="item" separator=",">
-    		(#{item.word,jdbcType=VARCHAR}, #{item.templetName,jdbcType=VARCHAR}, 
+    		(#{item.word,jdbcType=VARCHAR}, #{item.templetName,jdbcType=VARCHAR},
+			#{item.exhibitId,jdbcType=BIGINT}, #{item.exhibitName,jdbcType=VARCHAR},
       		#{item.boothId,jdbcType=BIGINT}, #{item.boothName,jdbcType=VARCHAR}, #{item.xAxis,jdbcType=INTEGER}, 
       		#{item.yAxis,jdbcType=INTEGER}, #{item.number,jdbcType=INTEGER}, #{item.remark,jdbcType=VARCHAR})
       		</foreach>

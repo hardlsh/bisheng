@@ -89,6 +89,7 @@ public class BoothBusinessImpl implements BoothBusiness {
 		Preconditions.checkArgument(updateIndex == 1, "修改导入标识失败");
 		Booth queryBooth = boothService.queryBoothById(queryParam.getBoothId());
 		queryParam.setExhibitId(queryBooth.getExhibitId());
+		queryParam.setExhibitName(queryBooth.getExhibitName());
 		
 		// 之前已经导入过的,需要先删除
 		if (BoothWordSignEnum.ALIMPORT.getKey() == queryParam.getWordSign()) {

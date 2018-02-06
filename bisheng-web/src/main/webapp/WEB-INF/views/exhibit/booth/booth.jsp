@@ -260,7 +260,7 @@
 					{"data" : function(e) {
 						return '<div style="min-width:110px;"> '+
 						'<button type="button" class="btn btn-sm purple" ' + 'onclick="boothHelper.downloadTemplet(\''+e.boothName+'\',\''+e.xCount+'\',\''+e.yCount+'\')">下载模板</button> ' +
-						'<button type="button" class="btn btn-sm purple" ' + 'onclick="boothHelper.uploadTemplet(\''+e.boothId+'\')">上传文字</button>'+
+						'<button type="button" class="btn btn-sm purple" ' + 'onclick="boothHelper.uploadTemplet(\''+e.boothId+'\',\''+e.wordSign+'\')">上传文字</button>'+
 						'<a class="ajaxify btn btn-sm purple" href="${basePath}/booth/toUpdateBooth.do?boothId=' + e.boothId + '">修改展位</a> ' +
 						'<button type="button" class="btn btn-sm blue" ' + 'onclick="boothHelper.createQRCode(\'' + e.boothId + '\')">生成二维码</button> ' +	
 						'</div>';
@@ -368,7 +368,7 @@
         	$("#down_form").submit();
 		},
 		// 上传文字
-		uploadTemplet : function (boothId, boothName, xCount, yCount, wordSign) {
+		uploadTemplet : function (boothId, wordSign) {
 			// 为隐藏域赋值
 			$("#upBoothId").val(boothId);
 			$("#uploadFormReset").click();
@@ -394,12 +394,6 @@
 			var suffix = file_id.substr(file_id.lastIndexOf(".")+1).toLowerCase();
 			if( suffix!="xlsx"){
 				bootbox.alert("请选择正确的excel类型!");
-				return;
-			}
-			
-			var templateCount = $("#templateCount").val();
-			if (templateCount == null || templateCount == ""){
-				bootbox.alert("模板入库数量不能为空！");
 				return;
 			}
 			

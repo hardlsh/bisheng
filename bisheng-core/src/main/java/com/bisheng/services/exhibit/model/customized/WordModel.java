@@ -33,7 +33,15 @@ public class WordModel extends Word {
      * 操作数量汇总
      */
     private Long operateCount;
-    
+	/**
+	 * 展位id
+	 */
+	private String boothIdStr;
+	/**
+	 * 展位名称
+	 */
+	private String boothNameStr;
+
 	public String getExhibitName() {
 		return exhibitName;
 	}
@@ -80,5 +88,21 @@ public class WordModel extends Word {
 
 	public void setOutTotalCount(Long outTotalCount) {
 		this.outTotalCount = outTotalCount;
+	}
+
+	public String getBoothIdStr() {
+		return boothIdStr;
+	}
+
+	public void setBoothIdStr(String boothIdStr) {
+		this.boothIdStr = boothIdStr;
+	}
+
+	public String getBoothNameStr() {
+		return boothNameStr;
+	}
+
+	public void setBoothNameStr(String boothNameStr) {
+		this.boothNameStr = boothNameStr;
 	}
 }

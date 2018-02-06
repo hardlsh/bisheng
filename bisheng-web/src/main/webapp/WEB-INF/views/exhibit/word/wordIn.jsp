@@ -177,7 +177,7 @@
 					},"bSortable" : false},
 					{"data" : "word","bSortable" : false},
 					{"data" : "exhibitName","bSortable" : false},
-                	{"data" : "boothName","bSortable" : false},
+                	{"data" : "boothNameStr","bSortable" : false},
 					{"data" : "totalCount","bSortable" : false},
                 	{"data" : "inTotalCount","bSortable" : false},
 					{"data" : "inDate","bSortable" : false}

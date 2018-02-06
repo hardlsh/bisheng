@@ -466,13 +466,13 @@ public class BoothController extends BaseController {
 		ALMResponse res = null;
 		Booth booth = null;
 		logger.info("【展位管理】导入文字模板_开始,入参:" + gson.toJson(param));
-		if (null != param.getBoothId()) {
-			booth = boothService.queryBoothById(param.getBoothId());
-			res = new ALMResponse(RetCode.FAILURE);
+		if (null == param.getBoothId()) {
 			logger.info("【导入文字模板】展位id为空,导入失败，操作人：" + LogUtil.getCurrentUserName());
+			res = new ALMResponse(RetCode.FAILURE);
 			return res;
 		}
 
+		booth = boothService.queryBoothById(param.getBoothId());
 		response.setContentType("text/html;charset=UTF-8");
 		InputStream inputStream = null;
 		String fileName = file.getOriginalFilename();
@@ -517,7 +517,6 @@ public class BoothController extends BaseController {
 				String word = null;
 				line = new StringBuilder();
 				for (int c = WEBConstants.ROW_START_NUM; c < WEBConstants.ROW_START_NUM + booth.getyCount(); c++) {
-					logger.info("第" + r + "行,第" + c + "列");
 					word = ExcelManager.getCellValue(row.getCell(c));
 					if (StringUtils.isBlank(word)) {
 						word = WEBConstants.REPLACE_SIGN;
