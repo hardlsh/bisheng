@@ -35,11 +35,11 @@ public interface WordBusiness {
 	List<WordModel> queryWordListByParam(ExhibitQueryParam param);
 
 	/**
-	 * 批量插入文字存量信息(导入模板时调用)，并入库
+	 * 批量插入文字存量信息、文字入库信息
 	 *
 	 * @param param
 	 */
-	void batchInsertWord(ExhibitQueryParam param);
+	void batchInsertWordIn(ExhibitQueryParam param);
 
 	/**
 	 * 批量修改文字存量信息

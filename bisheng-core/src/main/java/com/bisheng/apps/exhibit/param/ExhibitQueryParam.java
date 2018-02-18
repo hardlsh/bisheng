@@ -69,7 +69,7 @@ public class ExhibitQueryParam extends BaseQuery {
 	private String updateDateStr;// 修改时间
     private String updateDateStrMin;// 最小修改时间
     private String updateDateStrMax;// 最大修改时间
-	private Date updateDate;// 最小修改时间
+	private Date updateDate;// 修改时间
     private Date updateDateMin;// 最小修改时间
     private Date updateDateMax;// 最大修改时间
     

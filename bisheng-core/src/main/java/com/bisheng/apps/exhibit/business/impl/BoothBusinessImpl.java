@@ -101,7 +101,7 @@ public class BoothBusinessImpl implements BoothBusiness {
 		boothWordService.batchInsert(queryParam.getBoothWordList());
 		
 		// 插入文字存量数据和文字入库数据
-		wordBusiness.batchInsertWord(queryParam);
+		wordBusiness.batchInsertWordIn(queryParam);
 	}
 
 	@Override

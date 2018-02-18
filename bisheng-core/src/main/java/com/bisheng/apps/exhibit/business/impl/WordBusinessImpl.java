@@ -1,12 +1,9 @@
 package com.bisheng.apps.exhibit.business.impl;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.bisheng.services.exhibit.model.generated.WordIn;
-import com.bisheng.services.exhibit.service.WordInService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +18,9 @@ import com.bisheng.services.exhibit.enums.WordOperateTypeEnum;
 import com.bisheng.services.exhibit.model.customized.BoothWordModel;
 import com.bisheng.services.exhibit.model.customized.WordModel;
 import com.bisheng.services.exhibit.model.generated.Word;
+import com.bisheng.services.exhibit.model.generated.WordIn;
 import com.bisheng.services.exhibit.model.generated.WordOperate;
+import com.bisheng.services.exhibit.service.WordInService;
 import com.bisheng.services.exhibit.service.WordOperateService;
 import com.bisheng.services.exhibit.service.WordService;
 import com.github.pagehelper.PageInfo;
@@ -82,7 +81,7 @@ public class WordBusinessImpl implements WordBusiness {
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void batchInsertWord(ExhibitQueryParam param) {
+	public void batchInsertWordIn(ExhibitQueryParam param) {
 		Word word;
 		WordModel wordModel;
 		WordIn wordIn;
@@ -93,8 +92,9 @@ public class WordBusinessImpl implements WordBusiness {
 			List<Word> wordList = wordService.queryWordList(wordModel);
 			if (null == wordList || wordList.isEmpty()) {
 				word = new Word();
-				word.setWord(boothWord.getWord());
 				word.setExhibitId(param.getExhibitId());
+				word.setWord(boothWord.getWord());
+				word.setInDate(param.getUpdateDate());
 				word.setTotalCount(param.getTemplateCount());
 				wordService.addWordReturnId(word);
 
@@ -119,7 +119,7 @@ public class WordBusinessImpl implements WordBusiness {
 		wordIn.setExhibitId(param.getExhibitId());
 		wordIn.setExhibitName(param.getExhibitName());
 		wordIn.setInNumber(param.getTemplateCount());
-		wordIn.setInDate(new Date());
+		wordIn.setInDate(param.getUpdateDate());
 		wordIn.setInUser(param.getUpdateByUser());
 		return wordIn;
 	}

@@ -538,8 +538,6 @@ public class BoothController extends BaseController {
 				return message;
 			}
 			ExhibitQueryParam queryParam = paramHandle(booth, lineList, fileName);
-			queryParam.setUpdateByUser(LogUtil.getCurrentUserName());
-			queryParam.setTemplateCount(Constants.FIRST_IN);
 			// 保存数据
 			boothBusiness.batchInsertBoothWord(queryParam);
 		} else {
@@ -601,6 +599,9 @@ public class BoothController extends BaseController {
 		}
 		queryParam.setWordContent(content.toString());
 		queryParam.setBoothWordList(boothWordList);
+		queryParam.setUpdateByUser(LogUtil.getCurrentUserName());
+		queryParam.setTemplateCount(Constants.FIRST_IN);
+		queryParam.setUpdateDate(new Date());
 		return queryParam;
 	}
 }
