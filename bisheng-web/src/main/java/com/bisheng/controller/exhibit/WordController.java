@@ -180,20 +180,20 @@ public class WordController extends BaseController {
 	}
     
 	/**
-	 * 批量修改文字存量
+	 * 文字批量入库
 	 * @param param
 	 * @return
 	 */
-	@RequestMapping("/batchUpdateWord")
+	@RequestMapping("/batchInWord")
 	@ResponseBody
-	public ALMResponse batchUpdateWord(ExhibitQueryParam param) {
-		logger.info("【文字存量管理】批量修改_开始,操作人:" + LogUtil.getCurrentUserName() + ",入参:" + gson.toJson(param));
+	public ALMResponse batchInWord(ExhibitQueryParam param) {
+		logger.info("【文字入库管理】批量入库_开始,操作人:" + LogUtil.getCurrentUserName() + ",入参:" + gson.toJson(param));
 		ALMResponse res;
 		try{
 			if (StringUtils.isBlank(param.getWordStr())) {
 				res = new ALMResponse(RetCode.FAILURE);
-				res.setResultMsg("请勾选要修改的文字之后,再进行操作");
-				logger.error("【文字存量管理】批量修改_异常,没有勾选要操作的文字,操作人:" + LogUtil.getCurrentUserName());
+				res.setResultMsg("请勾选要入库的文字之后,再进行操作");
+				logger.error("【文字入库管理】批量入库_异常,没有勾选要操作的文字,操作人:" + LogUtil.getCurrentUserName());
 				return res;
 			}
 			List<Long> wordIdList = new ArrayList<Long>();
@@ -203,14 +203,14 @@ public class WordController extends BaseController {
 			param.setWordIdList(wordIdList);
 			param.setUpdateByUser(LogUtil.getCurrentUserName());
 			ExhibitQueryParam.convertDate(param);// 转换参数
-			wordBusiness.batchUpdateWord(param);
+			wordBusiness.newWordIn(param);
 			res = new ALMResponse(RetCode.SUCCESS);
 		} catch (Exception e) {
 			res = new ALMResponse(RetCode.FAILURE);
-			logger.error("【文字存量管理】批量修改_异常,操作人:" + LogUtil.getCurrentUserName(), e);
+			logger.error("【文字入库管理】批量入库_异常,操作人:" + LogUtil.getCurrentUserName(), e);
 			return res;
 		}
-		logger.info("【文字存量管理】批量修改_结束,操作人:" + LogUtil.getCurrentUserName());
+		logger.info("【文字入库管理】批量入库_结束,操作人:" + LogUtil.getCurrentUserName());
 		return res;
 	}
 	

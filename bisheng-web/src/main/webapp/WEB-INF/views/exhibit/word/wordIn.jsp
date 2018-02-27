@@ -148,9 +148,9 @@
 			
 			$('#btnRefresh').click(me.btnRefresh);//搜索按钮
 			$('#btnEmpty').click(me.btnEmpty);//清空条件
-			$('#btnUpdate').click(me.btnUpdate);// 批量修改按钮
+			$('#btnUpdate').click(me.btnUpdate);// 批量入库按钮
 			$('#checkAll').click(me.checkAllFunc);// 文字入库表上的全选
-			$('#confirmUpdate').click(me.confirmUpdate);// 修改弹出框上的确认按钮
+			$('#confirmUpdate').click(me.confirmUpdate);// 入库弹出框上的确认按钮
             $('#doExport').click(me.doExport);// 导出明细按钮
 			
 			$('.multiselect').multiselect({
@@ -215,15 +215,15 @@
 				$(entity).prop('checked', checked);
 			});
 		},
-		// 批量修改
+		// 批量入库
 		btnUpdate : function() {
-			var updateWordIds = []; // 批量修改时对应的id数组
+			var updateWordIds = []; // 批量入库时对应的id数组
 			var exhibitIdList = $("#exhibitIdList").val();
 			if (exhibitIdList == null || exhibitIdList == "") {
-				bootbox.alert("批量修改时,请选择一个展馆");
+				bootbox.alert("批量入库时,请选择一个展馆");
 				return;
 			} else if (exhibitIdList.indexOf(",") != -1) {
-				bootbox.alert("批量修改时,请选择一个展馆");
+				bootbox.alert("批量入库时,请选择一个展馆");
 				return;
 			}
 			$('[name="chb1"]').each(function(index, entity) {
@@ -232,7 +232,7 @@
 				}
 			});
 			if (updateWordIds.length == 0) {
-				bootbox.alert('请选择要批量修改的文字');
+				bootbox.alert('请选择要批量入库的文字');
 				return;
 			}
 		
@@ -256,12 +256,12 @@
                         $("#updateDateStr").datepicker('setDate',new Date());
                         $('#updateModal').modal('show');
                     } else {
-                        bootbox.alert("批量修改错误:" + data.resultMsg);
+                        bootbox.alert("批量入库错误:" + data.resultMsg);
                     }
                 }
             });
 		},
-		// 批量修改确认
+		// 批量入库确认
 		confirmUpdate : function () {
 		    var updateCount = $('#updateCount').val();
 		    var updateDateStr = $('#updateDateStr').val();
@@ -275,7 +275,7 @@
 			}
 			$("#confirmUpdate").attr({"disabled":"disabled"});
 			$.ajax({
-		        url : "${basePath}/word/batchUpdateWord.do",
+		        url : "${basePath}/word/batchInWord.do",
 		        data : $("#updateForm").serialize(),
 		        dataType: "json",
 		        type : "POST",

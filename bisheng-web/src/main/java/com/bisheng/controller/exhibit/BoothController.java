@@ -577,10 +577,10 @@ public class BoothController extends BaseController {
 		BoothWordModel boothWordModel = null;
 		String[] oneLineArr = null;
 		StringBuilder content = new StringBuilder();
-		for (int i=0; i<lineList.size(); i++) {
-			oneLineArr = lineList.get(i).split("");
-			for (int j=0; j<oneLineArr.length; j++) {
-				if (WEBConstants.REPLACE_SIGN.equals(oneLineArr[j])) {
+		for (int c=0; c<lineList.size(); c++) {
+			oneLineArr = lineList.get(c).split("");
+			for (int r = 0; r<oneLineArr.length; r++) {
+				if (WEBConstants.REPLACE_SIGN.equals(oneLineArr[r])) {
 					continue;
 				}
 				boothWordModel = new BoothWordModel();
@@ -589,13 +589,13 @@ public class BoothController extends BaseController {
 				boothWordModel.setBoothId(booth.getBoothId());
 				boothWordModel.setBoothName(booth.getBoothName());
 				boothWordModel.setTempletName(fileName);
-				boothWordModel.setxAxis(i+1);
-				boothWordModel.setyAxis(j+1);
-				boothWordModel.setNumber((i + 1) * (j + 1));
-				boothWordModel.setWord(oneLineArr[j]);
+				boothWordModel.setxAxis(c+1);
+				boothWordModel.setyAxis(r+1);
+				boothWordModel.setNumber(r * lineList.size() + (c + 1));
+				boothWordModel.setWord(oneLineArr[r]);
 				boothWordList.add(boothWordModel);
 			}
-			content.append(lineList.get(i)+",");
+			content.append(lineList.get(c)+",");
 		}
 		queryParam.setWordContent(content.toString());
 		queryParam.setBoothWordList(boothWordList);
