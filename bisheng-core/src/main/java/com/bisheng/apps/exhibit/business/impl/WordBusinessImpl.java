@@ -119,7 +119,11 @@ public class WordBusinessImpl implements WordBusiness {
 		WordIn wordIn = new WordIn();
 		wordIn.setExhibitId(param.getExhibitId());
 		wordIn.setExhibitName(param.getExhibitName());
-		wordIn.setInNumber(param.getTemplateCount());
+		if (null != param.getTemplateCount()) {
+			wordIn.setInNumber(param.getTemplateCount());
+		} else if (null != param.getCount()) {
+			wordIn.setInNumber(param.getCount());
+		}
 		wordIn.setInDate(param.getUpdateDate());
 		wordIn.setInUser(param.getUpdateByUser());
 		return wordIn;

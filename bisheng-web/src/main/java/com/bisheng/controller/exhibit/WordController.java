@@ -203,7 +203,7 @@ public class WordController extends BaseController {
 			param.setWordIdList(wordIdList);
 			param.setUpdateByUser(LogUtil.getCurrentUserName());
 			ExhibitQueryParam.convertDate(param);// 转换参数
-			wordBusiness.newWordIn(param);
+			wordBusiness.updateWordIn(param);
 			res = new ALMResponse(RetCode.SUCCESS);
 		} catch (Exception e) {
 			res = new ALMResponse(RetCode.FAILURE);

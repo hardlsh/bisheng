@@ -101,6 +101,7 @@
                		<!-- 隐藏的复位按钮 -->
 					<input id="resetUpdate" type="reset" style="display: none;" />
                    	<input type="hidden" id="exhibitIdUpdate" name="exhibitId"/>
+					<input type="hidden" id="exhibitNameUpdate" name="exhibitName"/>
                   	<input type="hidden" id="wordStrUpdate" name="wordStr"/>
 					<input type="hidden" id="operateTypeUpdate" name="operateType" value="2"/>
 					<div class="row">
@@ -249,6 +250,7 @@
                 success: function (data) {
                 	// 为隐藏域赋值
         			$("#exhibitIdUpdate").val(exhibitIdList[0]);
+        			$("#exhibitNameUpdate").val(data.data.exhibitName);
         			$("#wordStrUpdate").val(updateWordIds.join(","));
                     if (data.resultCode == '0000') {
                     	var html = "您选择修改:" + data.data.exhibitName + "，共选择了" + updateWordIds.length + "个字。";
