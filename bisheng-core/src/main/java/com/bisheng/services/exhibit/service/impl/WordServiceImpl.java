@@ -28,19 +28,6 @@ public class WordServiceImpl extends BaseService implements WordService {
 	}
 
 	@Override
-	public List<WordModel> queryWordListByParam(ExhibitQueryParam queryParam) {
-		return getWordDao().queryWordListByParam(queryParam);
-	}
-
-	@Override
-	public PageInfo<WordModel> queryPagedWordByParam(ExhibitQueryParam param) {
-		setStartPage(param);
-		List<WordModel> list = getWordDao().queryWordListByParam(param);
-		PageInfo<WordModel> pageInfo = new PageInfo<>(list);
-		return pageInfo;
-	}
-	
-	@Override
 	public List<Word> queryWordList(WordModel wordModel) {
 		return getWordDao().queryWordList(wordModel);
 	}

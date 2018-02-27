@@ -1,19 +1,9 @@
 package com.bisheng.apps.exhibit.business.impl;
 
-import com.bisheng.apps.exhibit.business.WordBusiness;
-import com.bisheng.apps.exhibit.param.ExhibitQueryParam;
-import com.bisheng.services.exhibit.enums.WordOperateTypeEnum;
-import com.bisheng.services.exhibit.model.customized.BoothWordModel;
-import com.bisheng.services.exhibit.model.customized.WordModel;
-import com.bisheng.services.exhibit.model.generated.Word;
-import com.bisheng.services.exhibit.model.generated.WordIn;
-import com.bisheng.services.exhibit.model.generated.WordOperate;
-import com.bisheng.services.exhibit.service.WordInService;
-import com.bisheng.services.exhibit.service.WordOperateService;
-import com.bisheng.services.exhibit.service.WordService;
-import com.github.pagehelper.PageInfo;
-import com.google.common.base.Function;
-import com.google.common.collect.Maps;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +11,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import com.bisheng.apps.exhibit.business.WordBusiness;
+import com.bisheng.apps.exhibit.param.ExhibitQueryParam;
+import com.bisheng.services.exhibit.model.customized.BoothWordModel;
+import com.bisheng.services.exhibit.model.customized.WordModel;
+import com.bisheng.services.exhibit.model.generated.Word;
+import com.bisheng.services.exhibit.model.generated.WordIn;
+import com.bisheng.services.exhibit.service.WordInService;
+import com.bisheng.services.exhibit.service.WordService;
+import com.github.pagehelper.PageInfo;
+import com.google.common.base.Function;
+import com.google.common.collect.Maps;
 
 @Service
 public class WordBusinessImpl implements WordBusiness {
@@ -33,25 +31,11 @@ public class WordBusinessImpl implements WordBusiness {
 	@Autowired
 	private WordService wordService;
 	@Autowired
-	private WordOperateService wordOperateService;
-	@Autowired
 	private WordInService wordInService;
 
 	@Override
 	public PageInfo<WordModel> queryPagedWordInByParam(ExhibitQueryParam param) {
 		PageInfo<WordModel> inWordPageList = wordService.queryPagedWordInByParam(param);
-		return inWordPageList;
-	}
-
-	@Override
-	public PageInfo<WordModel> queryPagedWordByParam(ExhibitQueryParam param) {
-		param.setOperateType(WordOperateTypeEnum.IN.getKey());
-		PageInfo<WordModel> inWordPageList = wordService.queryPagedWordByParam(param);
-		param.setOperateType(WordOperateTypeEnum.OUT.getKey());
-		PageInfo<WordModel> outWordPageList = wordService.queryPagedWordByParam(param);
-		List<WordModel> inWordList = inWordPageList.getList();
-		List<WordModel> outWordList = outWordPageList.getList();
-		convertWordList(inWordList, outWordList);
 		return inWordPageList;
 	}
 
@@ -65,16 +49,6 @@ public class WordBusinessImpl implements WordBusiness {
 				}
 			}
 		}
-	}
-
-	@Override
-	public List<WordModel> queryWordListByParam(ExhibitQueryParam param){
-		param.setOperateType(WordOperateTypeEnum.IN.getKey());
-		List<WordModel> inWordList = wordService.queryWordListByParam(param);
-		param.setOperateType(WordOperateTypeEnum.OUT.getKey());
-		List<WordModel> outWordList = wordService.queryWordListByParam(param);
-		convertWordList(inWordList, outWordList);
-		return inWordList;
 	}
 
 	@Override
@@ -162,46 +136,6 @@ public class WordBusinessImpl implements WordBusiness {
             }
         });
 		return wordMap;
-	}
-
-	@Override
-	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void batchCreateWord(ExhibitQueryParam param) {
-		Word word;
-		WordModel wordModel;
-		WordOperate wordOperate;
-		List<WordOperate> wordOperateList = new ArrayList<WordOperate>();
-		for (String wordSingle : param.getWordList()) {
-			wordModel = new WordModel();
-			wordModel.setWord(wordSingle);
-			List<Word> wordList = wordService.queryWordList(wordModel);
-			if (null == wordList || wordList.isEmpty()) {
-				word = new Word();
-				word.setWord(wordSingle);
-				word.setExhibitId(param.getExhibitId());
-				word.setTotalCount(param.getCount());
-				wordService.addWordReturnId(word);
-				
-				wordOperate = new WordOperate();
-				wordOperate.setExhibitId(param.getExhibitId());
-				wordOperate.setWordId(word.getWordId());
-				wordOperate.setType(WordOperateTypeEnum.IN.getKey());
-				wordOperate.setCount(param.getCount());
-				wordOperate.setOperateUser(param.getUpdateByUser());
-				wordOperateList.add(wordOperate);
-			} else if (null != wordList && wordList.size() == 1){
-				wordOperate = new WordOperate();
-				wordOperate.setExhibitId(param.getExhibitId());
-				wordOperate.setWordId(wordList.get(0).getWordId());
-				wordOperate.setType(WordOperateTypeEnum.IN.getKey());
-				wordOperate.setCount(param.getCount());
-				wordOperate.setOperateUser(param.getUpdateByUser());
-				wordOperateList.add(wordOperate);
-			} else {
-				logger.error("【文字存量业务】文字存量表数据记录有重复,对应展馆ID:"+param.getExhibitId()+",对应文字:" + wordSingle);
-			}
-		}
-		wordOperateService.batchInsert(wordOperateList);
 	}
 
 }
