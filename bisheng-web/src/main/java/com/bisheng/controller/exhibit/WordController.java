@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -46,6 +47,11 @@ public class WordController extends BaseController {
 	@RequestMapping("/toWordIn")
 	public ModelAndView toWordIn() {
 		ModelAndView mav = new ModelAndView("exhibit/word/wordIn");
+		return mav;
+	}
+	@RequestMapping("/toWordOut")
+	public ModelAndView toWordOut() {
+		ModelAndView mav = new ModelAndView("exhibit/word/wordOut");
 		return mav;
 	}
 
@@ -74,6 +80,34 @@ public class WordController extends BaseController {
 			logger.debug("【文字存量管理】查询文字入库_结束,操作人:"+LogUtil.getCurrentUserName());
 		} catch (Exception e) {
 			logger.error("【文字存量管理】查询文字入库_异常,操作人:"+LogUtil.getCurrentUserName()+",异常原因:", e);
+		}
+	}
+
+	/**
+	 * 查询文字出库信息
+	 * @param response
+	 * @param param
+	 */
+	@RequestMapping("/getWordOutList")
+	public void getWordOutList(HttpServletResponse response, ExhibitQueryParam param) {
+		logger.info("【文字存量管理】查询文字出库_开始,操作人:"+LogUtil.getCurrentUserName()+",入参:"+gson.toJson(param));
+		try {
+			String wordStr = param.getWordStr().replace(" ", "");
+			if (wordStr.length() == 1) {
+				param.setWord(param.getWordStr());
+			}else if (wordStr.length() > 1) {
+				param.setWordList(Arrays.asList(wordStr.split("")));
+			}
+			ExhibitQueryParam.convertDate(param);// 转换参数
+			PageInfo<WordModel> pageInfo = wordBusiness.queryPagedWordOutByParam(param);
+			int total = (int) pageInfo.getTotal();
+			PaginationResult<List<WordModel>> result = PaginationResult.newInstance(pageInfo.getList());
+			result.setiTotalRecords(total);
+			result.setiTotalDisplayRecords(total);
+			actionResult4Json(result.json(), response);
+			logger.debug("【文字存量管理】查询文字出库_结束,操作人:"+LogUtil.getCurrentUserName());
+		} catch (Exception e) {
+			logger.error("【文字存量管理】查询文字出库_异常,操作人:"+LogUtil.getCurrentUserName()+",异常原因:", e);
 		}
 	}
     
@@ -109,13 +143,7 @@ public class WordController extends BaseController {
 				logger.error("【文字入库管理】批量入库_异常,没有勾选要操作的文字,操作人:" + LogUtil.getCurrentUserName());
 				return res;
 			}
-			List<Long> wordIdList = new ArrayList<Long>();
-			for (String wordId : param.getWordStr().split(",")) {
-				wordIdList.add(Long.valueOf(wordId));
-			}
-			param.setWordIdList(wordIdList);
-			param.setUpdateByUser(LogUtil.getCurrentUserName());
-			ExhibitQueryParam.convertDate(param);// 转换参数
+			paramHandle(param);
 			wordBusiness.updateWordIn(param);
 			res = new ALMResponse(RetCode.SUCCESS);
 		} catch (Exception e) {
@@ -125,6 +153,46 @@ public class WordController extends BaseController {
 		}
 		logger.info("【文字入库管理】批量入库_结束,操作人:" + LogUtil.getCurrentUserName());
 		return res;
+	}
+
+	/**
+	 * 文字批量出库
+	 * @param param
+	 * @return
+	 */
+	@RequestMapping("/batchOutWord")
+	@ResponseBody
+	public ALMResponse batchOutWord(ExhibitQueryParam param) {
+		logger.info("【文字出库管理】批量出库_开始,操作人:" + LogUtil.getCurrentUserName() + ",入参:" + gson.toJson(param));
+		ALMResponse res;
+		try{
+			if (StringUtils.isBlank(param.getWordStr())) {
+				res = new ALMResponse(RetCode.FAILURE);
+				res.setResultMsg("请勾选要出库的文字之后,再进行操作");
+				logger.error("【文字出库管理】批量出库_异常,没有勾选要操作的文字,操作人:" + LogUtil.getCurrentUserName());
+				return res;
+			}
+			paramHandle(param);
+			wordBusiness.updateWordOut(param);
+			res = new ALMResponse(RetCode.SUCCESS);
+		} catch (Exception e) {
+			res = new ALMResponse(RetCode.FAILURE);
+			logger.error("【文字出库管理】批量出库_异常,操作人:" + LogUtil.getCurrentUserName(), e);
+			return res;
+		}
+		logger.info("【文字出库管理】批量出库_结束,操作人:" + LogUtil.getCurrentUserName());
+		return res;
+	}
+
+	// 参数处理
+	private void paramHandle(ExhibitQueryParam param) throws ParseException {
+		List<Long> wordIdList = new ArrayList<Long>();
+		for (String wordId : param.getWordStr().split(",")) {
+			wordIdList.add(Long.valueOf(wordId));
+		}
+		param.setWordIdList(wordIdList);
+		param.setUpdateByUser(LogUtil.getCurrentUserName());
+		ExhibitQueryParam.convertDate(param);// 转换参数
 	}
 
 }

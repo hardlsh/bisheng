@@ -22,6 +22,13 @@ public interface WordService {
 	PageInfo<WordModel> queryPagedWordInByParam(ExhibitQueryParam param);
 
 	/**
+	 * 查询出库信息
+	 * @param param
+	 * @return
+	 */
+	PageInfo<WordModel> queryPagedWordOutByParam(ExhibitQueryParam param);
+
+	/**
 	 * 查询文字存量记录(单表查询)
 	 * @param wordModel
 	 * @return

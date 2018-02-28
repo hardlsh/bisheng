@@ -5,7 +5,7 @@
 <script src="${basePath}/resources/js/jquery.form.js" type="text/javascript"></script>
 
 <ol class="breadcrumb">
-  <li class="active">文字入库管理</li>
+  <li class="active">文字出库管理</li>
 </ol>
 <div class="row">
 	<div class="col-md-12">
@@ -13,7 +13,7 @@
 		<div class="portlet box grey-cascade">
 			<div class="portlet-title">
 				<div class="caption">
-					<i class="fa fa-globe"></i>文字入库管理
+					<i class="fa fa-globe"></i>文字出库管理
 				</div>
 			</div>
 			<div class="portlet-body">
@@ -42,7 +42,7 @@
 							文字:
 	                        	<input id="wordQuery" name="wordStr" class="form-control input-inline input-sm" maxlength="1000" 
 								placeholder="请输入要查询的文字,支持批量文字" onkeyup="value=value.replace(/[^\u4e00-\u9fa5]/,'')" type="text" style="width:240px" />
-							入库日期:
+							出库日期:
 							<input class="form-control input-inline input-sm date-picker" id="updateDateStrMin" name="updateDateStrMin"
 								   size="10" type="text" data-date-format="yyyy-mm-dd" placeholder="开始日期"/>
 							至:
@@ -60,7 +60,7 @@
 							<div class="col-md-12">
 								<button id="btnRefresh" class="btn btn-sm green" type="button">搜索</button>
 								<a class="btn btn-sm red" id="btnEmpty"><i class="icon-trash"></i>清空条件</a>
-								<button id="btnUpdate" class="btn btn-sm blue" type="button">入库</button>
+								<button id="btnUpdate" class="btn btn-sm blue" type="button">出库</button>
 								<button id="doExport" class="btn btn-sm green" type="button">导出明细</button>
 	                        </div>
 						</div>
@@ -77,8 +77,8 @@
 							<th>所属展馆</th>
 							<th>所属展位</th>
 							<th>现有库存</th>
-							<th>入库数量</th>
-							<th>最近入库日期</th>
+							<th>出库数量</th>
+							<th>最近出库日期</th>
 						</tr>
 					</thead>
 				</table>
@@ -87,13 +87,13 @@
 	</div>
 </div>
 
-<!-- 批量入库,弹出框 -->
+<!-- 批量出库,弹出框 -->
 <div class="modal" id="updateModal" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                <h4 class="modal-title">文字批量入库</h4>
+                <h4 class="modal-title">文字批量出库</h4>
             </div>
             <div class="modal-body">
                 <label id="prompt" class="control-label">您选择修改上海展馆,共选择了99个字!</label>
@@ -106,7 +106,7 @@
 					<div class="row">
 						<div class="form-group">
 							<label
-								class="control-label col-md-3 col-sm-3 col-xs-8">入库数量<span
+								class="control-label col-md-3 col-sm-3 col-xs-8">出库数量<span
 								class="required"> * </span></label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
 								<input id="updateCount" name="count"
@@ -120,11 +120,11 @@
 					<div class="row">
 						<div class="form-group">
 							<label
-									class="control-label col-md-3 col-sm-3 col-xs-8">入库日期<span
+									class="control-label col-md-3 col-sm-3 col-xs-8">出库日期<span
 									class="required"> * </span></label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
 								<input class="form-control input-inline input-sm date-picker" id="updateDateStr" name="updateDateStr"
-									   size="10" type="text" data-date-format="yyyy-mm-dd" placeholder="入库日期"/>
+									   size="10" type="text" data-date-format="yyyy-mm-dd" placeholder="出库日期"/>
 							</div>
 						</div>
 					</div>
@@ -141,16 +141,16 @@
 
 <script type="text/javascript">
 
-	var wordInHelper = {
+	var wordOutHelper = {
 		
 		init : function () {
-			var me = wordInHelper;
+			var me = wordOutHelper;
 			
 			$('#btnRefresh').click(me.btnRefresh);//搜索按钮
 			$('#btnEmpty').click(me.btnEmpty);//清空条件
-			$('#btnUpdate').click(me.btnUpdate);// 批量入库按钮
-			$('#checkAll').click(me.checkAllFunc);// 文字入库表上的全选
-			$('#confirmUpdate').click(me.confirmUpdate);// 入库弹出框上的确认按钮
+			$('#btnUpdate').click(me.btnUpdate);// 批量出库按钮
+			$('#checkAll').click(me.checkAllFunc);// 文字出库表上的全选
+			$('#confirmUpdate').click(me.confirmUpdate);// 出库弹出框上的确认按钮
             $('#doExport').click(me.doExport);// 导出明细按钮
 			
 			$('.multiselect').multiselect({
@@ -167,24 +167,26 @@
 		},
 		//初始化Table,加载表格
 		wordTable : function () {
-			var url = "${basePath}/word/getWordInList.do"; //表格数据远程地址
+			var me = wordOutHelper;
+			
+			var url = "${basePath}/word/getWordOutList.do"; //表格数据远程地址
 			var colArray = [
 					{"data" : function(e) {
 						return '<input type="checkbox" class="checkboxes" name="chb1" data-id="'
-						+ e.wordId + '" onclick="wordInHelper.checkAll()" />';
+						+ e.wordId + '" onclick="wordOutHelper.checkAll()" />';
 					},"bSortable" : false},
 					{"data" : "word","bSortable" : false},
 					{"data" : "exhibitName","bSortable" : false},
                 	{"data" : "boothNameStr","bSortable" : false},
 					{"data" : "totalCount","bSortable" : false},
-                	{"data" : "inTotalCount","bSortable" : false},
-					{"data" : "inDate","bSortable" : false}
+                	{"data" : "outTotalCount","bSortable" : false},
+					{"data" : "outDate","bSortable" : false}
 				];
 			TablePaginationSort.initCustom(url, colArray, "wordTable","filter_form");
 		},
 		// 查询
 		btnRefresh : function() {
-			var me = wordInHelper;
+			var me = wordOutHelper;
 			//展馆为必选项
 			var exhibitIdList = $("#exhibitIdList").val();
 
@@ -213,15 +215,15 @@
 				$(entity).prop('checked', checked);
 			});
 		},
-		// 批量入库
+		// 批量出库
 		btnUpdate : function() {
-			var updateWordIds = []; // 批量入库时对应的id数组
+			var updateWordIds = []; // 批量出库时对应的id数组
 			var exhibitIdList = $("#exhibitIdList").val();
 			if (exhibitIdList == null || exhibitIdList == "") {
-				bootbox.alert("批量入库时,请选择一个展馆");
+				bootbox.alert("批量出库时,请选择一个展馆");
 				return;
 			} else if (exhibitIdList.indexOf(",") != -1) {
-				bootbox.alert("批量入库时,请选择一个展馆");
+				bootbox.alert("批量出库时,请选择一个展馆");
 				return;
 			}
 			$('[name="chb1"]').each(function(index, entity) {
@@ -230,7 +232,7 @@
 				}
 			});
 			if (updateWordIds.length == 0) {
-				bootbox.alert('请选择要批量入库的文字');
+				bootbox.alert('请选择要批量出库的文字');
 				return;
 			}
 		
@@ -255,12 +257,12 @@
                         $("#updateDateStr").datepicker('setDate',new Date());
                         $('#updateModal').modal('show');
                     } else {
-                        bootbox.alert("批量入库错误:" + data.resultMsg);
+                        bootbox.alert("批量出库错误:" + data.resultMsg);
                     }
                 }
             });
 		},
-		// 批量入库确认
+		// 批量出库确认
 		confirmUpdate : function () {
 		    var updateCount = $('#updateCount').val();
 		    var updateDateStr = $('#updateDateStr').val();
@@ -274,7 +276,7 @@
 			}
 			$("#confirmUpdate").attr({"disabled":"disabled"});
 			$.ajax({
-		        url : "${basePath}/word/batchInWord.do",
+		        url : "${basePath}/word/batchOutWord.do",
 		        data : $("#updateForm").serialize(),
 		        dataType: "json",
 		        type : "POST",
@@ -298,19 +300,19 @@
         doExport : function(){
             $("#filter_form").attr('action','${basePath}/word/exportWord.do');
             $("#filter_form").submit();
-        }
+        },
         // 为日期赋值
-//        updateDateDefault : function () {
-//            $("#updateDateStrMin").datepicker('setDate','-7d');
-//            $("#updateDateStrMax").datepicker('setDate',new Date());
-//        }
+        updateDateDefault : function () {
+            $("#updateDateStrMin").datepicker('setDate','-7d');
+            $("#updateDateStrMax").datepicker('setDate',new Date());
+        }
 		
 	};
 
 	$(function() {
         ComponentsPickers.init();//日期插件初始化
-//        wordInHelper.updateDateDefault();
-		wordInHelper.init();
+        //wordOutHelper.updateDateDefault();
+		wordOutHelper.init();
 	});
 
 </script>

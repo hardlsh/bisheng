@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.bisheng.core.framework.exception.BusinessException;
+import com.bisheng.services.exhibit.model.generated.WordOut;
+import com.bisheng.services.exhibit.service.WordOutService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +35,8 @@ public class WordBusinessImpl implements WordBusiness {
 	private WordService wordService;
 	@Autowired
 	private WordInService wordInService;
+	@Autowired
+	private WordOutService wordOutService;
 
 	@Override
 	public PageInfo<WordModel> queryPagedWordInByParam(ExhibitQueryParam param) {
@@ -39,16 +44,10 @@ public class WordBusinessImpl implements WordBusiness {
 		return inWordPageList;
 	}
 
-	private void convertWordList (List<WordModel> inWordList, List<WordModel> outWordList) {
-		for (WordModel inWord : inWordList) {
-			inWord.setInTotalCount(inWord.getOperateCount());
-			for (WordModel outWord : outWordList) {
-				if (inWord.getWordId().equals(outWord.getWordId())) {
-					inWord.setOutTotalCount(outWord.getOperateCount());
-					break;
-				}
-			}
-		}
+	@Override
+	public PageInfo<WordModel> queryPagedWordOutByParam(ExhibitQueryParam param) {
+		PageInfo<WordModel> outWordPageList = wordService.queryPagedWordOutByParam(param);
+		return outWordPageList;
 	}
 
 	@Override
@@ -57,7 +56,9 @@ public class WordBusinessImpl implements WordBusiness {
 		Word word;
 		WordModel wordModel;
 		WordIn wordIn;
+		WordOut wordOut;
 		List<WordIn> wordInList = new ArrayList<>();
+		List<WordOut> wordOutList = new ArrayList<>();
 		for (BoothWordModel boothWord : param.getBoothWordList()) {
 			wordModel = new WordModel();
 			wordModel.setWord(boothWord.getWord());
@@ -73,6 +74,10 @@ public class WordBusinessImpl implements WordBusiness {
 				wordIn.setWordId(word.getWordId());
 				wordIn.setWord(word.getWord());
 				wordInList.add(wordIn);
+				wordOut = assembleWordOut(param);
+				wordOut.setWordId(word.getWordId());
+				wordOut.setWord(word.getWord());
+				wordOutList.add(wordOut);
 			} else if (null != wordList && wordList.size() == 1){
 				word = wordList.get(0);
 				word.setTotalCount(word.getTotalCount() + param.getTemplateCount());
@@ -87,6 +92,7 @@ public class WordBusinessImpl implements WordBusiness {
 			}
 		}
 		wordInService.batchInsert(wordInList);
+		wordOutService.batchInsert(wordOutList);
 	}
 
 	private WordIn assembleWordIn(ExhibitQueryParam param){
@@ -101,6 +107,14 @@ public class WordBusinessImpl implements WordBusiness {
 		wordIn.setInDate(param.getUpdateDate());
 		wordIn.setInUser(param.getUpdateByUser());
 		return wordIn;
+	}
+
+	private WordOut assembleWordOut(ExhibitQueryParam param) {
+		WordOut wordOut = new WordOut();
+		wordOut.setExhibitId(param.getExhibitId());
+		wordOut.setExhibitName(param.getExhibitName());
+		wordOut.setOutNumber(0L);
+		return wordOut;
 	}
 
 	@Override
@@ -122,6 +136,36 @@ public class WordBusinessImpl implements WordBusiness {
 			wordInList.add(wordIn);
 		}
 		wordInService.batchInsert(wordInList);
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void updateWordOut(ExhibitQueryParam param) {
+		Map<Long, Word> wordMap = getWordMap(param);
+		Long totalCount;
+		Word word;
+		WordOut wordOut;
+		List<WordOut> wordOutList = new ArrayList<>();
+		for (Long wordId : param.getWordIdList()) {
+			word = wordMap.get(wordId);
+			totalCount = word.getTotalCount() - param.getCount();
+			if (totalCount < 0) {
+				logger.error("【文字存量业务】异常,出库数量不得大于现有库存,对应文字--" + word.getWord());
+				throw new BusinessException("出库数量不得大于现有库存");
+			}
+			word.setTotalCount(totalCount);
+			word.setOutDate(param.getUpdateDate());
+			wordService.updateWord(word);
+
+			wordOut = assembleWordOut(param);
+			wordOut.setOutDate(param.getUpdateDate());
+			wordOut.setOutUser(param.getUpdateByUser());
+			wordOut.setWordId(word.getWordId());
+			wordOut.setWord(word.getWord());
+			wordOut.setOutNumber(param.getCount());
+			wordOutList.add(wordOut);
+		}
+		wordOutService.batchInsert(wordOutList);
 	}
 	
 	private Map<Long, Word> getWordMap(ExhibitQueryParam param){

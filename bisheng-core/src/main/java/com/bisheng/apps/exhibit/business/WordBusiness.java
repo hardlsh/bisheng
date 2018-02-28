@@ -19,7 +19,14 @@ public interface WordBusiness {
 	PageInfo<WordModel> queryPagedWordInByParam(ExhibitQueryParam param);
 
 	/**
-	 * 新建入库 批量插入展位文字信息、文字存量信息、文字入库信息
+	 * 根据查询参数查询文字出库信息
+	 * @param param
+	 * @return
+	 */
+	PageInfo<WordModel> queryPagedWordOutByParam(ExhibitQueryParam param);
+
+	/**
+	 * 新建入库 批量插入展位文字信息、文字存量信息、文字入库信息、文字出库信息
 	 * @param param
 	 */
 	void newWordIn(ExhibitQueryParam param);
@@ -30,4 +37,9 @@ public interface WordBusiness {
 	 */
 	void updateWordIn(ExhibitQueryParam param);
 
+	/**
+	 * 修改出库 修改文字存量信息、插入文字出库信息
+	 * @param param
+	 */
+	void updateWordOut(ExhibitQueryParam param);
 }

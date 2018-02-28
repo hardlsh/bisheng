@@ -62,7 +62,6 @@ public class ExhibitQueryParam extends BaseQuery {
     private String wordStr;// 文字传参
     private List<String> wordList;// 文字集合
     private List<Long> wordIdList;// 文字id集合
-    private Integer operateType;// 操作类型
     private Long count;// 操作数量
 	private Long totalCountMin;// 最小库存
 	private Long totalCountMax;// 最大库存
@@ -295,12 +294,6 @@ public class ExhibitQueryParam extends BaseQuery {
 	}
 	public void setWordIdList(List<Long> wordIdList) {
 		this.wordIdList = wordIdList;
-	}
-	public Integer getOperateType() {
-		return operateType;
-	}
-	public void setOperateType(Integer operateType) {
-		this.operateType = operateType;
 	}
 	public String getUpdateDateStrMin() {
 		return updateDateStrMin;
