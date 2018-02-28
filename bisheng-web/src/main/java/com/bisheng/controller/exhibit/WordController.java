@@ -1,5 +1,6 @@
 package com.bisheng.controller.exhibit;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bisheng.apps.exhibit.business.WordBusiness;
 import com.bisheng.apps.exhibit.param.ExhibitQueryParam;
 import com.bisheng.controller.BaseController;
@@ -64,13 +65,7 @@ public class WordController extends BaseController {
 	public void getWordInList(HttpServletResponse response, ExhibitQueryParam param) {
 		logger.info("【文字存量管理】查询文字入库_开始,操作人:"+LogUtil.getCurrentUserName()+",入参:"+gson.toJson(param));
 		try {
-			String wordStr = param.getWordStr().replace(" ", "");
-			if (wordStr.length() == 1) {
-				param.setWord(param.getWordStr());
-			}else if (wordStr.length() > 1) {
-				param.setWordList(Arrays.asList(wordStr.split("")));
-			}
-			ExhibitQueryParam.convertDate(param);// 转换参数
+			paramHandle(param);
 			PageInfo<WordModel> pageInfo = wordBusiness.queryPagedWordInByParam(param);
 			int total = (int) pageInfo.getTotal();
 			PaginationResult<List<WordModel>> result = PaginationResult.newInstance(pageInfo.getList());
@@ -92,13 +87,7 @@ public class WordController extends BaseController {
 	public void getWordOutList(HttpServletResponse response, ExhibitQueryParam param) {
 		logger.info("【文字存量管理】查询文字出库_开始,操作人:"+LogUtil.getCurrentUserName()+",入参:"+gson.toJson(param));
 		try {
-			String wordStr = param.getWordStr().replace(" ", "");
-			if (wordStr.length() == 1) {
-				param.setWord(param.getWordStr());
-			}else if (wordStr.length() > 1) {
-				param.setWordList(Arrays.asList(wordStr.split("")));
-			}
-			ExhibitQueryParam.convertDate(param);// 转换参数
+			paramHandle(param);
 			PageInfo<WordModel> pageInfo = wordBusiness.queryPagedWordOutByParam(param);
 			int total = (int) pageInfo.getTotal();
 			PaginationResult<List<WordModel>> result = PaginationResult.newInstance(pageInfo.getList());
@@ -186,6 +175,12 @@ public class WordController extends BaseController {
 
 	// 参数处理
 	private void paramHandle(ExhibitQueryParam param) throws ParseException {
+		String wordStr = param.getWordStr().replace(" ", "");
+		if (wordStr.length() == 1) {
+			param.setWord(param.getWordStr());
+		}else if (wordStr.length() > 1) {
+			param.setWordList(Arrays.asList(wordStr.split("")));
+		}
 		List<Long> wordIdList = new ArrayList<Long>();
 		for (String wordId : param.getWordStr().split(",")) {
 			wordIdList.add(Long.valueOf(wordId));
@@ -193,6 +188,22 @@ public class WordController extends BaseController {
 		param.setWordIdList(wordIdList);
 		param.setUpdateByUser(LogUtil.getCurrentUserName());
 		ExhibitQueryParam.convertDate(param);// 转换参数
+	}
+
+	// TODO 入库和出库数据待处理
+	/**
+	 * 入库数据导出明细
+	 */
+	@RequestMapping("/exportWordIn")
+	public void exportWordIn(HttpServletResponse response, ExhibitQueryParam param) {
+		logger.info("导出入库数据开始：param:{},操作人：{}", JSONObject.toJSONString(param), LogUtil.getCurrentUserName());
+		try {
+			paramHandle(param);
+
+		} catch (Exception e) {
+
+		}
+
 	}
 
 }

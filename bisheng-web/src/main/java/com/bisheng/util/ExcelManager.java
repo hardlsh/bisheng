@@ -148,5 +148,46 @@ public class ExcelManager{
 		cellStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
 		return cellStyle;
 	}
+
+	public static <T> void exportSXSSFExcel(List<T> resultList, String mode,
+											Class<T> clazz,XSSFParams xssfParams){
+		try {
+			List<CellEntity> cellEntityList = CommonUtil.getcellEntityList(mode, clazz);
+			Sheet sheet = xssfParams.getWorkbook().getSheetAt(xssfParams.getSheetNow());
+			for(int i=0; i<resultList.size(); i++){
+				T entity = resultList.get(i);
+				Row row = sheet.createRow(xssfParams.getNextNum());
+				row.setHeight((short) (17*20));
+				for(CellEntity cellEntity : cellEntityList){
+					Cell cell = row.createCell(cellEntity.cell.Index());
+					cellEntity.getField().setAccessible(true);
+					Object value = cellEntity.getField().get(entity);
+					if(value == null){
+						value = "";
+					}
+					if(value instanceof Integer || value instanceof Long){
+						double val = Double.parseDouble(value+"");
+						cell.setCellValue(val);
+					}else if(value instanceof BigDecimal){
+						cell.setCellValue((((BigDecimal) value).setScale(cellEntity.cell.scale(),BigDecimal.ROUND_HALF_EVEN)).toString());
+					}else if(value instanceof Date){
+						cell.setCellValue(  (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format((Date)value)         );
+					}else{
+						MethodUtils.invokeExactMethod(cell, "setCellValue", value);
+					}
+				}
+				xssfParams.setNextNum(xssfParams.getNextNum()+1);
+				if(xssfParams.getNextNum()%1000000==0){
+					xssfParams.setNextNum(2);
+					xssfParams.setSheetNow(xssfParams.getSheetNow()+1);
+					sheet = xssfParams.getWorkbook().getSheetAt(xssfParams.getSheetNow());
+					//防止出现数组越界
+					xssfParams.getWorkbook().createSheet();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 }

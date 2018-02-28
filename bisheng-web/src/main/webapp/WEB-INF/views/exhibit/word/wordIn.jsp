@@ -296,7 +296,7 @@
 		},
         //导出明细
         doExport : function(){
-            $("#filter_form").attr('action','${basePath}/word/exportWord.do');
+            $("#filter_form").attr('action','${basePath}/word/exportWordIn.do');
             $("#filter_form").submit();
         }
         // 为日期赋值
