@@ -60,6 +60,7 @@ public class ExhibitQueryParam extends BaseQuery {
     
     // 文字存量
     private String wordStr;// 文字传参
+	private String wordIdStr;// 文字Id传参
     private List<String> wordList;// 文字集合
     private List<Long> wordIdList;// 文字id集合
     private Long count;// 操作数量
@@ -350,5 +351,13 @@ public class ExhibitQueryParam extends BaseQuery {
 
 	public void setTotalCountMax(Long totalCountMax) {
 		this.totalCountMax = totalCountMax;
+	}
+
+	public String getWordIdStr() {
+		return wordIdStr;
+	}
+
+	public void setWordIdStr(String wordIdStr) {
+		this.wordIdStr = wordIdStr;
 	}
 }

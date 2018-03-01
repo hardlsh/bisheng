@@ -102,7 +102,7 @@
 					<input id="resetUpdate" type="reset" style="display: none;" />
                    	<input type="hidden" id="exhibitIdUpdate" name="exhibitId"/>
 					<input type="hidden" id="exhibitNameUpdate" name="exhibitName"/>
-                  	<input type="hidden" id="wordStrUpdate" name="wordStr"/>
+                  	<input type="hidden" id="wordStrUpdate" name="wordIdStr"/>
 					<div class="row">
 						<div class="form-group">
 							<label

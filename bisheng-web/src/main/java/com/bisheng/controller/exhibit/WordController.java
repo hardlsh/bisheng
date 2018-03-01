@@ -181,11 +181,13 @@ public class WordController extends BaseController {
 		}else if (wordStr.length() > 1) {
 			param.setWordList(Arrays.asList(wordStr.split("")));
 		}
-		List<Long> wordIdList = new ArrayList<Long>();
-		for (String wordId : param.getWordStr().split(",")) {
-			wordIdList.add(Long.valueOf(wordId));
+		if (StringUtils.isNotBlank(param.getWordIdStr())) {
+			List<Long> wordIdList = new ArrayList<>();
+			for (String wordId : param.getWordIdStr().split(",")) {
+				wordIdList.add(Long.valueOf(wordId));
+			}
+			param.setWordIdList(wordIdList);
 		}
-		param.setWordIdList(wordIdList);
 		param.setUpdateByUser(LogUtil.getCurrentUserName());
 		ExhibitQueryParam.convertDate(param);// 转换参数
 	}
