@@ -10,6 +10,7 @@ import com.bisheng.services.exhibit.model.generated.BoothWord;
 public class BoothWordModel extends BoothWord {
     private Integer xCount;// x轴字数
     private Integer yCount;// y轴字数
+	private Long totalCount;// 文字总数
     
 	public Integer getxCount() {
 		return xCount;
@@ -22,5 +23,13 @@ public class BoothWordModel extends BoothWord {
 	}
 	public void setyCount(Integer yCount) {
 		this.yCount = yCount;
+	}
+
+	public Long getTotalCount() {
+		return totalCount;
+	}
+
+	public void setTotalCount(Long totalCount) {
+		this.totalCount = totalCount;
 	}
 }

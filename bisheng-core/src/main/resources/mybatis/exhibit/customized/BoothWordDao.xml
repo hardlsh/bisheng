@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bisheng.services.exhibit.dao.customized.BoothWordDao">
 	<resultMap id="BoothWordModel" type="com.bisheng.services.exhibit.model.customized.BoothWordModel" extends="BaseResultMap">
-
+		<result column="total_count" property="totalCount" jdbcType="BIGINT" />
 	</resultMap>
 
 	<sql id="Column_List" >
@@ -35,9 +35,10 @@
 		resultMap="BoothWordModel">
 		SELECT 
 			bw.booth_word_id, bw.word, bw.templet_name, bw.x_axis, bw.y_axis, bw.number, b.exhibit_id, 
-			b.exhibit_name, b.booth_id, b.booth_name 
+			b.exhibit_name, b.booth_id, b.booth_name, w.total_count
 		FROM 
 			tb_booth b INNER JOIN tb_booth_word bw ON b.booth_id = bw.booth_id
+				INNER JOIN tb_word w ON bw.word = w.word
 		<where>
 			<if test="exhibitIdList != null and exhibitIdList.size() > 0">
 				AND b.exhibit_id IN 

@@ -67,6 +67,7 @@
 							<th>行</th>
 							<th>列</th>
 							<th>编号</th>
+							<th>现有库存</th>
 							<th>所属展馆</th>
 							<th>所属展位</th>
 						</tr>
@@ -113,6 +114,7 @@
 					{"data" : "xAxis","bSortable" : false},
 					{"data" : "yAxis","bSortable" : false},
 					{"data" : "number","bSortable" : false},
+					{"data" : "totalCount","bSortable" : false},
 					{"data" : "exhibitName","bSortable" : false},
 					{"data" : "boothName","bSortable" : false}
 				];
