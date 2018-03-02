@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.bisheng.core.framework.exception.BusinessException;
-import com.bisheng.services.exhibit.model.generated.WordOut;
-import com.bisheng.services.exhibit.service.WordOutService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +13,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bisheng.apps.exhibit.business.WordBusiness;
 import com.bisheng.apps.exhibit.param.ExhibitQueryParam;
+import com.bisheng.core.framework.exception.BusinessException;
+import com.bisheng.core.framework.pager.PaginationConvert;
+import com.bisheng.core.framework.pager.PaginationResult;
 import com.bisheng.services.exhibit.model.customized.BoothWordModel;
 import com.bisheng.services.exhibit.model.customized.WordModel;
 import com.bisheng.services.exhibit.model.generated.Word;
 import com.bisheng.services.exhibit.model.generated.WordIn;
+import com.bisheng.services.exhibit.model.generated.WordOut;
 import com.bisheng.services.exhibit.service.WordInService;
+import com.bisheng.services.exhibit.service.WordOutService;
 import com.bisheng.services.exhibit.service.WordService;
-import com.github.pagehelper.PageInfo;
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
 
@@ -39,15 +40,13 @@ public class WordBusinessImpl implements WordBusiness {
 	private WordOutService wordOutService;
 
 	@Override
-	public PageInfo<WordModel> queryPagedWordInByParam(ExhibitQueryParam param) {
-		PageInfo<WordModel> inWordPageList = wordService.queryPagedWordInByParam(param);
-		return inWordPageList;
+	public PaginationResult<List<WordModel>> queryPagedWordInByParam(ExhibitQueryParam param) {
+		return PaginationConvert.buildPagination(wordService.queryPagedWordInByParam(param));
 	}
 
 	@Override
-	public PageInfo<WordModel> queryPagedWordOutByParam(ExhibitQueryParam param) {
-		PageInfo<WordModel> outWordPageList = wordService.queryPagedWordOutByParam(param);
-		return outWordPageList;
+	public PaginationResult<List<WordModel>> queryPagedWordOutByParam(ExhibitQueryParam param) {
+		return PaginationConvert.buildPagination(wordService.queryPagedWordOutByParam(param));
 	}
 
 	@Override

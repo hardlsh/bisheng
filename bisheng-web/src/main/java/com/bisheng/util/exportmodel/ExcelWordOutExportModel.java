@@ -7,12 +7,12 @@ import com.bisheng.util.export.ReportField;
 import java.io.Serializable;
 
 /**
- * 展馆导出model
- * 对应WordExportExcel
+ * 文字出库导出model
+ * 对应WordOutExportExcel
  * @author lihao
  */
 @Report
-public class ExcelWordExportModel implements Serializable {
+public class ExcelWordOutExportModel implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ReportField(Cells = {
@@ -26,23 +26,19 @@ public class ExcelWordExportModel implements Serializable {
     @ReportField(Cells = {
             @Cell(Mode = "WordExportExcel", Index = 2)
     })
-    private Long totalCount;// 现有库存
+    private String boothName;// 所属展位
     @ReportField(Cells = {
             @Cell(Mode = "WordExportExcel", Index = 3)
     })
-    private Long inTotalCount;// 入库数量
+    private Long totalCount;// 现有库存
     @ReportField(Cells = {
             @Cell(Mode = "WordExportExcel", Index = 4)
     })
-    private Long outTotalCount;// 出库数量
+    private Long outNumber;// 出库数量
     @ReportField(Cells = {
             @Cell(Mode = "WordExportExcel", Index = 5)
     })
-    private String inDate;// 最近入库时间
-    @ReportField(Cells = {
-            @Cell(Mode = "WordExportExcel", Index = 6)
-    })
-    private String outDate;// 最近出库时间
+    private String outDate;// 最近入库时间
 
     public String getWord() {
         return word;
@@ -60,6 +56,14 @@ public class ExcelWordExportModel implements Serializable {
         this.exhibitName = exhibitName;
     }
 
+    public String getBoothName() {
+        return boothName;
+    }
+
+    public void setBoothName(String boothName) {
+        this.boothName = boothName;
+    }
+
     public Long getTotalCount() {
         return totalCount;
     }
@@ -68,28 +72,12 @@ public class ExcelWordExportModel implements Serializable {
         this.totalCount = totalCount;
     }
 
-    public Long getInTotalCount() {
-        return inTotalCount;
+    public Long getOutNumber() {
+        return outNumber;
     }
 
-    public void setInTotalCount(Long inTotalCount) {
-        this.inTotalCount = inTotalCount;
-    }
-
-    public Long getOutTotalCount() {
-        return outTotalCount;
-    }
-
-    public void setOutTotalCount(Long outTotalCount) {
-        this.outTotalCount = outTotalCount;
-    }
-
-    public String getInDate() {
-        return inDate;
-    }
-
-    public void setInDate(String inDate) {
-        this.inDate = inDate;
+    public void setOutNumber(Long outNumber) {
+        this.outNumber = outNumber;
     }
 
     public String getOutDate() {
