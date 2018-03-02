@@ -38,7 +38,7 @@
 	<select id="queryWordInByParam" parameterType="com.bisheng.apps.exhibit.param.ExhibitQueryParam" resultMap="WordModel">
 		SELECT
 			w.word_id, w.word, wi.exhibit_name, s.boothIdStr, s.boothNameStr, w.total_count,
-			count(wi.in_number) as inTotalCount, w.in_date
+			sum(wi.in_number) as inTotalCount, w.in_date
 		FROM
 			tb_word w
 		LEFT JOIN tb_word_in wi ON w.word_id = wi.word_id
@@ -91,7 +91,7 @@
 	<select id="queryWordOutByParam" parameterType="com.bisheng.apps.exhibit.param.ExhibitQueryParam" resultMap="WordModel">
 		SELECT
 		w.word_id, w.word, wo.exhibit_name, s.boothIdStr, s.boothNameStr, w.total_count,
-		count(wo.out_number) as outTotalCount, w.out_date
+		sum(wo.out_number) as outTotalCount, w.out_date
 		FROM
 		tb_word w
 		LEFT JOIN tb_word_out wo ON w.word_id = wo.word_id

@@ -74,9 +74,9 @@
 						<tr>
 							<th><input id="checkAll" type="checkbox" name="checkBox">全选</th>
 							<th>文字</th>
+							<th>现有库存量</th>
 							<th>所属展馆</th>
 							<th>所属展位</th>
-							<th>现有库存</th>
 							<th>入库数量</th>
 							<th>最近入库日期</th>
 						</tr>
@@ -171,13 +171,19 @@
 			var colArray = [
 					{"data" : function(e) {
 						return '<input type="checkbox" class="checkboxes" name="chb1" data-id="'
-						+ e.wordId + '" onclick="wordInHelper.checkAll()" />';
+						+ e.wordId + '" />';
 					},"bSortable" : false},
 					{"data" : "word","bSortable" : false},
+                	{"data" : "totalCount","bSortable" : false},
 					{"data" : "exhibitName","bSortable" : false},
                 	{"data" : "boothNameStr","bSortable" : false},
-					{"data" : "totalCount","bSortable" : false},
-                	{"data" : "inTotalCount","bSortable" : false},
+                	{"data" : function(e) {
+	                		if (e.inTotalCount == null) {
+	                			return 0;
+	                		} else {
+	                			return e.inTotalCount;
+	                		}
+						},"bSortable" : false},
 					{"data" : "inDate","bSortable" : false}
 				];
 			TablePaginationSort.initCustom(url, colArray, "wordTable","filter_form");
