@@ -63,6 +63,7 @@
 						<tr>
 							<th>文字Id</th>
 							<th>文字</th>
+							<th>数量</th>
 							<th>模板名称</th>
 							<th>行</th>
 							<th>列</th>
@@ -110,6 +111,7 @@
 			var colArray = [
 					{"data" : "boothWordId","bSortable" : false},
 					{"data" : "word","bSortable" : false},
+					{"data" : "searchTotal","bSortable" : false},
 					{"data" : "templetName","bSortable" : false},
 					{"data" : "xAxis","bSortable" : false},
 					{"data" : "yAxis","bSortable" : false},

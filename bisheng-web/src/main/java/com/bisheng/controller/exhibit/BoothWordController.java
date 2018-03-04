@@ -1,7 +1,9 @@
 package com.bisheng.controller.exhibit;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -50,19 +52,43 @@ public class BoothWordController extends BaseController {
     public void getBoothWordList(HttpServletResponse response, ExhibitQueryParam param) {
     	logger.info("【展位文字管理】查询展位_开始,操作人:"+LogUtil.getCurrentUserName()+",入参:"+gson.toJson(param));
 		try {
-			if (StringUtils.isNotBlank(param.getWordStr())) {
-				param.setWordList(Arrays.asList(param.getWordStr().split("")));
+			if (StringUtils.isBlank(param.getWordStr())) {
+				logger.error("【展位文字管理】查询展位文字参数校验不通过");
+				return;
 			}
+			param.setWordList(Arrays.asList(param.getWordStr().split("")));
 			PageInfo<BoothWordModel> pageInfo = boothBusiness.queryPagedBoothWordByParam(param);
 			int total = (int) pageInfo.getTotal();
-			PaginationResult<List<BoothWordModel>> result = PaginationResult.newInstance(pageInfo.getList());
+			List<BoothWordModel> boothWordList = displayHandler(param, pageInfo);
+			PaginationResult<List<BoothWordModel>> result = PaginationResult.newInstance(boothWordList);
 			result.setiTotalRecords(total);
 			result.setiTotalDisplayRecords(total);
 			actionResult4Json(result.json(), response);
-			logger.debug("【展位文字管理】查询展位_结束,操作人:"+LogUtil.getCurrentUserName());
+			logger.debug("【展位文字管理】查询展位文字_结束,操作人:"+LogUtil.getCurrentUserName());
 		} catch (Exception e) {
-			logger.error("【展位文字管理】查询展位_异常,操作人:"+LogUtil.getCurrentUserName()+",异常原因:", e);
+			logger.error("【展位文字管理】查询展位文字_异常,操作人:"+LogUtil.getCurrentUserName()+",异常原因:", e);
 		}
     }
-    
+
+	// 页面展示处理(数量列)
+	private List<BoothWordModel> displayHandler(ExhibitQueryParam param, PageInfo<BoothWordModel> pageInfo) {
+		List<BoothWordModel> boothWordList =  pageInfo.getList();
+		List<String> wordList = param.getWordList();
+		Map<String, Integer> wordMap = new HashMap<>();
+		Integer value;
+		for (String word : wordList) {
+			value = wordMap.get(word);
+			if (null == value) {
+				wordMap.put(word, 1);
+			} else {
+				wordMap.put(word, value + 1);
+			}
+		}
+		if (null != boothWordList && boothWordList.size() > 0) {
+			for (BoothWordModel boothWord : boothWordList) {
+				boothWord.setSearchTotal(wordMap.get(boothWord.getWord()));
+			}
+		}
+		return boothWordList;
+	}
 }

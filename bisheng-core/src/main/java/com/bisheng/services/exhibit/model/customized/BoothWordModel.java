@@ -11,6 +11,7 @@ public class BoothWordModel extends BoothWord {
     private Integer xCount;// x轴字数
     private Integer yCount;// y轴字数
 	private Long totalCount;// 文字总数
+	private Integer searchTotal;// 输入框内的文字数量
     
 	public Integer getxCount() {
 		return xCount;
@@ -32,4 +33,11 @@ public class BoothWordModel extends BoothWord {
 	public void setTotalCount(Long totalCount) {
 		this.totalCount = totalCount;
 	}
+	public Integer getSearchTotal() {
+		return searchTotal;
+	}
+	public void setSearchTotal(Integer searchTotal) {
+		this.searchTotal = searchTotal;
+	}
+	
 }
