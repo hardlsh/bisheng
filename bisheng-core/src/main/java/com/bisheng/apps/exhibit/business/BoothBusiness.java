@@ -41,6 +41,7 @@ public interface BoothBusiness {
 
 	/**
 	 * 删除展位
+	 * 删除对应展位文字、库存、出入库信息
 	 * @param param
 	 */
 	void deleteBooth(ExhibitQueryParam param);

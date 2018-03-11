@@ -49,7 +49,9 @@ public class WordServiceImpl extends BaseService implements WordService {
 	public void updateWord(Word word) {
 		Word record = new Word();
 		record.setWordId(word.getWordId());
-		record.setTotalCount(word.getTotalCount());
+		if (null != word.getTotalCount()) {
+			record.setTotalCount(word.getTotalCount());
+		}
 		if (null != word.getInDate()) {
 			record.setInDate(word.getInDate());
 		}
@@ -59,5 +61,10 @@ public class WordServiceImpl extends BaseService implements WordService {
 		getWordDao().updateWord(record);
 	}
 
-
+	@Override
+	public void deleteByWord(Word word) {
+		Word record = new Word();
+		record.setWord(word.getWord());
+		getWordDao().deleteByWord(record);
+	}
 }

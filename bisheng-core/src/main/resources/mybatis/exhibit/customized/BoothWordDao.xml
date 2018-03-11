@@ -8,7 +8,50 @@
 	<sql id="Column_List" >
 		bw.booth_word_id, bw.word, bw.templet_name, bw.booth_id, bw.exhibit_id, bw.exhibit_name, bw.booth_name, bw.x_axis, bw.y_axis, bw.remark
   	</sql>
-	
+
+	<!-- 单表查询 -->
+	<select id="queryBoothWord" parameterType="com.bisheng.services.exhibit.model.generated.BoothWord"
+			resultType="com.bisheng.services.exhibit.model.generated.BoothWord">
+		SELECT
+		 	<include refid="Column_List"/>
+		FROM tb_booth_word bw
+		WHERE bw.booth_id = #{boothId, jdbcType=BIGINT}
+	</select>
+
+	<!-- 根据参数,查询展位文字 -->
+	<select id="queryBoothWordByParam" parameterType="com.bisheng.apps.exhibit.param.ExhibitQueryParam"
+			resultMap="BoothWordModel">
+		SELECT
+		bw.booth_word_id, bw.word, bw.templet_name, bw.x_axis, bw.y_axis, bw.number, b.exhibit_id,
+		b.exhibit_name, b.booth_id, b.booth_name, w.total_count
+		FROM
+		tb_booth b INNER JOIN tb_booth_word bw ON b.booth_id = bw.booth_id
+		INNER JOIN tb_word w ON bw.word = w.word
+		<where>
+			<if test="exhibitIdList != null and exhibitIdList.size() > 0">
+				AND b.exhibit_id IN
+				<foreach collection="exhibitIdList" item="exhibitIdItem" separator="," open="(" close=")">
+					#{exhibitIdItem, jdbcType=BIGINT}
+				</foreach>
+			</if>
+			<if test="boothIdList != null and boothIdList.size() > 0">
+				AND b.booth_id IN
+				<foreach collection="boothIdList" item="boothIdItem" separator="," open="(" close=")">
+					#{boothIdItem, jdbcType=BIGINT}
+				</foreach>
+			</if>
+			<if test="word != null and word != ''">
+				AND bw.word = #{word, jdbcType=VARCHAR}
+			</if>
+			<if test="wordList != null and wordList.size() > 0">
+				AND bw.word IN
+				<foreach collection="wordList" item="wordItem" separator="," open="(" close=")">
+					#{wordItem, jdbcType=VARCHAR}
+				</foreach>
+			</if>
+		</where>
+	</select>
+
 	<!-- 批量插入 -->
 	<insert id="batchInsert">
 		INSERT INTO tb_booth_word 
@@ -29,38 +72,5 @@
 		WHERE 
 			booth_id = #{boothId,jdbcType=BIGINT}
 	</delete>
-	
-	<!-- 根据参数,查询展位文字 -->
-	<select id="queryBoothWordByParam" parameterType="com.bisheng.apps.exhibit.param.ExhibitQueryParam" 
-		resultMap="BoothWordModel">
-		SELECT 
-			bw.booth_word_id, bw.word, bw.templet_name, bw.x_axis, bw.y_axis, bw.number, b.exhibit_id, 
-			b.exhibit_name, b.booth_id, b.booth_name, w.total_count
-		FROM 
-			tb_booth b INNER JOIN tb_booth_word bw ON b.booth_id = bw.booth_id
-				INNER JOIN tb_word w ON bw.word = w.word
-		<where>
-			<if test="exhibitIdList != null and exhibitIdList.size() > 0">
-				AND b.exhibit_id IN 
-				<foreach collection="exhibitIdList" item="exhibitIdItem" separator="," open="(" close=")">
-					#{exhibitIdItem, jdbcType=BIGINT}
-				</foreach>
-			</if>
-			<if test="boothIdList != null and boothIdList.size() > 0">
-				AND b.booth_id IN
-				<foreach collection="boothIdList" item="boothIdItem" separator="," open="(" close=")">
-					#{boothIdItem, jdbcType=BIGINT}
-				</foreach>
-			</if>
-			<if test="word != null and word != ''">
-				AND bw.word = #{word, jdbcType=VARCHAR} 
-			</if>
-			<if test="wordList != null and wordList.size() > 0">
-				AND bw.word IN
-				<foreach collection="wordList" item="wordItem" separator="," open="(" close=")">
-					#{wordItem, jdbcType=VARCHAR}
-				</foreach>
-			</if>
-		</where>
-	</select>
+
 </mapper>

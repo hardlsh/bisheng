@@ -45,4 +45,10 @@ public interface WordBusiness {
 	 * @param param
 	 */
 	void updateWordOut(ExhibitQueryParam param);
+
+	/**
+	 * 根据展位id删除，文字相关表(展位文字表、文字存量表、文字出入库表)
+	 * @param boothId
+	 */
+	void deleteWordByBoothId(Long boothId);
 }

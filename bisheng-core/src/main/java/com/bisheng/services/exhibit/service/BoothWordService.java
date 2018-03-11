@@ -13,7 +13,19 @@ import java.util.List;
  * @author lihao
  */
 public interface BoothWordService {
-	
+
+	/**
+	 * 单表查询
+	 * @param boothWord
+	 * @return
+	 */
+	List<BoothWord> queryBoothWord(BoothWord boothWord);
+
+	/**
+	 * 分页查询展位文字
+	 */
+	PageInfo<BoothWordModel> queryPagedBoothWordByParam(ExhibitQueryParam param);
+
 	/**
 	 * 批量插入展位文字
 	 */
@@ -24,9 +36,4 @@ public interface BoothWordService {
 	 */
 	int deleteByBoothId(BoothWord boothWord);
 
-	/**
-	 * 分页查询展位文字
-	 */
-	PageInfo<BoothWordModel> queryPagedBoothWordByParam(ExhibitQueryParam param);
-	
 }

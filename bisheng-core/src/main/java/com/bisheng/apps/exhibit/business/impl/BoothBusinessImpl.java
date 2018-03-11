@@ -1,21 +1,10 @@
 package com.bisheng.apps.exhibit.business.impl;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import com.bisheng.core.framework.exception.BusinessException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.bisheng.apps.exhibit.business.BoothBusiness;
 import com.bisheng.apps.exhibit.business.WordBusiness;
 import com.bisheng.apps.exhibit.param.ExhibitQueryParam;
 import com.bisheng.core.common.util.MBeanUtil;
+import com.bisheng.core.framework.exception.BusinessException;
 import com.bisheng.core.framework.exception.Preconditions;
 import com.bisheng.services.exhibit.enums.BoothWordSignEnum;
 import com.bisheng.services.exhibit.model.customized.BoothModel;
@@ -25,6 +14,15 @@ import com.bisheng.services.exhibit.model.generated.BoothWord;
 import com.bisheng.services.exhibit.service.BoothService;
 import com.bisheng.services.exhibit.service.BoothWordService;
 import com.github.pagehelper.PageInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class BoothBusinessImpl implements BoothBusiness {
@@ -67,6 +65,7 @@ public class BoothBusinessImpl implements BoothBusiness {
 	}
 
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void deleteBooth(ExhibitQueryParam param) {
 		Booth record = new Booth();
 		record.setBoothId(param.getBoothId());
@@ -74,6 +73,7 @@ public class BoothBusinessImpl implements BoothBusiness {
 		if (result != 1) {
 			throw new BusinessException("删除展位异常");
 		}
+		wordBusiness.deleteWordByBoothId(param.getBoothId());
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package com.bisheng.services.exhibit.service;
 
+import com.bisheng.services.exhibit.model.generated.Word;
 import com.bisheng.services.exhibit.model.generated.WordIn;
 
 import java.util.List;
@@ -15,4 +16,10 @@ public interface WordInService {
      * @param wordInList
      */
     void batchInsert(List<WordIn> wordInList);
+
+    /**
+     * 删除文字入库
+     * @param word
+     */
+    void deleteByWord(Word word);
 }

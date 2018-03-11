@@ -47,4 +47,9 @@ public interface WordService {
 	 */
 	void updateWord(Word word);
 
+	/**
+	 * 删除文字存量
+	 * @param word
+	 */
+	void deleteByWord(Word word);
 }

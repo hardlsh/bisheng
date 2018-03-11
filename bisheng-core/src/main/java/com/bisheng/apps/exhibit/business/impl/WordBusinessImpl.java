@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.bisheng.services.exhibit.model.generated.*;
+import com.bisheng.services.exhibit.service.BoothWordService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +20,6 @@ import com.bisheng.core.framework.pager.PaginationConvert;
 import com.bisheng.core.framework.pager.PaginationResult;
 import com.bisheng.services.exhibit.model.customized.BoothWordModel;
 import com.bisheng.services.exhibit.model.customized.WordModel;
-import com.bisheng.services.exhibit.model.generated.Word;
-import com.bisheng.services.exhibit.model.generated.WordIn;
-import com.bisheng.services.exhibit.model.generated.WordOut;
 import com.bisheng.services.exhibit.service.WordInService;
 import com.bisheng.services.exhibit.service.WordOutService;
 import com.bisheng.services.exhibit.service.WordService;
@@ -38,6 +37,8 @@ public class WordBusinessImpl implements WordBusiness {
 	private WordInService wordInService;
 	@Autowired
 	private WordOutService wordOutService;
+	@Autowired
+	private BoothWordService boothWordService;
 
 	@Override
 	public PaginationResult<List<WordModel>> queryPagedWordInByParam(ExhibitQueryParam param) {
@@ -79,19 +80,18 @@ public class WordBusinessImpl implements WordBusiness {
 				wordOutList.add(wordOut);
 			} else if (null != wordList && wordList.size() == 1){
 				word = wordList.get(0);
-				word.setTotalCount(word.getTotalCount() + param.getTemplateCount());
 				word.setInDate(param.getUpdateDate());
 				wordService.updateWord(word);
-				wordIn = assembleWordIn(param);
-				wordIn.setWordId(wordList.get(0).getWordId());
-				wordIn.setWord(wordList.get(0).getWord());
-				wordInList.add(wordIn);
 			} else {
 				logger.error("【文字存量业务】文字存量表数据记录有重复,对应展馆ID:"+boothWord.getExhibitId()+",对应文字:" + boothWord.getWord());
 			}
 		}
-		wordInService.batchInsert(wordInList);
-		wordOutService.batchInsert(wordOutList);
+		if (wordInList.size() > 0) {
+			wordInService.batchInsert(wordInList);
+		}
+		if (wordOutList.size() > 0) {
+			wordOutService.batchInsert(wordOutList);
+		}
 	}
 
 	private WordIn assembleWordIn(ExhibitQueryParam param){
@@ -181,4 +181,22 @@ public class WordBusinessImpl implements WordBusiness {
 		return wordMap;
 	}
 
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void deleteWordByBoothId(Long boothId) {
+		BoothWord record = new BoothWord();
+		record.setBoothId(boothId);
+		List<BoothWord> boothWordList = boothWordService.queryBoothWord(record);
+		Word word;
+		if (null != boothWordList && boothWordList.size() > 0) {
+			for (BoothWord boothWord : boothWordList) {
+				word = new Word();
+				word.setWord(boothWord.getWord());
+				wordService.deleteByWord(word);
+				wordInService.deleteByWord(word);
+				wordOutService.deleteByWord(word);
+			}
+			boothWordService.deleteByBoothId(record);
+		}
+	}
 }

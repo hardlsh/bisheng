@@ -1,6 +1,7 @@
 package com.bisheng.services.exhibit.dao.customized;
 
 import com.bisheng.services.exhibit.dao.generated.WordOutMapper;
+import com.bisheng.services.exhibit.model.generated.Word;
 
 import java.util.Map;
 
@@ -15,4 +16,10 @@ public interface WordOutDao extends WordOutMapper{
      * @param map
      */
     void batchInsert(Map<String, Object> map);
+
+    /**
+     * 删除文字出库
+     * @param word
+     */
+    void deleteByWord(Word word);
 }

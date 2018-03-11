@@ -22,6 +22,19 @@ public class BoothWordServiceImpl extends BaseService implements BoothWordServic
 	}
 
 	@Override
+	public List<BoothWord> queryBoothWord(BoothWord boothWord) {
+		return getBoothWordDao().queryBoothWord(boothWord);
+	}
+
+	@Override
+	public PageInfo<BoothWordModel> queryPagedBoothWordByParam(ExhibitQueryParam param) {
+		setStartPage(param);
+		List<BoothWordModel> list = getBoothWordDao().queryBoothWordByParam(param);
+		PageInfo<BoothWordModel> pageInfo = new PageInfo<>(list);
+		return pageInfo;
+	}
+
+	@Override
 	public void batchInsert(List<BoothWordModel> boothWordList) {
 		if (null != boothWordList && !boothWordList.isEmpty()) {
 			Map<String, Object> map = new HashMap<>();
@@ -33,14 +46,6 @@ public class BoothWordServiceImpl extends BaseService implements BoothWordServic
 	@Override
 	public int deleteByBoothId(BoothWord boothWord) {
 		return getBoothWordDao().deleteByBoothId(boothWord);
-	}
-
-	@Override
-	public PageInfo<BoothWordModel> queryPagedBoothWordByParam(ExhibitQueryParam param) {
-		setStartPage(param);
-		List<BoothWordModel> list = getBoothWordDao().queryBoothWordByParam(param);
-		PageInfo<BoothWordModel> pageInfo = new PageInfo<>(list);
-		return pageInfo;
 	}
 
 }

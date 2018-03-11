@@ -15,4 +15,11 @@
             #{item.outDate,jdbcType=TIMESTAMP}, #{item.outUser,jdbcType=VARCHAR})
         </foreach>
     </insert>
+
+    <!-- 单表删除 -->
+    <delete id="deleteByWord" parameterType="com.bisheng.services.exhibit.model.generated.Word">
+        DELETE FROM tb_word_out
+        WHERE word = #{word,jdbcType=VARCHAR}
+    </delete>
+
 </mapper>

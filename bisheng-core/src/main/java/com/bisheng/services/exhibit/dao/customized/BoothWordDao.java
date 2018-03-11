@@ -11,6 +11,18 @@ import com.bisheng.services.exhibit.model.generated.BoothWord;
 public interface BoothWordDao extends BoothWordMapper{
 
 	/**
+	 * 单表查询
+	 * @param boothWord
+	 * @return
+	 */
+	List<BoothWord> queryBoothWord(BoothWord boothWord);
+
+	/**
+	 * 根据参数,查询展位文字
+	 */
+	List<BoothWordModel> queryBoothWordByParam(ExhibitQueryParam param);
+
+	/**
 	 * 批量插入
 	 */
 	void batchInsert(Map<String, Object> map);
@@ -19,10 +31,5 @@ public interface BoothWordDao extends BoothWordMapper{
 	 * 根据boothId,进行删除操作
 	 */
 	int deleteByBoothId(BoothWord boothWord);
-
-	/**
-	 * 根据参数,查询展位文字
-	 */
-	List<BoothWordModel> queryBoothWordByParam(ExhibitQueryParam param);
 
 }

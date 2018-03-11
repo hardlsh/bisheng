@@ -58,7 +58,7 @@
 							<div class="col-md-12">
 								<button id="btnRefresh" class="btn btn-sm green" type="button">搜索</button>
 								<a class="btn btn-sm red" id="btnEmpty"><i class="icon-trash"></i>清空条件</a>
-								<button id="doExport" class="btn btn-sm green" type="button">导出明细</button>
+								<!-- <button id="doExport" class="btn btn-sm green" type="button">导出明细</button> -->
 	                        </div>
 						</div>
 						</div>
