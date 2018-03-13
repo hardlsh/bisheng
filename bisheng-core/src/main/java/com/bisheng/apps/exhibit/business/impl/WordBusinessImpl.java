@@ -62,6 +62,7 @@ public class WordBusinessImpl implements WordBusiness {
 		for (BoothWordModel boothWord : param.getBoothWordList()) {
 			wordModel = new WordModel();
 			wordModel.setWord(boothWord.getWord());
+			wordModel.setExhibitId(boothWord.getExhibitId());
 			List<Word> wordList = wordService.queryWordList(wordModel);
 			if (null == wordList || wordList.isEmpty()) {
 				word = new Word();

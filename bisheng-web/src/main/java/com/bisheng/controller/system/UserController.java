@@ -322,7 +322,7 @@ public class UserController extends BaseController {
 				for (UserModel user : userList) {
 					if (exhibit.getExhibitId().equals(user.getExhibitId())) {
 						userModel.setExhibitSel(true);
-						break;
+						continue;
 					}
 				}
 				list.add(userModel);
