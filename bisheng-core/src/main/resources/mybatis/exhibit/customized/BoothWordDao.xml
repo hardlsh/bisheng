@@ -66,7 +66,7 @@
 	</insert>
 	
 	<!-- 根据boothId,进行删除操作 -->
-	<delete id="deleteByBoothId" parameterType="com.bisheng.services.exhibit.model.generated.BoothWord">
+	<delete id="deleteByBoothId" parameterType="java.lang.Long">
 		DELETE FROM 
 			tb_booth_word 
 		WHERE 

@@ -1,7 +1,6 @@
 package com.bisheng.services.exhibit.dao.customized;
 
 import com.bisheng.services.exhibit.dao.generated.WordOutMapper;
-import com.bisheng.services.exhibit.model.generated.Word;
 
 import java.util.Map;
 
@@ -19,7 +18,7 @@ public interface WordOutDao extends WordOutMapper{
 
     /**
      * 删除文字出库
-     * @param word
+     * @param exhibitId
      */
-    void deleteByWord(Word word);
+    void deleteByExhibitId(Long exhibitId);
 }

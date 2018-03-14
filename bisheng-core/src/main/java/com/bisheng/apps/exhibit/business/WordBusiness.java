@@ -3,7 +3,6 @@ package com.bisheng.apps.exhibit.business;
 import com.bisheng.apps.exhibit.param.ExhibitQueryParam;
 import com.bisheng.core.framework.pager.PaginationResult;
 import com.bisheng.services.exhibit.model.customized.WordModel;
-import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -47,8 +46,8 @@ public interface WordBusiness {
 	void updateWordOut(ExhibitQueryParam param);
 
 	/**
-	 * 根据展位id删除，文字相关表(展位文字表、文字存量表、文字出入库表)
-	 * @param boothId
+	 * 根据展馆id删除，文字相关表(文字存量表、文字出入库表)
+	 * @param exhibitId
 	 */
-	void deleteWordByBoothId(Long boothId);
+	void deleteWordByExhibitId(Long exhibitId);
 }

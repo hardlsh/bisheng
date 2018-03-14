@@ -1,6 +1,5 @@
 package com.bisheng.services.exhibit.service;
 
-import com.bisheng.services.exhibit.model.generated.Word;
 import com.bisheng.services.exhibit.model.generated.WordIn;
 
 import java.util.List;
@@ -19,7 +18,7 @@ public interface WordInService {
 
     /**
      * 删除文字入库
-     * @param word
+     * @param exhibitId
      */
-    void deleteByWord(Word word);
+    void deleteByExhibitId(Long exhibitId);
 }

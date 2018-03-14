@@ -49,7 +49,7 @@ public interface WordService {
 
 	/**
 	 * 删除文字存量
-	 * @param word
+	 * @param exhibitId
 	 */
-	void deleteByWord(Word word);
+	void deleteByExhibitId(Long exhibitId);
 }

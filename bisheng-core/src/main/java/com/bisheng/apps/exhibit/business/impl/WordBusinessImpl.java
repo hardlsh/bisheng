@@ -1,18 +1,5 @@
 package com.bisheng.apps.exhibit.business.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import com.bisheng.services.exhibit.model.generated.*;
-import com.bisheng.services.exhibit.service.BoothWordService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.bisheng.apps.exhibit.business.WordBusiness;
 import com.bisheng.apps.exhibit.param.ExhibitQueryParam;
 import com.bisheng.core.framework.exception.BusinessException;
@@ -20,11 +7,24 @@ import com.bisheng.core.framework.pager.PaginationConvert;
 import com.bisheng.core.framework.pager.PaginationResult;
 import com.bisheng.services.exhibit.model.customized.BoothWordModel;
 import com.bisheng.services.exhibit.model.customized.WordModel;
+import com.bisheng.services.exhibit.model.generated.Word;
+import com.bisheng.services.exhibit.model.generated.WordIn;
+import com.bisheng.services.exhibit.model.generated.WordOut;
 import com.bisheng.services.exhibit.service.WordInService;
 import com.bisheng.services.exhibit.service.WordOutService;
 import com.bisheng.services.exhibit.service.WordService;
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class WordBusinessImpl implements WordBusiness {
@@ -37,8 +37,6 @@ public class WordBusinessImpl implements WordBusiness {
 	private WordInService wordInService;
 	@Autowired
 	private WordOutService wordOutService;
-	@Autowired
-	private BoothWordService boothWordService;
 
 	@Override
 	public PaginationResult<List<WordModel>> queryPagedWordInByParam(ExhibitQueryParam param) {
@@ -184,20 +182,10 @@ public class WordBusinessImpl implements WordBusiness {
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void deleteWordByBoothId(Long boothId) {
-		BoothWord record = new BoothWord();
-		record.setBoothId(boothId);
-		List<BoothWord> boothWordList = boothWordService.queryBoothWord(record);
-		Word word;
-		if (null != boothWordList && boothWordList.size() > 0) {
-			for (BoothWord boothWord : boothWordList) {
-				word = new Word();
-				word.setWord(boothWord.getWord());
-				wordService.deleteByWord(word);
-				wordInService.deleteByWord(word);
-				wordOutService.deleteByWord(word);
-			}
-			boothWordService.deleteByBoothId(record);
-		}
+	public void deleteWordByExhibitId(Long exhibitId) {
+			wordService.deleteByExhibitId(exhibitId);
+			wordInService.deleteByExhibitId(exhibitId);
+			wordOutService.deleteByExhibitId(exhibitId);
 	}
+
 }

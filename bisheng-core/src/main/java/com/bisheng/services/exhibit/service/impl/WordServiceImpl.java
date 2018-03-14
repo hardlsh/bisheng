@@ -62,9 +62,7 @@ public class WordServiceImpl extends BaseService implements WordService {
 	}
 
 	@Override
-	public void deleteByWord(Word word) {
-		Word record = new Word();
-		record.setWord(word.getWord());
-		getWordDao().deleteByWord(record);
+	public void deleteByExhibitId(Long exhibitId) {
+		getWordDao().deleteByExhibitId(exhibitId);
 	}
 }

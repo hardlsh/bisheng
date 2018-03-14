@@ -2,7 +2,6 @@ package com.bisheng.services.exhibit.service.impl;
 
 import com.bisheng.core.framework.service.BaseService;
 import com.bisheng.services.exhibit.dao.customized.WordInDao;
-import com.bisheng.services.exhibit.model.generated.Word;
 import com.bisheng.services.exhibit.model.generated.WordIn;
 import com.bisheng.services.exhibit.service.WordInService;
 import org.springframework.stereotype.Service;
@@ -31,9 +30,7 @@ public class WordInServiceImpl extends BaseService implements WordInService{
     }
 
     @Override
-    public void deleteByWord(Word word) {
-        Word record = new Word();
-        record.setWord(word.getWord());
-        getWordInDao().deleteByWord(record);
+    public void deleteByExhibitId(Long exhibitId) {
+        getWordInDao().deleteByExhibitId(exhibitId);
     }
 }

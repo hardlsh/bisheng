@@ -49,6 +49,7 @@ public interface ExhibitBusiness {
 
 	/**
 	 * 删除展馆
+	 * 对应删除展馆的所有信息
 	 * @param param
 	 */
 	void deleteExhibit(ExhibitQueryParam param);

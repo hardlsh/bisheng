@@ -10,7 +10,6 @@ import com.bisheng.services.exhibit.enums.BoothWordSignEnum;
 import com.bisheng.services.exhibit.model.customized.BoothModel;
 import com.bisheng.services.exhibit.model.customized.BoothWordModel;
 import com.bisheng.services.exhibit.model.generated.Booth;
-import com.bisheng.services.exhibit.model.generated.BoothWord;
 import com.bisheng.services.exhibit.service.BoothService;
 import com.bisheng.services.exhibit.service.BoothWordService;
 import com.github.pagehelper.PageInfo;
@@ -47,6 +46,11 @@ public class BoothBusinessImpl implements BoothBusiness {
 		PageInfo<BoothModel> pageInfo = boothService.queryPagedBoothByParam(param);
 		return pageInfo;
 	}
+
+	@Override
+	public PageInfo<BoothWordModel> queryPagedBoothWordByParam(ExhibitQueryParam param) {
+		return boothWordService.queryPagedBoothWordByParam(param);
+	}
 	
 	@Override
 	public void addBooth(ExhibitQueryParam param) {
@@ -73,7 +77,7 @@ public class BoothBusinessImpl implements BoothBusiness {
 		if (result != 1) {
 			throw new BusinessException("删除展位异常");
 		}
-		wordBusiness.deleteWordByBoothId(param.getBoothId());
+		boothWordService.deleteByBoothId(param.getBoothId());
 	}
 
 	@Override
@@ -93,9 +97,7 @@ public class BoothBusinessImpl implements BoothBusiness {
 		
 		// 之前已经导入过的,需要先删除
 		if (BoothWordSignEnum.ALIMPORT.getKey() == queryParam.getWordSign()) {
-			BoothWord boothWord = new BoothWord();
-			boothWord.setBoothId(queryParam.getBoothId());
-			int delIndex = boothWordService.deleteByBoothId(boothWord);
+			int delIndex = boothWordService.deleteByBoothId(queryParam.getBoothId());
 			Preconditions.checkArgument(delIndex >= 1, "删除原来导入数据失败");
 		}
 		boothWordService.batchInsert(queryParam.getBoothWordList());
@@ -104,9 +106,4 @@ public class BoothBusinessImpl implements BoothBusiness {
 		wordBusiness.newWordIn(queryParam);
 	}
 
-	@Override
-	public PageInfo<BoothWordModel> queryPagedBoothWordByParam(ExhibitQueryParam param) {
-		return boothWordService.queryPagedBoothWordByParam(param);
-	}
-	
 }

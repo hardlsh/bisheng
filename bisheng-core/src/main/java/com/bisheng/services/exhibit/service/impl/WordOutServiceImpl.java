@@ -2,7 +2,6 @@ package com.bisheng.services.exhibit.service.impl;
 
 import com.bisheng.core.framework.service.BaseService;
 import com.bisheng.services.exhibit.dao.customized.WordOutDao;
-import com.bisheng.services.exhibit.model.generated.Word;
 import com.bisheng.services.exhibit.model.generated.WordOut;
 import com.bisheng.services.exhibit.service.WordOutService;
 import org.springframework.stereotype.Service;
@@ -31,9 +30,7 @@ public class WordOutServiceImpl extends BaseService implements WordOutService{
     }
 
     @Override
-    public void deleteByWord(Word word) {
-        Word record = new Word();
-        record.setWord(word.getWord());
-        getWordOutDao().deleteByWord(record);
+    public void deleteByExhibitId(Long exhibitId) {
+        getWordOutDao().deleteByExhibitId(exhibitId);
     }
 }

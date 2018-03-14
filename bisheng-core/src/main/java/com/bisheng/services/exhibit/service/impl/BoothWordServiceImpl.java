@@ -44,8 +44,8 @@ public class BoothWordServiceImpl extends BaseService implements BoothWordServic
 	}
 
 	@Override
-	public int deleteByBoothId(BoothWord boothWord) {
-		return getBoothWordDao().deleteByBoothId(boothWord);
+	public int deleteByBoothId(Long boothId) {
+		return getBoothWordDao().deleteByBoothId(boothId);
 	}
 
 }

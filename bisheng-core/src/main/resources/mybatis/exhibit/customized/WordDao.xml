@@ -166,8 +166,8 @@
 	</update>
 
 	<!-- 单表删除 -->
-	<delete id="deleteByWord" parameterType="com.bisheng.services.exhibit.model.generated.Word">
+	<delete id="deleteByExhibitId" parameterType="java.lang.Long">
 		DELETE FROM tb_word
-		WHERE word = #{word,jdbcType=VARCHAR}
+		WHERE exhibit_id = #{exhibitId,jdbcType=BIGINT}
 	</delete>
 </mapper>

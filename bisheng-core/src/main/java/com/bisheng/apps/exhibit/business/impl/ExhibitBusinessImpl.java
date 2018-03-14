@@ -1,25 +1,38 @@
 package com.bisheng.apps.exhibit.business.impl;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import com.bisheng.core.framework.exception.BusinessException;
-import org.springframework.stereotype.Service;
-
+import com.bisheng.apps.exhibit.business.BoothBusiness;
 import com.bisheng.apps.exhibit.business.ExhibitBusiness;
+import com.bisheng.apps.exhibit.business.WordBusiness;
 import com.bisheng.apps.exhibit.param.ExhibitQueryParam;
 import com.bisheng.core.common.util.MBeanUtil;
+import com.bisheng.core.framework.exception.BusinessException;
+import com.bisheng.services.exhibit.model.customized.BoothModel;
 import com.bisheng.services.exhibit.model.customized.ExhibitModel;
 import com.bisheng.services.exhibit.model.generated.Exhibit;
+import com.bisheng.services.exhibit.service.BoothService;
 import com.bisheng.services.exhibit.service.ExhibitService;
+import com.bisheng.services.system.service.UserExhibitService;
 import com.github.pagehelper.PageInfo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class ExhibitBusinessImpl implements ExhibitBusiness {
 
-	@Resource
-	private ExhibitService  exhibitService;
+	@Autowired
+	private ExhibitService exhibitService;
+	@Autowired
+	private BoothBusiness boothBusiness;
+	@Autowired
+	private BoothService boothService;
+	@Autowired
+	private UserExhibitService userExhibitService;
+	@Autowired
+	private WordBusiness wordBusiness;
 	
 	@Override
 	public List<ExhibitModel> queryExhibitListByParam(ExhibitQueryParam exhibitParam) {
@@ -58,6 +71,7 @@ public class ExhibitBusinessImpl implements ExhibitBusiness {
 	}
 
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void deleteExhibit(ExhibitQueryParam param){
 		Exhibit record = new Exhibit();
 		record.setExhibitId(param.getExhibitId());
@@ -65,5 +79,19 @@ public class ExhibitBusinessImpl implements ExhibitBusiness {
 		if (result != 1) {
 			throw new BusinessException("删除展馆异常");
 		}
+		// 删除展位相关信息
+		BoothModel boothModel = new BoothModel();
+		boothModel.setExhibitId(param.getExhibitId());
+		List<BoothModel> boothModelList = boothService.queryBoothModelByModel(boothModel);
+		if (null != boothModelList && boothModelList.size() > 0) {
+			for (BoothModel booth : boothModelList) {
+				param.setBoothId(booth.getBoothId());
+				boothBusiness.deleteBooth(param);
+			}
+		}
+		// 删除文字信息
+		wordBusiness.deleteWordByExhibitId(param.getExhibitId());
+		// 删除用户展馆信息
+		userExhibitService.deleteByExhibitId(param.getExhibitId());
 	}
 }

@@ -29,7 +29,8 @@ public interface BoothWordDao extends BoothWordMapper{
 	
 	/**
 	 * 根据boothId,进行删除操作
+	 * @param boothId
 	 */
-	int deleteByBoothId(BoothWord boothWord);
+	int deleteByBoothId(Long boothId);
 
 }

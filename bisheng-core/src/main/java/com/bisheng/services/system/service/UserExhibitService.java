@@ -2,8 +2,6 @@ package com.bisheng.services.system.service;
 
 import java.util.Map;
 
-import com.bisheng.services.system.model.generated.UserExhibitExample;
-
 /**
  * 用户展馆服务
  * @author hp
@@ -12,8 +10,17 @@ import com.bisheng.services.system.model.generated.UserExhibitExample;
 public interface UserExhibitService {
 	/**
 	 * 删除用户展馆
+	 * @param userId
 	 */
-	int deleteByExample(UserExhibitExample example);
+	int deleteByUserId(Long userId);
+
+	/**
+	 * 删除用户展馆
+	 * @param exhibitId
+	 * @return
+	 */
+	int deleteByExhibitId(Long exhibitId);
+
 	/**
 	 * 批量插入用户展馆
 	 */

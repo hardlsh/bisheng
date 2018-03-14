@@ -1,11 +1,11 @@
 package com.bisheng.apps.exhibit.business;
 
-import java.util.List;
-
 import com.bisheng.apps.exhibit.param.ExhibitQueryParam;
 import com.bisheng.services.exhibit.model.customized.BoothModel;
 import com.bisheng.services.exhibit.model.customized.BoothWordModel;
 import com.github.pagehelper.PageInfo;
+
+import java.util.List;
 
 /**
  * 展位业务类
@@ -27,7 +27,12 @@ public interface BoothBusiness {
 	 * @return
 	 */
 	PageInfo<BoothModel> queryPagedBoothByParam(ExhibitQueryParam param);
-	
+
+	/**
+	 * 分页查询展位文字
+	 */
+	PageInfo<BoothWordModel> queryPagedBoothWordByParam(ExhibitQueryParam param);
+
 	/**
 	 * 新增展位
 	 * @param param
@@ -50,10 +55,5 @@ public interface BoothBusiness {
 	 * 批量保存展位文字
 	 */
 	void batchInsertBoothWord(ExhibitQueryParam queryParam);
-
-	/**
-	 * 分页查询展位文字
-	 */
-	PageInfo<BoothWordModel> queryPagedBoothWordByParam(ExhibitQueryParam param);
 
 }

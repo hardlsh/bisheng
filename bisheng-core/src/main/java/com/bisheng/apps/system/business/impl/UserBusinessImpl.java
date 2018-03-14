@@ -157,10 +157,7 @@ public class UserBusinessImpl implements UserBusiness {
 	 * 修改用户展馆分两步, 先删除, 再新增
 	 */
 	private int updateUserExhibitByParam(AuthParam param) {
-		UserExhibitExample example = new UserExhibitExample();
-		UserExhibitExample.Criteria criteria = example.createCriteria();
-		criteria.andUserIdEqualTo(param.getUserId());
-		int delRes = userExhibitService.deleteByExample(example);
+		int delRes = userExhibitService.deleteByUserId(param.getUserId());
 
 		List<UserExhibit> userExhibitList = new ArrayList<>();
 		UserExhibit userExhibit = null;
