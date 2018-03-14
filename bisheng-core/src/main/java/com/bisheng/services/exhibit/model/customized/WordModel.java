@@ -41,20 +41,6 @@ public class WordModel extends Word {
 	 * 展位名称
 	 */
 	private String boothNameStr;
-	/**
-	 * 展馆id
-	 */
-	private Long exhibitId;
-
-	@Override
-	public Long getExhibitId() {
-		return exhibitId;
-	}
-
-	@Override
-	public void setExhibitId(Long exhibitId) {
-		this.exhibitId = exhibitId;
-	}
 
 	public String getExhibitName() {
 		return exhibitName;
